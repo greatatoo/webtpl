@@ -1,0 +1,41 @@
+{
+    "name": "greatatoo/webtpl",
+    "description": "A basic web template for Laravel.",
+    "license": "license",
+    "authors": [
+        {
+            "name": "David Lu",
+            "email": "greatatoo@gmail.com"
+        }
+    ],
+    "homepage": "https://github.com/greatatoo/webtpl",
+    "keywords": ["Laravel", "Webtpl"],
+    "require": {
+        "illuminate/support": "~7|~8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~9.0",
+        "orchestra/testbench": "~5|~6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Greatatoo\\Webtpl\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Greatatoo\\Webtpl\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+				"Greatatoo\\Webtpl\\WebtplServiceProvider",
+				"Greatatoo\\Webtpl\\Providers\\PermissionsServiceProvider"
+            ],
+            "aliases": {
+                "Webtpl": "Greatatoo\\Webtpl\\Facades\\Webtpl"
+            }
+        }
+    }
+}
