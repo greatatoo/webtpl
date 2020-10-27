@@ -53,7 +53,7 @@ class InstallCommand extends Command
 		 | Custom default setting
 		 +------------------------------------------------------------
 		 */
-		$this->replaceHomeWithDashboard();
+		// $this->replaceHomeWithDashboard(); //
 		// $this->installWebtplServiceProvider(); // already registered in composer.json
 		$this->modifyUserModel();
 		$this->addRoleMiddleware();
