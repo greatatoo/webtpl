@@ -54,7 +54,8 @@ class RolePermissionDummySeeder extends Seeder
 		$managerPerm = Permission::where('slug', 'edit-users')->first();
 
 		$developer = new User();
-		$developer->name = 'greatatoo';
+		$developer->name = 'GreatAtoo';
+		$developer->account = 'greatatoo';
 		$developer->email = 'greatatoo@gmail.com';
 		$developer->password = bcrypt('secret');
 		$developer->save();
@@ -62,7 +63,8 @@ class RolePermissionDummySeeder extends Seeder
 		$developer->permissions()->attach($devPerm);
 
 		$manager = new User();
-		$manager->name = 'david';
+		$manager->name = 'David';
+		$manager->account = 'david';
 		$manager->email = 'david@ccgopro.com';
 		$manager->password = bcrypt('secret');
 		$manager->save();

@@ -19,6 +19,21 @@ $ php artisan migrate
 
 ## Usage
 
+routes/web.php
+```php
+//Get session
+Route::get('/session', [\Greatatoo\Webtpl\Http\Controllers\SessionController::class, 'query']);
+
+//Create session by account (login)
+Route::post('/session', [\Greatatoo\Webtpl\Http\Controllers\SessionController::class, 'create']);
+
+//Create session by email (login)
+Route::post('/session/email', [\Greatatoo\Webtpl\Http\Controllers\SessionController::class, 'create']);
+
+//Destroy session (logout)
+Route::delete('/session', [\Greatatoo\Webtpl\Http\Controllers\SessionController::class, 'destroy']);
+```
+
 ## Change log
 
 Please see the [changelog](changelog.md) for more information on what has changed recently.

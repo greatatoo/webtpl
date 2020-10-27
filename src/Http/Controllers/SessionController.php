@@ -11,33 +11,48 @@ use Illuminate\Support\Facades\Redirect;
 
 class SessionController extends Controller
 {
-	//the users table colume regarded as the username.
-	private $username = 'email';
+	//the column in users table is regarded as a username to authenticate
+	private $username = 'account';
 
+	/**
+	 * Get session data
+	 */
 	public function query(Request $request)
 	{
 		return new JsonResponse(Auth::user(), 200);
 	}
 
-	public function login(Request $request, $method = 'email')
+	/**
+	 * Login
+	 */
+	public function login(Request $request, $column = 'account'){
+		return $this->create($request, $column);
+	}
+
+	/**
+	 * Create session by account or email.
+	 */
+	public function create(Request $request, $column = 'account')
 	{
-		//check if already logged in
+		//check if already logged in.
 		if ($request->user()) {
 			//Log::debug(Auth::user());
 			Log::debug("user has logged in");
 			return $this->sendLoginResponse($request);
 		}
 
-		//check if method is available
-		if (!in_array($method, ['name', 'email'])) {
-			Log::error("method '$method' not supported");
+		//check if login column is available.
+		//name and email are the columns on users table.
+		if (!in_array($column, ['account', 'email'])) {
+			Log::error("login method '$column' not supported");
 			return $this->sendFailedLoginResponse($request);
 		}
 
-		//current colume regarded as the username
-		$this->username = $method;
+		//current column is regarded as a username to authenticate.
+		$this->username = $column;
 
-		//check the request parameters
+		//check the request parameters.
+		//$this->username() returns ether 'name' or 'email'.
 		$request->validate([
 			$this->username() => 'required|string',
 			'password' => 'required|string',
@@ -57,7 +72,17 @@ class SessionController extends Controller
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
 	 */
-	public function logout(Request $request)
+	public function logout(Request $request){
+		return $this->destroy($request);
+	}
+
+	/**
+	 * Log the user out of the application.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+	 */
+	public function destroy(Request $request)
 	{
 		Auth::logout();
 
@@ -129,6 +154,9 @@ class SessionController extends Controller
 		]);
 	}
 
+	/**
+	 * Pick a column to be the username for authentication.
+	 */
 	public function username()
 	{
 		return $this->username;
