@@ -125,6 +125,11 @@ class InstallCommand extends Command
 			if (preg_match('/use HasFactory/', $line)) {
 				$newLines[] = '    use HasPermissionsTrait;';
 			}
+
+			if (preg_match('/protected \$fillable/', $line)) {
+				$newLines[] = "        'account',";
+			}
+			
 		}
 
 		$this->linesToFile($newLines, app_path("Models/User.php"));

@@ -52,7 +52,7 @@ class SessionController extends Controller
 		$this->username = $column;
 
 		//check the request parameters.
-		//$this->username() returns ether 'name' or 'email'.
+		//$this->username() returns ether 'account' or 'email'.
 		$request->validate([
 			$this->username() => 'required|string',
 			'password' => 'required|string',
