@@ -14,7 +14,7 @@ class AddAccountToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('account')->nullable(false)->unique();
+            $table->string('account')->nullable(false)->unique()->after('id');
         });
     }
 
@@ -26,7 +26,7 @@ class AddAccountToUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->removeColumn('account');
+			$table->dropColumn('account');
         });
     }
 }

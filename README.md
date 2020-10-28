@@ -19,7 +19,10 @@ $ php artisan migrate
 
 ## Usage
 
+### Session Authentication
+
 routes/web.php
+
 ```php
 //Get session
 Route::get('/session', [\Greatatoo\Webtpl\Http\Controllers\SessionController::class, 'query']);
@@ -32,6 +35,22 @@ Route::post('/session/{column}', [\Greatatoo\Webtpl\Http\Controllers\SessionCont
 
 //Destroy session (logout)
 Route::delete('/session', [\Greatatoo\Webtpl\Http\Controllers\SessionController::class, 'destroy']);
+```
+
+### Token Authentication
+
+routes/api.php
+
+```php
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
+```
+
+HTTP Header
+
+```bash
+curl -X GET --header "Authorization: Bearer user_api_token_on_users_table"  http://localhost/api/user
 ```
 
 ## Change log

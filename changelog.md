@@ -7,3 +7,5 @@ All notable changes to `Webtpl` will be documented in this file.
 ### Added
 
 - Added role/permission implementation.
+- Added login by account id.
+- Added token driver implementation.
