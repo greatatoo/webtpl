@@ -42,8 +42,11 @@ Route::delete('/session', [\Greatatoo\Webtpl\Http\Controllers\SessionController:
 routes/api.php
 
 ```php
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(['auth:api','role:admin'])->group(function () {
+	Route::apiResources([
+		'role' => \Greatatoo\Webtpl\Http\Controllers\RoleController::class,
+		'permission' => \Greatatoo\Webtpl\Http\Controllers\PermissionController::class,
+	]);
 });
 ```
 

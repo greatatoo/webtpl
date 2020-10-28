@@ -2,62 +2,103 @@
 
 namespace Greatatoo\Webtpl\Http\Controllers;
 
+use Greatatoo\Webtpl\Models\Permission;
+
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Database\QueryException;
 
 class PermissionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function index()
+	{
+		return Permission::all();
+	}
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function store(Request $request)
+	{
+		$request->validate([
+			'name' => 'required|string',
+			'slug' => 'required|string',
+		]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+		try {
+			$permission = new Permission();
+			$permission->name = $request->name;
+			$permission->slug = $request->slug;
+			$permission->save();
+		} catch (QueryException $e) {
+			return new JsonResponse(
+				["reason" => $e->getMessage()],
+				400
+			);
+		}
+	}
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function show($id)
+	{
+		return Permission::find($id);
+	}
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function update(Request $request, $id)
+	{
+		$request->validate([
+			'name' => 'required|string'
+		]);
+
+		try {
+			$permission = Permission::find($id);
+			$permission->name = $request->name;
+			$permission->save();
+			return $permission;
+		} catch (QueryException $e) {
+			return new JsonResponse(
+				["reason" => $e->getMessage()],
+				400
+			);
+		}
+	}
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function destroy($id)
+	{
+		try {
+			$permission = Permission::find($id);
+			if ($permission)
+				$permission->delete();
+		} catch (QueryException $e) {
+			return new JsonResponse(
+				["reason" => $e->getMessage()],
+				400
+			);
+		}
+	}
 }
