@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddAccountToUsers extends Migration
+class AlterUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,10 @@ class AddAccountToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('account')->nullable(false)->unique()->after('id');
-        });
+			$table->string('account')->nullable(false)->unique()->after('id');
+			$table->string('api_token')->unique()->nullable()->after('password');
+			$table->string('email')->nullable()->change();
+		});
     }
 
     /**
@@ -27,6 +29,8 @@ class AddAccountToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
 			$table->dropColumn('account');
-        });
+			$table->dropColumn('api_token');
+			$table->string('email')->nullable(false)->change();
+		});
     }
 }

@@ -44,8 +44,9 @@ routes/api.php
 ```php
 Route::middleware(['auth:api','role:admin'])->group(function () {
 	Route::apiResources([
+		'user' => \Greatatoo\Webtpl\Http\Controllers\UserController::class,
 		'role' => \Greatatoo\Webtpl\Http\Controllers\RoleController::class,
-		'permission' => \Greatatoo\Webtpl\Http\Controllers\PermissionController::class
+		'permission' => \Greatatoo\Webtpl\Http\Controllers\PermissionController::class,
 	]);
 
 	Route::get('role/{role}/permission',[\Greatatoo\Webtpl\Http\Controllers\RolePermissionController::class,'show']);
