@@ -45,15 +45,27 @@ routes/api.php
 Route::middleware(['auth:api','role:admin'])->group(function () {
 	Route::apiResources([
 		'role' => \Greatatoo\Webtpl\Http\Controllers\RoleController::class,
-		'permission' => \Greatatoo\Webtpl\Http\Controllers\PermissionController::class,
+		'permission' => \Greatatoo\Webtpl\Http\Controllers\PermissionController::class
 	]);
+
+	Route::get('role/{role}/permission',[\Greatatoo\Webtpl\Http\Controllers\RolePermissionController::class,'show']);
+	Route::put('role/{role}/permission',[\Greatatoo\Webtpl\Http\Controllers\RolePermissionController::class,'update']);
+	Route::delete('role/{role}/permission',[\Greatatoo\Webtpl\Http\Controllers\RolePermissionController::class,'destroy']);
+
+	Route::get('user/{user}/permission',[\Greatatoo\Webtpl\Http\Controllers\UserPermissionController::class,'show']);
+	Route::put('user/{user}/permission',[\Greatatoo\Webtpl\Http\Controllers\UserPermissionController::class,'update']);
+	Route::delete('user/{user}/permission',[\Greatatoo\Webtpl\Http\Controllers\UserPermissionController::class,'destroy']);
+
+	Route::get('user/{user}/role',[\Greatatoo\Webtpl\Http\Controllers\UserRoleController::class,'show']);
+	Route::put('user/{user}/role',[\Greatatoo\Webtpl\Http\Controllers\UserRoleController::class,'update']);
+	Route::delete('user/{user}/role',[\Greatatoo\Webtpl\Http\Controllers\UserRoleController::class,'destroy']);
 });
 ```
 
-HTTP Header
+cURL
 
 ```bash
-curl -X GET --header "Authorization: Bearer user_api_token_on_users_table"  http://localhost/api/user
+curl -X GET --header "Authorization: Bearer user_api_token_on_users_table"  http://localhost/api/role
 ```
 
 ## Change log

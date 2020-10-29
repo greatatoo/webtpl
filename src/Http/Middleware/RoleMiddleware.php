@@ -21,12 +21,12 @@ class RoleMiddleware
 	{
 		if (!$request->user()->hasRole($role)) {
 			Log::debug("user has no role '$role'");
-			abort(401);
+			abort(401, "role '$role' required");
 		}
 
 		if ($permission !== null && !$request->user()->can($permission)) {
 			Log::debug("user has no permission '$permission'");
-			abort(403);
+			abort(403, "permission '$permission' required");
 		}
 
 		return $next($request);
