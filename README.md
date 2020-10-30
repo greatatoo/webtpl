@@ -49,6 +49,9 @@ Route::middleware(['auth:api','role:admin'])->group(function () {
 		'permission' => \Greatatoo\Webtpl\Http\Controllers\PermissionController::class,
 	]);
 
+	Route::post('user/search', [\Greatatoo\Webtpl\Http\Controllers\UserController::class, 'search']);
+	Route::get('user/{user}/detail', [\Greatatoo\Webtpl\Http\Controllers\UserController::class, 'detail']);
+
 	Route::get('role/{role}/permission',[\Greatatoo\Webtpl\Http\Controllers\RolePermissionController::class,'show']);
 	Route::put('role/{role}/permission',[\Greatatoo\Webtpl\Http\Controllers\RolePermissionController::class,'update']);
 	Route::delete('role/{role}/permission',[\Greatatoo\Webtpl\Http\Controllers\RolePermissionController::class,'destroy']);
