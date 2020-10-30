@@ -4,13 +4,18 @@ namespace Greatatoo\Webtpl\Http\Controllers;
 
 use App\Models\User;
 
+use Greatatoo\Webtpl\Traits\HasPermissionsTrait;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
 
 class UserController extends Controller
 {
+	use HasPermissionsTrait;
+
 	/**
 	 * Display a listing of the users.
 	 *
@@ -97,56 +102,7 @@ class UserController extends Controller
 	 */
 	public function detail($userId)
 	{
-		$user = User::find($userId);
-
-		if (!$user)
-			abort(404, "no such user '$userId'");
-
-		//query user's roles
-		$roles = DB::table('users_roles')
-			->leftJoin('roles', 'users_roles.role_id', '=', 'roles.id')
-			->where('users_roles.user_id', $userId)
-			->get([
-				'users_roles.role_id',
-				'roles.name as role_name',
-				'roles.slug as role_slug',
-			]);
-
-		//query the permissions of the user
-		$query1 = DB::table('users_permissions')
-			->select(
-				'permissions.id as permission_id',
-				'permissions.name as permission_name',
-				'permissions.slug as permission_slug'
-			)
-			->LeftJoin('permissions', 'users_permissions.permission_id', '=', 'permissions.id')
-			->where([
-				['user_id', $userId],
-				['permission_id', '!=', null]
-			]);
-
-		//query the permissions of the roles of the user
-		$query2 = DB::table('users_roles')
-			->select(
-				'roles_permissions.permission_id',
-				'permissions.name as permission_name',
-				'permissions.slug as permission_slug'
-			)
-			->leftJoin('roles_permissions', 'users_roles.role_id', '=', 'roles_permissions.role_id')
-			->LeftJoin('permissions', 'roles_permissions.permission_id', '=', 'permissions.id')
-			->where([
-				['users_roles.user_id', '=', $userId],
-				['roles_permissions.permission_id', '!=', null]
-			]);
-
-		//union both queries and join permissions
-		$permissions = $query1->union($query2)->get();
-
-		return [
-			'user' => $user,
-			'roles' => $roles,
-			'permissions' => $permissions
-		];
+		return UserController::getUserDetail($userId);
 	}
 
 	/**

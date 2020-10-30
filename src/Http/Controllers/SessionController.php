@@ -2,6 +2,10 @@
 
 namespace Greatatoo\Webtpl\Http\Controllers;
 
+use App\Models\User;
+
+use Greatatoo\Webtpl\Traits\HasPermissionsTrait;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
@@ -11,21 +15,26 @@ use Illuminate\Support\Facades\Redirect;
 
 class SessionController extends Controller
 {
+	use HasPermissionsTrait;
+
 	//the column in users table is regarded as a username to authenticate
 	private $username = 'account';
 
 	/**
-	 * Get session data
+	 *  Return user's detail info containing user record, roles and permissions.
 	 */
 	public function query(Request $request)
 	{
-		return new JsonResponse(Auth::user(), 200);
+		$userId = Auth::user()->id;
+		$userDetail = SessionController::getUserDetail($userId);
+		return new JsonResponse($userDetail, 200);
 	}
 
 	/**
 	 * Login
 	 */
-	public function login(Request $request, $column = 'account'){
+	public function login(Request $request, $column = 'account')
+	{
 		return $this->create($request, $column);
 	}
 
@@ -72,7 +81,8 @@ class SessionController extends Controller
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
 	 */
-	public function logout(Request $request){
+	public function logout(Request $request)
+	{
 		return $this->destroy($request);
 	}
 
@@ -106,7 +116,7 @@ class SessionController extends Controller
 	 */
 	protected function loggedOut(Request $request)
 	{
-		Log::debug('post logged out');
+		//Log::debug('post logged out');
 	}
 
 	/**
@@ -119,11 +129,14 @@ class SessionController extends Controller
 	{
 		$request->session()->regenerate();
 
+		$userId = Auth::user()->id;
+		$userDetail = SessionController::getUserDetail($userId);
+
 		if ($response = $this->authenticated($request, Auth::user()))
 			return $response;
 
 		return $request->wantsJson()
-			? new JsonResponse(Auth::user(), 200)
+			? new JsonResponse($userDetail, 200)
 			: Redirect::intended($this->redirectPath());
 	}
 
@@ -136,7 +149,7 @@ class SessionController extends Controller
 	 */
 	protected function authenticated(Request $request, $user)
 	{
-		Log::debug('post logged in');
+		//Log::debug('post logged in');
 	}
 
 	/**
