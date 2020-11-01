@@ -18,13 +18,15 @@ class SessionController extends Controller
 	use HasPermissionsTrait;
 
 	//the column in users table is regarded as a username to authenticate
-	private $username = 'account';
+	protected $username = 'account';
 
 	/**
 	 *  Return user's detail info containing user record, roles and permissions.
 	 */
 	public function query(Request $request)
 	{
+		if(!Auth::user())
+			return new JsonResponse([], 200);
 		$userId = Auth::user()->id;
 		$userDetail = SessionController::getUserDetail($userId);
 		return new JsonResponse($userDetail, 200);
