@@ -5,13 +5,15 @@
 [![Build Status][ico-travis]][link-travis]
 [![StyleCI][ico-styleci]][link-styleci]
 
-This is where your description should go. Take a look at [contributing.md](contributing.md) to see a to do list.
+Webtpl is a web template containing a bunch of essential features such as Role/Permission ACL, Authentication by account or email, Bearer Authorization and so on for common Laravel projects. Take a look at [contributing.md](contributing.md) to see a to do list.
 
 ## Installation
 
 Via Composer
 
 ``` bash
+composer create-project --prefer-dist laravel/laravel <project name>
+cd <project name>
 composer require greatatoo/webtpl
 php artisan webtpl:install
 php artisan migrate
@@ -25,16 +27,16 @@ routes/web.php
 
 ```php
 //Get session
-Route::get('/session', [\Greatatoo\Webtpl\Http\Controllers\SessionController::class, 'query']);
+Route::get('/session', [\App\Http\Controllers\Essential\SessionController::class, 'query']);
 
 //Create session by account (login)
-Route::post('/session', [\Greatatoo\Webtpl\Http\Controllers\SessionController::class, 'create']);
+Route::post('/session', [\App\Http\Controllers\Essential\SessionController::class, 'create']);
 
 //Create session by email (login)
-Route::post('/session/{column}', [\Greatatoo\Webtpl\Http\Controllers\SessionController::class, 'create']);
+Route::post('/session/{column}', [\App\Http\Controllers\Essential\SessionController::class, 'create']);
 
 //Destroy session (logout)
-Route::delete('/session', [\Greatatoo\Webtpl\Http\Controllers\SessionController::class, 'destroy']);
+Route::delete('/session', [\App\Http\Controllers\Essential\SessionController::class, 'destroy']);
 ```
 
 ### Token Authentication
