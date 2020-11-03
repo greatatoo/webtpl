@@ -3,7 +3,6 @@
 namespace Greatatoo\Webtpl\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class RoleMiddleware

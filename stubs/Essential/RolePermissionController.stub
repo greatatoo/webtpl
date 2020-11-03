@@ -1,7 +1,8 @@
 <?php
 
-namespace Greatatoo\Webtpl\Http\Controllers;
+namespace App\Http\Controllers\Essential;
 
+use App\Http\Controllers\Controller;
 use Greatatoo\Webtpl\Traits\RolePermissionResourceTrait;
 
 class RolePermissionController extends Controller

@@ -57,9 +57,32 @@ class InstallCommand extends Command
 		// $this->installWebtplServiceProvider(); // already registered in composer.json
 		$this->modifyUserModel();
 		$this->addRoleMiddleware();
+		$this->copyControllerStubs();
 		$this->copySeeders();
 		$this->info('Webtpl installed successfully.');
 		return 0;
+	}
+
+	/**
+	 * Copy essential controllers to project
+	 */
+	protected function copyControllerStubs()
+	{
+		$srcDir = __DIR__ . "/../../../stubs/Essential";
+		$destDir = app_path("Http/Controllers/Essential");
+
+		if (!file_exists($destDir))
+			mkdir($destDir);
+
+		$dh = opendir($srcDir);
+		while (($file = readdir($dh)) !== false) {
+			if (preg_match('/^..?$/', $file))
+				continue;
+			$fileName = pathinfo($file)['filename'];
+			copy("$srcDir/$fileName.stub", "$destDir/$fileName.php");
+			$this->info("Copy app/Http/Controllers/Essential/$fileName.php");
+		}
+		closedir($dh);
 	}
 
 	/**
@@ -67,8 +90,20 @@ class InstallCommand extends Command
 	 */
 	protected function copySeeders()
 	{
-		copy(__DIR__ . '/../../../database/seeders/RolePermissionDummySeeder.php', database_path('seeders/RolePermissionDummySeeder.php'));
-		$this->info("Seeders copied");
+		$srcDir = __DIR__ . "/../../../database/seeders";
+		$destDir = database_path('seeders');
+
+		if (!file_exists($destDir))
+			mkdir($destDir);
+
+		$dh = opendir($srcDir);
+		while (($file = readdir($dh)) !== false) {
+			if (preg_match('/^..?$/', $file))
+				continue;
+			copy("$srcDir/$file", "$destDir/$file");
+			$this->info("Copy database/seeders/$file");
+		}
+		closedir($dh);
 	}
 
 	/**
@@ -82,7 +117,7 @@ class InstallCommand extends Command
 			$this->replaceInFile('/home', '/dashboard', resource_path('views/welcome.blade.php'));
 			$this->replaceInFile('Home', 'Dashboard', resource_path('views/welcome.blade.php'));
 		}
-		$this->info("/home → /dashboard modified");
+		$this->info("Modify /home → /dashboard");
 	}
 
 	/**
@@ -99,7 +134,7 @@ class InstallCommand extends Command
 				$appConfig
 			));
 		}
-		$this->info("WebtplServiceProvider appended to app.php");
+		$this->info("Append WebtplServiceProvider to config/app.php");
 	}
 
 	/**
@@ -129,7 +164,6 @@ class InstallCommand extends Command
 			if (preg_match('/protected \$fillable/', $line)) {
 				$newLines[] = "        'account',";
 			}
-			
 		}
 
 		$this->linesToFile($newLines, app_path("Models/User.php"));
