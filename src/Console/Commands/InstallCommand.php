@@ -59,6 +59,7 @@ class InstallCommand extends Command
 		$this->addRoleMiddleware();
 		$this->copyControllerStubs();
 		$this->copySeeders();
+		$this->addRoutes();
 		$this->info('Webtpl installed successfully.');
 		return 0;
 	}
@@ -79,6 +80,8 @@ class InstallCommand extends Command
 			if (preg_match('/^..?$/', $file))
 				continue;
 			$fileName = pathinfo($file)['filename'];
+			if (file_exists("$destDir/$fileName.php"))
+				continue;
 			copy("$srcDir/$fileName.stub", "$destDir/$fileName.php");
 			$this->info("Copy app/Http/Controllers/Essential/$fileName.php");
 		}
@@ -138,6 +141,37 @@ class InstallCommand extends Command
 	}
 
 	/**
+	 * Add routes in routes/web.php
+	 */
+	protected function addRoutes()
+	{
+		$lines = $this->fileToLines(base_path('routes/web.php'));
+
+		//check if Webtpl exists
+		if ($this->linesContain($lines, 'Webtpl'))
+			return;
+
+		$needAppend = false;
+		$newLines = [];
+		foreach ($lines as $line) {
+			$newLines[] = $line;
+
+			if (preg_match('/<\?php/', $line)) {
+				$newLines[] = '';
+				$newLines[] = 'use Greatatoo\Webtpl\Webtpl;';
+				$needAppend = true;
+			}
+		}
+		if ($needAppend){
+			$newLines[] = '';
+			$newLines[] = 'Webtpl::routes();';
+		}
+
+		$this->linesToFile($newLines, base_path('routes/web.php'));
+		$this->info("Modify routes/web.php");
+	}
+
+	/**
 	 * Add HasPermissionsTrait to User Model
 	 */
 	protected function modifyUserModel()
@@ -167,7 +201,7 @@ class InstallCommand extends Command
 		}
 
 		$this->linesToFile($newLines, app_path("Models/User.php"));
-		$this->info("User.php modified");
+		$this->info("Modify Models/User.php");
 	}
 
 	/**
@@ -190,7 +224,7 @@ class InstallCommand extends Command
 		}
 
 		$this->linesToFile($newLines, app_path("Http/Kernel.php"));
-		$this->info("RoleMiddleware added to Http/Kernel.php");
+		$this->info("Add RoleMiddleware to Http/Kernel.php");
 	}
 
 	/**
