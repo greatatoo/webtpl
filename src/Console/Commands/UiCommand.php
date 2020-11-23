@@ -5,6 +5,10 @@ namespace Greatatoo\Webtpl\Console\Commands;
 use Illuminate\Console\Command;
 use InvalidArgumentException;
 
+use Greatatoo\Webtpl\Presets\Bootstrap;
+use Greatatoo\Webtpl\Presets\React;
+use Greatatoo\Webtpl\Presets\Vue;
+
 class UiCommand extends Command
 {
 	/**
@@ -66,7 +70,51 @@ class UiCommand extends Command
 		$this->addRoutes();
 		$this->applyWebtplUi();
 
+		//Install bootstrap, vue or react components
+		$this->{$this->argument('type')}();
+
 		$this->info('Webtpl ui scaffolding generated successfully.');
+	}
+
+	/**
+	 * Install the "bootstrap" preset.
+	 *
+	 * @return void
+	 */
+	protected function bootstrap()
+	{
+		Bootstrap::install();
+
+		$this->info('Bootstrap scaffolding installed successfully.');
+		$this->comment('Please run "npm install && npm run dev" to compile your fresh scaffolding.');
+	}
+
+	/**
+	 * Install the "vue" preset.
+	 *
+	 * @return void
+	 */
+	protected function vue()
+	{
+		Bootstrap::install();
+		Vue::install();
+
+		$this->info('Vue scaffolding installed successfully.');
+		$this->comment('Please run "npm install && npm run dev" to compile your fresh scaffolding.');
+	}
+
+	/**
+	 * Install the "react" preset.
+	 *
+	 * @return void
+	 */
+	protected function react()
+	{
+		Bootstrap::install();
+		React::install();
+
+		$this->info('React scaffolding installed successfully.');
+		$this->comment('Please run "npm install && npm run dev" to compile your fresh scaffolding.');
 	}
 
 	/**
