@@ -17,6 +17,7 @@ cd <project name>
 composer require greatatoo/webtpl
 php artisan webtpl:install
 php artisan migrate
+php artisan db:seed --class=InitWebtplSeeder
 ```
 
 ## Usage

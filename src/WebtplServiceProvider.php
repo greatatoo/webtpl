@@ -79,7 +79,8 @@ class WebtplServiceProvider extends ServiceProvider
 
 		//Registering package commands.
 		$this->commands([
-			Console\Commands\InstallCommand::class
+			Console\Commands\InstallCommand::class,
+			Console\Commands\UiCommand::class,
 		]);
 	}
 }

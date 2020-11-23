@@ -20,7 +20,7 @@ class InstallCommand extends Command
 	 *
 	 * @var string
 	 */
-	protected $description = 'Install the Webtpl components and resources';
+	protected $description = 'Install the models, controlls and routes of the Webtpl.';
 
 	/**
 	 * Create a new command instance.
@@ -147,25 +147,17 @@ class InstallCommand extends Command
 	{
 		$lines = $this->fileToLines(base_path('routes/web.php'));
 
-		//check if Webtpl exists
-		if ($this->linesContain($lines, 'Webtpl'))
+		//check if Webtpl::routes exists
+		if ($this->linesContain($lines, 'Webtpl::routes()'))
 			return;
 
-		$needAppend = false;
 		$newLines = [];
-		foreach ($lines as $line) {
+		foreach ($lines as $line)
 			$newLines[] = $line;
 
-			if (preg_match('/<\?php/', $line)) {
-				$newLines[] = '';
-				$newLines[] = 'use Greatatoo\Webtpl\Webtpl;';
-				$needAppend = true;
-			}
-		}
-		if ($needAppend){
-			$newLines[] = '';
-			$newLines[] = 'Webtpl::routes();';
-		}
+		$newLines[] = '';
+		$newLines[] = '//Set Webtpl essential routes';
+		$newLines[] = 'Greatatoo\Webtpl\Webtpl::routes();';
 
 		$this->linesToFile($newLines, base_path('routes/web.php'));
 		$this->info("Modify routes/web.php");

@@ -41,4 +41,11 @@ class Webtpl
 			Route::delete('user/{user}/role', [\App\Http\Controllers\Essential\UserRoleController::class, 'destroy']);
 		});
 	}
+
+	/**
+	 * Set ui routes
+	 */
+	public static function uiRoutes(){
+		Route::get('login', [\App\Http\Controllers\Auth\LoginController::class, 'show'])->name('login');
+	}
 }
