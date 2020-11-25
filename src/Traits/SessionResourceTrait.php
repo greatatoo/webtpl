@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Redirect;
 
+use App\Providers\RouteServiceProvider;
+
 trait SessionResourceTrait
 {
 	use HasPermissionsTrait;
@@ -171,5 +173,12 @@ trait SessionResourceTrait
 	public function username()
 	{
 		return $this->username;
+	}
+
+	/**
+	 * The URL to which the fail authentication will redirect
+	 */
+	protected function redirectPath(){
+		return RouteServiceProvider::HOME;
 	}
 }

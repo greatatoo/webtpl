@@ -46,6 +46,7 @@ class UiCommand extends Command
 	 */
 	protected $controllers = [
 		'Auth/LoginController.stub' => 'Auth/LoginController.php',
+		'HomeController.stub' => 'HomeController.php',
 	];
 
 	/**

@@ -46,6 +46,9 @@ class Webtpl
 	 * Set ui routes
 	 */
 	public static function uiRoutes(){
-		Route::get('login', [\App\Http\Controllers\Auth\LoginController::class, 'show'])->name('login');
+		Route::post('login', [\App\Http\Controllers\Auth\LoginController::class, 'doAuth'])->name('login');
+		Route::get('login', [\App\Http\Controllers\Auth\LoginController::class, 'show'])->name('login.form');
+		Route::post('logout', [\App\Http\Controllers\Essential\SessionController::class, 'destroy'])->name('logout');
+		Route::get('home', [\App\Http\Controllers\HomeController::class, 'show'])->middleware('auth')->name('home');
 	}
 }

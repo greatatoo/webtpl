@@ -56,6 +56,7 @@ class InstallCommand extends Command
 		// $this->replaceHomeWithDashboard(); //
 		// $this->installWebtplServiceProvider(); // already registered in composer.json
 		$this->modifyUserModel();
+		$this->addAuthVerifiedBy();
 		$this->addRoleMiddleware();
 		$this->copyControllerStubs();
 		$this->copySeeders();
@@ -138,6 +139,25 @@ class InstallCommand extends Command
 			));
 		}
 		$this->info("Append WebtplServiceProvider to config/app.php");
+	}
+
+	protected function addAuthVerifiedBy()
+	{
+		$lines = $this->fileToLines(config_path('auth.php'));
+
+		//check if verified_by exists
+		if ($this->linesContain($lines, 'verified_by'))
+			return;
+
+		$newLines = [];
+		foreach ($lines as $line){
+			$newLines[] = $line;
+			if (preg_match("/'defaults'/", $line)) 
+				$newLines[] = "        'verified_by' => 'account',";
+		}
+
+		$this->linesToFile($newLines, config_path('auth.php'));
+		$this->info("Modify config/auth.php");
 	}
 
 	/**
