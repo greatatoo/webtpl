@@ -6,29 +6,26 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 use Greatatoo\Webtpl\Traits\SessionResourceTrait;
 
 class LoginController extends Controller
 {
-	use SessionResourceTrait;	
+	use SessionResourceTrait;
 
-    /**
-     * Do authentication
+	/**
+	 * Do authentication
 	 * According to config 'auth.defaults', do the authentication by either account or email.
 	 * Redirect to /home after login success.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     */
-    public function doAuth(Request $request)
-    {
-        $conf = Config::get('auth.defaults');
-		$verifiedBy = 'account';
-		if (isset($conf['verified_by']))
-			$verifiedBy = $conf['verified_by'];
-
-		return $this->create($request, $verifiedBy);
-    }
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 */
+	public function doAuth(Request $request)
+	{
+		return $this->create($request, $this->getVerifiedColumn());
+	}
 
 	/**
 	 * Display the specified resource.
@@ -37,10 +34,21 @@ class LoginController extends Controller
 	 */
 	public function show()
 	{
+		//check if already logged in
+		if (Auth::check())
+			return Redirect::intended($this->redirectPath());	
+		return View::make('auth.login', ['verified_by' => $this->getVerifiedColumn()]);
+	}
+
+	/**
+	 * Get the column name used to verify the credentials
+	 */
+	private function getVerifiedColumn()
+	{
 		$conf = Config::get('auth.defaults');
 		$verifiedBy = 'account';
 		if (isset($conf['verified_by']))
-			$verifiedBy = $conf['verified_by'];
-		return View::make('auth.login', ['verified_by' => $verifiedBy]);
+			return $conf['verified_by'];
+		return $verifiedBy;
 	}
 }
