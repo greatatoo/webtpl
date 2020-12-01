@@ -39,10 +39,10 @@ class PermissionsServiceProvider extends ServiceProvider
 
         //Blade Direvtive @role
         Blade::if('role', function (...$roles) {
-            if(!auth()->user())
+            if (!auth()->user())
                 return false;
-            foreach($roles as $role){
-                if(auth()->user()->hasRole($role)) // hasRole comes from HasPermissionsTrait.php
+            foreach ($roles as $role) {
+                if (auth()->user()->hasRole($role)) // hasRole comes from HasPermissionsTrait.php
                     return true;
             }
             return false;
@@ -50,11 +50,11 @@ class PermissionsServiceProvider extends ServiceProvider
 
         //Blade Direvtive @permission
         Blade::if('permission', function (...$permissions) {
-            if(!auth()->user())
+            if (!auth()->user())
                 return false;
-            foreach($permissions as $permission){
+            foreach ($permissions as $permission) {
                 //Read https://www.codechief.org/article/laravel-6-authorization-using-gates
-                if(auth()->user()->can($permission))
+                if (auth()->user()->can($permission))
                     return true;
             }
             return false;

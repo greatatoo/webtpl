@@ -47,9 +47,19 @@ class Webtpl
      */
     public static function uiRoutes()
     {
+        //Guest
         Route::post('login', [\App\Http\Controllers\Auth\LoginController::class, 'doAuth'])->name('login');
         Route::get('login', [\App\Http\Controllers\Auth\LoginController::class, 'show'])->name('login.form');
         Route::post('logout', [\App\Http\Controllers\Essential\SessionController::class, 'destroy'])->name('logout');
-        Route::get('home', [\App\Http\Controllers\HomeController::class, 'show'])->middleware('auth')->name('home');
+        
+        //Personal
+        Route::middleware(['auth'])->group(function () {
+            Route::get('home', [\App\Http\Controllers\HomeController::class, 'show'])->name('home');
+        });
+
+        //Dashboard
+        Route::middleware(['auth', 'role:admin'])->group(function () {
+            Route::get('dashboard/users', [\App\Http\Controllers\Dashboard\UsersController::class, 'show'])->name('dashboard.users');
+        });
     }
 }

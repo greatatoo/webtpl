@@ -6,28 +6,28 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateRolesTable extends Migration
 {
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-		Schema::create('roles', function (Blueprint $table) {
-			$table->id();
-			$table->string('name'); //Role Name
-			$table->string('slug')->unique(); //role_name
-			$table->timestamps();
-		});
-	}
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id();
+            $table->string('name'); //Role Name
+            $table->string('slug')->unique(); //role_name
+            $table->timestamps();
+        });
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		Schema::dropIfExists('roles');
-	}
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('roles');
+    }
 }

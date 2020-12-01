@@ -9,68 +9,68 @@ use Greatatoo\Webtpl\Models\Permission;
 
 class RolePermissionDummySeeder extends Seeder
 {
-	/**
-	 * Run the database seeds.
-	 *
-	 * @return void
-	 * @see https://www.codechief.org/article/user-roles-and-permissions-tutorial-in-laravel-without-packages
-	 */
-	public function run()
-	{
-		$devPermission = Permission::where('slug', 'create-tasks')->first();
-		$managerPermission = Permission::where('slug', 'edit-users')->first();
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     * @see https://www.codechief.org/article/user-roles-and-permissions-tutorial-in-laravel-without-packages
+     */
+    public function run()
+    {
+        $devPermission = Permission::where('slug', 'create-tasks')->first();
+        $managerPermission = Permission::where('slug', 'edit-users')->first();
 
-		//RoleTableSeeder.php
-		$devRole = new Role();
-		$devRole->slug = 'developer';
-		$devRole->name = 'Front-end Developer';
-		$devRole->save();
-		$devRole->permissions()->attach($devPermission);
+        //RoleTableSeeder.php
+        $devRole = new Role();
+        $devRole->slug = 'developer';
+        $devRole->name = 'Front-end Developer';
+        $devRole->save();
+        $devRole->permissions()->attach($devPermission);
 
-		$managerRole = new Role();
-		$managerRole->slug = 'manager';
-		$managerRole->name = 'Assistant Manager';
-		$managerRole->save();
-		$managerRole->permissions()->attach($managerPermission);
+        $managerRole = new Role();
+        $managerRole->slug = 'manager';
+        $managerRole->name = 'Assistant Manager';
+        $managerRole->save();
+        $managerRole->permissions()->attach($managerPermission);
 
-		$devRole = Role::where('slug', 'developer')->first();
-		$managerRole = Role::where('slug', 'manager')->first();
+        $devRole = Role::where('slug', 'developer')->first();
+        $managerRole = Role::where('slug', 'manager')->first();
 
-		$createTasks = new Permission();
-		$createTasks->slug = 'create-tasks';
-		$createTasks->name = 'Create Tasks';
-		$createTasks->save();
-		$createTasks->roles()->attach($devRole);
+        $createTasks = new Permission();
+        $createTasks->slug = 'create-tasks';
+        $createTasks->name = 'Create Tasks';
+        $createTasks->save();
+        $createTasks->roles()->attach($devRole);
 
-		$editUsers = new Permission();
-		$editUsers->slug = 'edit-users';
-		$editUsers->name = 'Edit Users';
-		$editUsers->save();
-		$editUsers->roles()->attach($managerRole);
+        $editUsers = new Permission();
+        $editUsers->slug = 'edit-users';
+        $editUsers->name = 'Edit Users';
+        $editUsers->save();
+        $editUsers->roles()->attach($managerRole);
 
-		$devRole = Role::where('slug', 'developer')->first();
-		$managerRole = Role::where('slug', 'manager')->first();
-		$devPerm = Permission::where('slug', 'create-tasks')->first();
-		$managerPerm = Permission::where('slug', 'edit-users')->first();
+        $devRole = Role::where('slug', 'developer')->first();
+        $managerRole = Role::where('slug', 'manager')->first();
+        $devPerm = Permission::where('slug', 'create-tasks')->first();
+        $managerPerm = Permission::where('slug', 'edit-users')->first();
 
-		$developer = new User();
-		$developer->account = 'greatatoo';
-		$developer->name = 'GreatAtoo';
-		$developer->email = 'greatatoo@gmail.com';
-		$developer->password = bcrypt('secret');
-		$developer->api_token = uniqid($developer->account);
-		$developer->save();
-		$developer->roles()->attach($devRole);
-		$developer->permissions()->attach($devPerm);
+        $developer = new User();
+        $developer->account = 'greatatoo';
+        $developer->name = 'GreatAtoo';
+        $developer->email = 'greatatoo@gmail.com';
+        $developer->password = bcrypt('secret');
+        $developer->api_token = uniqid($developer->account);
+        $developer->save();
+        $developer->roles()->attach($devRole);
+        $developer->permissions()->attach($devPerm);
 
-		$manager = new User();
-		$manager->account = 'david';
-		$manager->name = 'David';
-		$manager->email = 'david@ccgopro.com';
-		$manager->password = bcrypt('secret');
-		$manager->api_token = uniqid($manager->account);
-		$manager->save();
-		$manager->roles()->attach($managerRole);
-		$manager->permissions()->attach($managerPerm);
-	}
+        $manager = new User();
+        $manager->account = 'david';
+        $manager->name = 'David';
+        $manager->email = 'david@ccgopro.com';
+        $manager->password = bcrypt('secret');
+        $manager->api_token = uniqid($manager->account);
+        $manager->save();
+        $manager->roles()->attach($managerRole);
+        $manager->permissions()->attach($managerPerm);
+    }
 }

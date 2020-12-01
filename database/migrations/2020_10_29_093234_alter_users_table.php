@@ -14,11 +14,11 @@ class AlterUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-			$table->string('account')->nullable(false)->unique()->after('id');
-			$table->string('api_token')->unique()->nullable()->after('password');
-			$table->tinyInteger('active')->default(0)->after('api_token');
-			$table->string('email')->nullable()->change();
-		});
+            $table->string('account')->nullable(false)->unique()->after('id');
+            $table->string('api_token')->unique()->nullable()->after('password');
+            $table->tinyInteger('active')->default(0)->after('api_token');
+            $table->string('email')->nullable()->change();
+        });
     }
 
     /**
@@ -29,9 +29,9 @@ class AlterUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-			$table->dropColumn('account');
-			$table->dropColumn('api_token');
-			$table->string('email')->nullable(false)->change();
-		});
+            $table->dropColumn('account');
+            $table->dropColumn('api_token');
+            $table->string('email')->nullable(false)->change();
+        });
     }
 }

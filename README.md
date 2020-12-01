@@ -26,7 +26,7 @@ php artisan db:seed --class=InitWebtplSeeder
 The Webtpl provides two kinds of credentials, account and email, to verify the user.
 Change the adopted credential you want from the defaults secion in config/auth.php.
 
-```json
+```php
 [
     'defaults' => [
         'verified_by' => 'account'

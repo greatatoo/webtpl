@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserRoleModel extends Model
 {
-	use HasFactory;
-	
-	protected $table = 'users_roles';
-	public $timestamps = false;
+    use HasFactory;
+
+    protected $table = 'users_roles';
+    public $timestamps = false;
 }
