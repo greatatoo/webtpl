@@ -153,7 +153,7 @@ class InstallCommand extends Command
         foreach ($lines as $line) {
             $newLines[] = $line;
             if (preg_match("/'defaults'/", $line))
-                $newLines[] = "        'verified_by' => 'account',";
+                $newLines[] = "        'verified_by' => 'account', // account or email";
         }
 
         $this->linesToFile($newLines, config_path('auth.php'));

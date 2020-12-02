@@ -4,7 +4,7 @@ namespace Greatatoo\Webtpl\Presets;
 
 use Illuminate\Filesystem\Filesystem;
 
-class Preset
+abstract class Preset
 {
     /**
      * Ensure the component directories we need exist.
@@ -48,6 +48,8 @@ class Preset
             json_encode($packages, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT).PHP_EOL
         );
     }
+
+    protected abstract static function updatePackageArray(array $packages);
 
     /**
      * Remove the installed Node modules.

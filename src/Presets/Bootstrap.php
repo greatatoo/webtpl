@@ -19,7 +19,7 @@ class Bootstrap extends Preset
         static::updateBootstrapping();
         static::removeNodeModules();
     }
-
+    
     /**
      * Update the given package array.
      *
@@ -34,7 +34,17 @@ class Bootstrap extends Preset
             'popper.js' => '^1.12',
             'sass' => '^1.15.2',
             'sass-loader' => '^8.0.0',
-        ] + $packages;
+        ] + static::getAdditionalPackageArray() + $packages;
+    }
+
+    /**
+     * Add additional packages
+     * Remember to update bootstrap-stubs/webpack.mix.js to copy the required files to resource_path()
+     */
+    protected static function getAdditionalPackageArray(){
+        return [
+            'datatables.net-bs4' => '^1.10.22',
+        ];
     }
 
     /**
@@ -67,6 +77,7 @@ class Bootstrap extends Preset
      */
     protected static function updateBootstrapping()
     {
+        copy(__DIR__.'/bootstrap-stubs/app.js', resource_path('js/app.js'));
         copy(__DIR__.'/bootstrap-stubs/bootstrap.js', resource_path('js/bootstrap.js'));
     }
 }
