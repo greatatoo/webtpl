@@ -48,6 +48,8 @@ class UiCommand extends Command
     protected $controllers = [
         'Auth/LoginController.stub' => 'Auth/LoginController.php',
         'Dashboard/UsersController.stub' => 'Dashboard/UsersController.php',
+        'DataTable/DataTableController.stub' => 'DataTable/DataTableController.php',
+        'DataTable/SSP.stub' => 'DataTable/SSP.php',
         'HomeController.stub' => 'HomeController.php',
     ];
 
@@ -237,26 +239,43 @@ class UiCommand extends Command
     }
 
     /**
-     * Add routes in routes/web.php
+     * Add routes in routes/web.php and api.php
      */
     protected function addRoutes()
     {
+        //web.php
         $lines = $this->fileToLines(base_path('routes/web.php'));
 
         //check if Webtpl::uiRoutes exists
-        if ($this->linesContain($lines, 'Webtpl::uiRoutes()'))
-            return;
+        if (!$this->linesContain($lines, 'Webtpl::uiRoutes()')) {
+            $newLines = [];
+            foreach ($lines as $line)
+                $newLines[] = $line;
 
-        $newLines = [];
-        foreach ($lines as $line)
-            $newLines[] = $line;
+            $newLines[] = '';
+            $newLines[] = '//Set Webtpl ui routes';
+            $newLines[] = 'Greatatoo\Webtpl\Webtpl::uiRoutes();';
 
-        $newLines[] = '';
-        $newLines[] = '//Set Webtpl ui routes';
-        $newLines[] = 'Greatatoo\Webtpl\Webtpl::uiRoutes();';
+            $this->linesToFile($newLines, base_path('routes/web.php'));
+            $this->info("Modify routes/web.php");
+        }
 
-        $this->linesToFile($newLines, base_path('routes/web.php'));
-        $this->info("Modify routes/web.php");
+        //api.php
+        $lines = $this->fileToLines(base_path('routes/api.php'));
+
+        //check if Webtpl::uiRoutes exists
+        if (!$this->linesContain($lines, 'Webtpl::apiRoutes()')) {
+            $newLines = [];
+            foreach ($lines as $line)
+                $newLines[] = $line;
+
+            $newLines[] = '';
+            $newLines[] = '//Set Webtpl api routes';
+            $newLines[] = 'Greatatoo\Webtpl\Webtpl::apiRoutes();';
+
+            $this->linesToFile($newLines, base_path('routes/api.php'));
+            $this->info("Modify routes/api.php");
+        }
     }
 
     /**

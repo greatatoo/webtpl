@@ -51,7 +51,7 @@ class Webtpl
         Route::post('login', [\App\Http\Controllers\Auth\LoginController::class, 'doAuth'])->name('login');
         Route::get('login', [\App\Http\Controllers\Auth\LoginController::class, 'show'])->name('login.form');
         Route::post('logout', [\App\Http\Controllers\Essential\SessionController::class, 'destroy'])->name('logout');
-        
+
         //Personal
         Route::middleware(['auth'])->group(function () {
             Route::get('home', [\App\Http\Controllers\HomeController::class, 'show'])->name('home');
@@ -60,6 +60,12 @@ class Webtpl
         //Dashboard
         Route::middleware(['auth', 'role:admin'])->group(function () {
             Route::get('dashboard/users', [\App\Http\Controllers\Dashboard\UsersController::class, 'show'])->name('dashboard.users');
+            //jquery component backend - datatable.net
+            Route::post('datatable', [\App\Http\Controllers\DataTable\DataTableController::class, 'store'])->withoutMiddleware(['csrf'])->name('datatable.post');
         });
+    }
+
+    public static function apiRoutes()
+    {
     }
 }

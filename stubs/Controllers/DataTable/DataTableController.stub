@@ -1,0 +1,144 @@
+<?php
+
+namespace App\Http\Controllers\DataTable;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
+
+/**
+ * This controller is dedicately designed for datatable.net component.
+ * @see https://datatables.net/examples/server_side/post.html
+ * @see https://github.com/DataTables/DataTables/blob/master/examples/server_side/scripts/ssp.class.php
+ */
+class DataTableController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     * 
+     * Request payload looks like below
+     * 
+     * {
+     *   "table":"users",
+     *   "primary_key":"id",
+     *   "columns":[
+     *       {"db":"id", "dt":"ID"},
+     *       {"db":"account", "dt":"Account"},
+     *       {"db":"name", "dt":"Name"},
+     *       {"db":"email", "dt":"Email"},
+     *       {"db":"created_at", "dt":"Created"}
+     *   ]
+     * }
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        if (!$request->table)
+            return abort(400, "no table specified");
+        Log::debug("table name = " . $request->table);
+
+        if (!$request->primary_key)
+            return abort(400, "no primary key specified");
+        Log::debug("primary key = " . $request->primary_key);
+
+        if (!$request->columns)
+            return abort(400, "no table columns specified");
+        Log::debug(print_r($request->columns, true));
+
+        // Array of database columns which should be read and sent back to DataTables.
+        // The `db` parameter represents the column name in the database, while the `dt`
+        // parameter represents the DataTables column identifier. In this case object
+        // parameter names
+        $columns = [];
+        foreach ($request->columns as $column) {
+            if (!isset($column['db']))
+                return abort(400, "column['db'] is required");
+            $dbColName = $column['db'];
+
+            if (!isset($column['dt']))
+                return abort(400, "column['dt'] is required");
+            $dtColName = $column['dt'];
+
+            $columns[] = ['db' => $dbColName, 'dt' => $dtColName];
+        }
+
+        // SQL server connection information
+        $sqlDetails = array(
+            'user' => env("DB_USERNAME", ""),
+            'pass' => env("DB_PASSWORD", ""),
+            'db'   => env("DB_DATABASE", ""),
+            'host' => env("DB_HOST", "")
+        );
+
+        return json_encode(
+            SSP::simple($_POST, $sqlDetails, $request->table, $request->primary_key, $columns)
+        );
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+}

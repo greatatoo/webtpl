@@ -79,5 +79,6 @@ class Bootstrap extends Preset
     {
         copy(__DIR__.'/bootstrap-stubs/app.js', resource_path('js/app.js'));
         copy(__DIR__.'/bootstrap-stubs/bootstrap.js', resource_path('js/bootstrap.js'));
+        copy(__DIR__.'/bootstrap-stubs/dashboard.js', resource_path('js/dashboard.js'));
     }
 }
