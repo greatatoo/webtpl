@@ -5,4 +5,5 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 require('datatables.net-bs4');
+require('./jqe');
 require('./dashboard');
