@@ -4,16 +4,37 @@ var render = {
         var html = '<div class="container p-3">';
 
         html += '<div class="row mt-1">';
-        html += '<label for="name" class="col-md-3 col-form-label text-md-right">Name</label>';
+        html += '<label for="name" class="col-md-3 col-form-label col-form-label-sm text-md-right">Name</label>';
         html += '<div class="col-md-6">';
-        html += '<input type="text" class="form-control name="name" value="" required>';
+        html += '<input type="text" class="form-control form-control-sm name="name" value="'+data.name+'" required autofocus>';
+        html += '</div>';
+		html += '</div>';
+		
+		html += '<div class="row mt-1">';
+        html += '<label for="email" class="col-md-3 col-form-label col-form-label-sm text-md-right">Email</label>';
+        html += '<div class="col-md-6">';
+        html += '<input type="text" class="form-control form-control-sm name="email" value="'+data.email+'" required>';
         html += '</div>';
         html += '</div>';
 
         html += '<div class="row mt-1">';
-        html += '<label for="password" class="col-md-3 col-form-label text-md-right">Password</label>';
+        html += '<label for="password" class="col-md-3 col-form-label col-form-label-sm text-md-right">Password</label>';
         html += '<div class="col-md-6">';
-        html += '<input type="password" class="form-control name="password" value="">';
+        html += '<input type="password" class="form-control form-control-sm name="password" value="">';
+        html += '</div>';
+		html += '</div>';
+		
+		html += '<div class="row mt-1">';
+        html += '<label for="api-token" class="col-md-3 col-form-label col-form-label-sm text-md-right">API Token</label>';
+        html += '<div class="col-md-6">';
+        html += '<input type="text" class="form-control form-control-sm name="api-token" value="'+data.api_token+'">';
+        html += '</div>';
+        html += '</div>';
+
+		html += '<div class="row mt-1">';
+        html += '<label for="active" class="col-md-3 col-form-label col-form-label-sm text-md-right">Active</label>';
+        html += '<div class="col-md-6">';
+        html += '<input type="text" class="form-control form-control-sm name="active" value="'+data.active+'">';
         html += '</div>';
         html += '</div>';
 
@@ -67,7 +88,8 @@ var usersDt = $('#dashboard-users').DataTable({
     ],
     "paging": true,
     "ordering": true,
-    "info": true,
+	"info": true,
+	"searching": true,
     "stateSave": true
 });
 

@@ -61,7 +61,7 @@ class Webtpl
         Route::middleware(['auth', 'role:admin'])->group(function () {
             Route::get('dashboard/users', [\App\Http\Controllers\Dashboard\UsersController::class, 'show'])->name('dashboard.users');
             //jquery component backend - datatable.net
-            Route::post('datatable', [\App\Http\Controllers\DataTable\DataTableController::class, 'store'])->withoutMiddleware(['csrf'])->name('datatable.post');
+            Route::post('datatable', [\App\Http\Controllers\DataTable\DataTableController::class, 'store'])->name('datatable.post');
         });
     }
 
