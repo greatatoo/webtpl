@@ -1,4 +1,3 @@
-var _pagePool = {};
 var _jqePool = {};
 
 window.jqe = {

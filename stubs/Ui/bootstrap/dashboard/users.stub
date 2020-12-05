@@ -8,14 +8,14 @@
                 <div class="card-header">{{ __('Users') }}</div>
 
                 <div class="card-body">
-                    <table id="dashboard-users" class="display" style="width:100%">
+                    <table id="dashboard-users" class="display table table-striped" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Account</th>
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Created</th>
-								<th></th>
+                                <th></th>
                             </tr>
                         </thead>
                     </table>
