@@ -40,10 +40,10 @@ var render = {
         html += '</div>';
         //row: buttons
         html += '<div class="row mt-3 justify-content-md-center">';
-        html += '<button class="btn btn-danger btn-sm btn-users-delete" data-id="' + data.id + '" data-confirm-times="3">Delete (<span class="confirm-times"></span>)</button>';
-        html += '<button class="btn btn-primary btn-sm ml-1 btn-users-roles" data-id="' + data.id + '">Roles</button>';
-        html += '<button class="btn btn-primary btn-sm ml-1 btn-users-permissions" data-id="' + data.id + '">Permissions</button>';
-        html += '<button class="btn btn-primary btn-sm ml-1 btn-users-update" data-id="' + data.id + '">Update</button>';
+        html += '<button class="btn btn-danger btn-sm btn-users-delete" data-user-id="' + data.id + '" data-user-name="' + data.name + '" data-confirm-times="3">Delete (<span class="confirm-times"></span>)</button>';
+        html += '<button class="btn btn-primary btn-sm ml-1 btn-users-roles" data-toggle="modal" data-target="#dashboard-users-roles-modal" data-user-id="' + data.id + '" data-user-name="' + data.name + '">Roles</button>';
+        html += '<button class="btn btn-primary btn-sm ml-1 btn-users-permissions" data-toggle="modal" data-target="#dashboard-users-permissions-modal" data-user-id="' + data.id + '" data-user-name="' + data.name + '">Permissions</button>';
+        html += '<button class="btn btn-primary btn-sm ml-1 btn-users-update" data-user-id="' + data.id + '" data-user-name="' + data.name + '">Update</button>';
         html += '</div>';
 
         html += '</div>';//end container
@@ -64,33 +64,14 @@ var bindUsersButtons = function () {
                 if (confirmVal > 1) {
                     $('.confirm-times', this).text(confirmVal - 1);
                     return false;
-                }else if(confirmVal == 0){
+                } else if (confirmVal == 0) {
                     return false;
                 }
-                
-                var userId = $(this).attr('data-id');
-                console.log('btnUsersDelete clicked ' + userId);
+
+                var userId = $(this).attr('data-user-id');
+                var userName = $(this).attr('data-user-name');
+                console.log('btnUsersDelete clicked ' + userId + ' ' + userName);
                 $('.confirm-times', this).text(0);
-            });
-    }
-
-    var btnUsersRoles = $('.btn-users-roles', '#dashboard-users');
-    if (!btnUsersRoles.hasClass('users-btn-binded')) {
-        btnUsersRoles
-            .addClass('users-btn-binded')
-            .click(function () {
-                var userId = $(this).attr('data-id');
-                console.log('btnUsersRoles clicked ' + userId);
-            });
-    }
-
-    var btnUsersPermissions = $('.btn-users-permissions', '#dashboard-users');
-    if (!btnUsersPermissions.hasClass('users-btn-binded')) {
-        btnUsersPermissions
-            .addClass('users-btn-binded')
-            .click(function () {
-                var userId = $(this).attr('data-id');
-                console.log('btnUsersPermissions clicked ' + userId);
             });
     }
 
@@ -99,8 +80,9 @@ var bindUsersButtons = function () {
         btnUsersUpdate
             .addClass('users-btn-binded')
             .click(function () {
-                var userId = $(this).attr('data-id');
-                console.log('btnUsersUpdate clicked ' + userId);
+                var userId = $(this).attr('data-user-id');
+                var userName = $(this).attr('data-user-name');
+                console.log('btnUsersUpdate clicked ' + userId + ' ' + userName);
             });
     }
 }
@@ -189,3 +171,49 @@ usersDt.on('draw', function () {
         $('#' + id + ' td.details-control').trigger('click');
     });
 });
+
+$('#dashboard-users-roles-modal')
+    .on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var userId = button.data('user-id'); // Extract info from data-* attributes
+        var userName = button.data('user-name'); // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this);
+        modal.find('.modal-title').text('Roles of ' + userName);
+        modal.find('.btn-ok')
+            .attr('data-user-id', userId)
+            .attr('data-user-name', userName);
+    })
+
+$('#dashboard-users-roles-modal .btn-ok')
+    .click(function () {
+        var userId = $(this).attr('data-user-id');
+        var userName = $(this).attr('data-user-name');
+        console.log('update users-roles ' + userId + ' ' + userName);
+
+        $('#dashboard-users-roles-modal').modal('hide');
+    });
+
+$('#dashboard-users-permissions-modal')
+    .on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var userId = button.data('user-id'); // Extract info from data-* attributes
+        var userName = button.data('user-name'); // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this);
+        modal.find('.modal-title').text('Permissions of ' + userName);
+        modal.find('.btn-ok')
+            .attr('data-user-id', userId)
+            .attr('data-user-name', userName);
+    })
+
+$('#dashboard-users-permissions-modal .btn-ok')
+    .click(function () {
+        var userId = $(this).attr('data-user-id');
+        var userName = $(this).attr('data-user-name');
+        console.log('update users-permissions ' + userId + ' ' + userName);
+
+        $('#dashboard-users-permissions-modal').modal('hide');
+    });
