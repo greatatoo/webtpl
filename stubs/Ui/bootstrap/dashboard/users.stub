@@ -36,7 +36,15 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    roles of user
+                    <table id="dashboard-users-roles-table" class="display table table-striped" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Slug</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-cancel" data-dismiss="modal">Close</button>

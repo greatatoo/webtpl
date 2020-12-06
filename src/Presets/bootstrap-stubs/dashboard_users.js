@@ -1,6 +1,5 @@
 var render = {
     dtRowUserDetail: function (data) {
-        console.log(data);
         var html = '<div class="container p-3">';//container
 
         //row: name
@@ -172,19 +171,76 @@ usersDt.on('draw', function () {
     });
 });
 
+/**
+ * User-Role Table
+ */
+var usersRolesDt = $('#dashboard-users-roles-table').DataTable({
+    "columnDefs": [
+        {
+            "targets": 0,
+            "render": function (data, type, row, meta) {
+                var roleId = data[0];
+                var isChecked = data[1];
+                return '<input type="checkbox" value="' + roleId + '" ' + (isChecked ? 'checked' : '') + '>';
+            }
+        }
+    ],
+    "paging": false,
+    "ordering": false,
+    "info": false,
+    "searching": false,
+    "stateSave": false
+});
+
 $('#dashboard-users-roles-modal')
     .on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Button that triggered the modal
         var userId = button.data('user-id'); // Extract info from data-* attributes
         var userName = button.data('user-name'); // Extract info from data-* attributes
-        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+
+        //Get all roles
+        $.ajax({
+            url: '/role',
+            type: 'get',
+            success: function (allRoles) {
+                //Get user roles
+                //TODO should use promise instead of inner ajax
+                var checkedArr = [];
+                $.ajax({
+                    url: '/user/' + userId + '/role',
+                    type: 'get',
+                    success: function (userRoles) {
+                        userRoles.forEach(function (el) {
+                            checkedArr.push(el.role_id);
+                        });
+
+                        //Combine 2 arraies
+                        var rowArr = [];
+                        allRoles.forEach(function (el) {
+                            var isChecked = $.inArray(el.id, checkedArr) >= 0;
+                            rowArr.push([[el.id, isChecked], el.name, el.slug]);
+                        });
+
+                        usersRolesDt.rows.add(rowArr).draw();
+                    },
+                    error: function (xhr) {
+                    }
+                });
+            },
+            error: function (xhr) {
+
+            }
+        });
+
         var modal = $(this);
         modal.find('.modal-title').text('Roles of ' + userName);
         modal.find('.btn-ok')
             .attr('data-user-id', userId)
             .attr('data-user-name', userName);
     })
+    .on('hidden.bs.modal', function (event) {
+        usersRolesDt.clear();
+    });
 
 $('#dashboard-users-roles-modal .btn-ok')
     .click(function () {
@@ -207,7 +263,7 @@ $('#dashboard-users-permissions-modal')
         modal.find('.btn-ok')
             .attr('data-user-id', userId)
             .attr('data-user-name', userName);
-    })
+    });
 
 $('#dashboard-users-permissions-modal .btn-ok')
     .click(function () {

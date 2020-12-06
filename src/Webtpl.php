@@ -18,7 +18,7 @@ class Webtpl
             Route::delete('/session', [\App\Http\Controllers\Essential\SessionController::class, 'destroy']);
         });
 
-        Route::middleware(['auth:api', 'role:admin'])->group(function () {
+        Route::middleware(['role:admin'])->group(function () {
             Route::apiResources([
                 'user' => \App\Http\Controllers\Essential\UserController::class,
                 'role' => \App\Http\Controllers\Essential\RoleController::class,
