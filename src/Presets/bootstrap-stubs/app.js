@@ -7,3 +7,4 @@ require('./bootstrap');
 require('datatables.net-bs4');
 require('./jqe');
 require('./dashboard_users');
+require('./dashboard_user_detail');

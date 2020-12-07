@@ -38,6 +38,7 @@ class UiCommand extends Command
         'homepage.stub' => 'homepage.blade.php',
         'layouts/app.stub' => 'layouts/app.blade.php',
         'dashboard/users.stub' => 'dashboard/users.blade.php',
+        'dashboard/user_detail.stub' => 'dashboard/user_detail.blade.php',
     ];
 
     /**
@@ -48,6 +49,7 @@ class UiCommand extends Command
     protected $controllers = [
         'Auth/LoginController.stub' => 'Auth/LoginController.php',
         'Dashboard/UsersController.stub' => 'Dashboard/UsersController.php',
+        'Dashboard/UserDetailController.stub' => 'Dashboard/UserDetailController.php',
         'DataTable/DataTableController.stub' => 'DataTable/DataTableController.php',
         'DataTable/SSP.stub' => 'DataTable/SSP.php',
         'HomeController.stub' => 'HomeController.php',

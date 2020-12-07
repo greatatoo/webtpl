@@ -81,5 +81,6 @@ class Bootstrap extends Preset
         copy(__DIR__.'/bootstrap-stubs/bootstrap.js', resource_path('js/bootstrap.js'));
         copy(__DIR__.'/bootstrap-stubs/jqe.js', resource_path('js/jqe.js'));
         copy(__DIR__.'/bootstrap-stubs/dashboard_users.js', resource_path('js/dashboard_users.js'));
+        copy(__DIR__.'/bootstrap-stubs/dashboard_user_detail.js', resource_path('js/dashboard_user_detail.js'));
     }
 }

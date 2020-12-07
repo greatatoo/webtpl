@@ -1,0 +1,138 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">{{ __('User Detail') }}</div>
+
+                <div class="card-body">
+                    <div class="container p-3">
+                        <div class="row mt-1">
+                            <label for="name" class="col-md-3 col-form-label text-md-right">Name</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" name="name" value="" required autofocus>
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <label for="email" class="col-md-3 col-form-label text-md-right">Email</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" name="email" value="" required>
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <label for="password" class="col-md-3 col-form-label text-md-right">Password</label>
+                            <div class="col-md-8">
+                                <input type="password" class="form-control" name="password" value="">
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <label for="api-token" class="col-md-3 col-form-label text-md-right">API Token</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" name="api-token" value="">
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <label for="active" class="col-md-3 col-form-label text-md-right">Active</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" name="active" value="">
+                            </div>
+                        </div>
+
+                        <div class="row mt-3 justify-content-md-end">
+                            <button class="btn btn-primary ml-1 btn-user-detail-update" data-user-id="{{ $userId }}">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">{{ __("User's Roles") }}</div>
+
+                <div class="card-body">
+                    <table id="dashboard-user-roles-table" class="display table table-striped" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Slug</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">{{ __("User's Permissions") }}</div>
+
+                <div class="card-body">
+                    user's permissions
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button class="btn btn-danger btn-user-delete" data-user-id="{{ $userId }}" data-confirm-times="3">Delete (<span class="confirm-times"></span>)</button>
+
+<div class="modal fade" id="dashboard-user-roles-modal" tabindex="-1" role="dialog" aria-labelledby="user-roles-modal-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="user-roles-modal-label">Roles of User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="dashboard-user-roles-table" class="display table table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Slug</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-cancel" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-ok">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="dashboard-users-permissions-modal" tabindex="-1" role="dialog" aria-labelledby="users-permissions-modal-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="users-permissions-modal-label">Permissions of User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                permissions of user
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-cancel" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-ok">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection

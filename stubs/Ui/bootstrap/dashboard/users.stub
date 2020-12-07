@@ -11,11 +11,12 @@
                         <table id="dashboard-users" class="display table table-striped" style="width:100%">
                             <thead>
                                 <tr>
+                                    <th></th>
                                     <th>Account</th>
                                     <th>Name</th>
                                     <th>Email</th>
+                                    <th>Active</th>
                                     <th>Created</th>
-                                    <th></th>
                                 </tr>
                             </thead>
                         </table>
