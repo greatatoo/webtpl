@@ -59,15 +59,17 @@
                 <div class="card-header">{{ __("User's Roles") }}</div>
 
                 <div class="card-body">
-                    <table id="dashboard-user-roles-table" class="display table table-striped" style="width:100%">
+                    <table id="dashboard-user-roles-table" class="display table table-striped" style="width:100%" data-user-id="{{ $userId }}">
                         <thead>
                             <tr>
                                 <th></th>
                                 <th>Name</th>
-                                <th>Slug</th>
                             </tr>
                         </thead>
                     </table>
+                    <div class="row mt-3 justify-content-md-end">
+                        <button class="btn btn-primary ml-1 btn-user-roles-update" data-user-id="{{ $userId }}">Update</button>
+                    </div>
                 </div>
             </div>
         </div>

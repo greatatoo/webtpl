@@ -10,7 +10,7 @@ $('.btn-user-detail-update')
 /**
  * DataTable - User's Roles
  */
-var userRolesDt = $('#dashboard-users-roles-table').DataTable({
+var userRolesDt = $('#dashboard-user-roles-table').DataTable({
     "columnDefs": [
         {
             "targets": 0,
@@ -18,6 +18,14 @@ var userRolesDt = $('#dashboard-users-roles-table').DataTable({
                 var roleId = data[0];
                 var isChecked = data[1];
                 return '<input type="checkbox" value="' + roleId + '" ' + (isChecked ? 'checked' : '') + '>';
+            }
+        },
+        {
+            "targets": 1,
+            "render": function (data, type, row, meta) {
+                var roleName = data[0];
+                var roleSlug = data[1];
+                return '<span title="' + roleSlug + '">' + roleName + '</span';
             }
         }
     ],
@@ -28,41 +36,44 @@ var userRolesDt = $('#dashboard-users-roles-table').DataTable({
     "stateSave": false
 });
 
-// $(function () {
-//     //Get all roles
-//     $.ajax({
-//         url: '/role',
-//         type: 'get',
-//         success: function (allRoles) {
-//             //Get user roles
-//             //TODO should use promise instead of inner ajax
-//             var checkedArr = [];
-//             $.ajax({
-//                 url: '/user/' + userId + '/role',
-//                 type: 'get',
-//                 success: function (userRoles) {
-//                     userRoles.forEach(function (el) {
-//                         checkedArr.push(el.role_id);
-//                     });
+$(function () {
 
-//                     //Combine 2 arraies
-//                     var rowArr = [];
-//                     allRoles.forEach(function (el) {
-//                         var isChecked = $.inArray(el.id, checkedArr) >= 0;
-//                         rowArr.push([[el.id, isChecked], el.name, el.slug]);
-//                     });
+    var userId = $('#dashboard-user-roles-table').attr('data-user-id');
 
-//                     usersRolesDt.rows.add(rowArr).draw();
-//                 },
-//                 error: function (xhr) {
-//                 }
-//             });
-//         },
-//         error: function (xhr) {
+    //Get all roles
+    $.ajax({
+        url: '/role',
+        type: 'get',
+        success: function (allRoles) {
+            //Get user roles
+            //TODO should use promise instead of inner ajax
+            var checkedArr = [];
+            $.ajax({
+                url: '/user/' + userId + '/role',
+                type: 'get',
+                success: function (userRoles) {
+                    userRoles.forEach(function (el) {
+                        checkedArr.push(el.role_id);
+                    });
 
-//         }
-//     });
-// });
+                    //Combine 2 arraies
+                    var rowArr = [];
+                    allRoles.forEach(function (el) {
+                        var isChecked = $.inArray(el.id, checkedArr) >= 0;
+                        rowArr.push([[el.id, isChecked], [el.name, el.slug]]);
+                    });
+
+                    userRolesDt.rows.add(rowArr).draw();
+                },
+                error: function (xhr) {
+                }
+            });
+        },
+        error: function (xhr) {
+
+        }
+    });
+});
 
 
 
