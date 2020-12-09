@@ -3,9 +3,15 @@
 namespace Greatatoo\Webtpl\Presets;
 
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Console\Concerns\InteractsWithIO;
+
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 class Bootstrap extends Preset
 {
+    use InteractsWithIO;
+
     /**
      * Install the preset.
      *
@@ -19,7 +25,7 @@ class Bootstrap extends Preset
         static::updateBootstrapping();
         static::removeNodeModules();
     }
-    
+
     /**
      * Update the given package array.
      *
@@ -41,7 +47,8 @@ class Bootstrap extends Preset
      * Add additional packages
      * Remember to update bootstrap-stubs/webpack.mix.js to copy the required files to resource_path()
      */
-    protected static function getAdditionalPackageArray(){
+    protected static function getAdditionalPackageArray()
+    {
         return [
             'datatables.net-bs4' => '^1.10.22',
         ];
@@ -54,7 +61,7 @@ class Bootstrap extends Preset
      */
     protected static function updateWebpackConfiguration()
     {
-        copy(__DIR__.'/bootstrap-stubs/webpack.mix.js', base_path('webpack.mix.js'));
+        copy(__DIR__ . '/bootstrap-stubs/webpack.mix.js', base_path('webpack.mix.js'));
     }
 
     /**
@@ -66,9 +73,27 @@ class Bootstrap extends Preset
     {
         (new Filesystem)->ensureDirectoryExists(resource_path('sass'));
 
-        copy(__DIR__.'/bootstrap-stubs/_variables.scss', resource_path('sass/_variables.scss'));
-        copy(__DIR__.'/bootstrap-stubs/app.scss', resource_path('sass/app.scss'));
-        copy(__DIR__.'/bootstrap-stubs/bootstrap-supplyment.css', resource_path('sass/bootstrap-supplyment.css'));
+
+        $stubDir = realpath(__DIR__ . '/bootstrap-stubs');
+
+        $directory = new RecursiveDirectoryIterator($stubDir);
+        $iterator = new RecursiveIteratorIterator($directory);
+        $files = array();
+        foreach ($iterator as $info) {
+            $filePath = substr($info->getPathname(), strlen($stubDir));
+            $filePath = preg_replace('/^\//', '', $filePath);
+            if (preg_match('/\.$/', $filePath))
+                continue;
+            if (!preg_match('/css$/', $filePath))
+                continue;
+            $files[] = $filePath;
+        }
+
+        foreach ($files as $file) {
+            $srcFile = "$stubDir/$file";
+            $tgtFile = resource_path("sass/$file");
+            copy($srcFile, $tgtFile);
+        }
     }
 
     /**
@@ -78,10 +103,25 @@ class Bootstrap extends Preset
      */
     protected static function updateBootstrapping()
     {
-        copy(__DIR__.'/bootstrap-stubs/app.js', resource_path('js/app.js'));
-        copy(__DIR__.'/bootstrap-stubs/bootstrap.js', resource_path('js/bootstrap.js'));
-        copy(__DIR__.'/bootstrap-stubs/jqe.js', resource_path('js/jqe.js'));
-        copy(__DIR__.'/bootstrap-stubs/dashboard_users.js', resource_path('js/dashboard_users.js'));
-        copy(__DIR__.'/bootstrap-stubs/dashboard_user_detail.js', resource_path('js/dashboard_user_detail.js'));
+        $stubDir = realpath(__DIR__ . '/bootstrap-stubs');
+
+        $directory = new RecursiveDirectoryIterator($stubDir);
+        $iterator = new RecursiveIteratorIterator($directory);
+        $files = array();
+        foreach ($iterator as $info) {
+            $filePath = substr($info->getPathname(), strlen($stubDir));
+            $filePath = preg_replace('/^\//', '', $filePath);
+            if (preg_match('/\.$/', $filePath))
+                continue;
+            if (!preg_match('/\.js$/', $filePath))
+                continue;
+            $files[] = $filePath;
+        }
+
+        foreach ($files as $file) {
+            $srcFile = "$stubDir/$file";
+            $tgtFile = resource_path("js/$file");
+            copy($srcFile, $tgtFile);
+        }
     }
 }

@@ -9,6 +9,9 @@ use Greatatoo\Webtpl\Presets\Bootstrap;
 use Greatatoo\Webtpl\Presets\React;
 use Greatatoo\Webtpl\Presets\Vue;
 
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+
 class UiCommand extends Command
 {
     /**
@@ -26,34 +29,6 @@ class UiCommand extends Command
      * @var string
      */
     protected $description = 'Scaffold basic login and registration views and routes.';
-
-    /**
-     * The views that need to be exported.
-     *
-     * @var array
-     */
-    protected $views = [
-        'auth/login.stub' => 'auth/login.blade.php',
-        'home.stub' => 'home.blade.php',
-        'homepage.stub' => 'homepage.blade.php',
-        'layouts/app.stub' => 'layouts/app.blade.php',
-        'dashboard/users.stub' => 'dashboard/users.blade.php',
-        'dashboard/user_detail.stub' => 'dashboard/user_detail.blade.php',
-    ];
-
-    /**
-     * The controllers that need to be exported.
-     *
-     * @var array
-     */
-    protected $controllers = [
-        'Auth/LoginController.stub' => 'Auth/LoginController.php',
-        'Dashboard/UsersController.stub' => 'Dashboard/UsersController.php',
-        'Dashboard/UserDetailController.stub' => 'Dashboard/UserDetailController.php',
-        'DataTable/DataTableController.stub' => 'DataTable/DataTableController.php',
-        'DataTable/SSP.stub' => 'DataTable/SSP.php',
-        'HomeController.stub' => 'HomeController.php',
-    ];
 
     /**
      * Execute the console command.
@@ -76,10 +51,11 @@ class UiCommand extends Command
         $this->exportControllers();
         $this->addRoutes();
         $this->applyWebtplUi();
+        $this->exportJsCss();
 
         //Install bootstrap, vue or react components
         $this->{$this->argument('type')}();
-
+        
         $this->info('Webtpl ui scaffolding generated successfully.');
     }
 
@@ -124,6 +100,71 @@ class UiCommand extends Command
         $this->comment('Please run "npm install && npm run dev" to compile your fresh scaffolding.');
     }
 
+    protected function exportJsCss()
+    {
+        $stubDir = realpath(__DIR__ . '/../../../src/Presets/js-css-stubs');
+
+        $directory = new RecursiveDirectoryIterator($stubDir);
+        $iterator = new RecursiveIteratorIterator($directory);
+        $jsFiles = array();
+        $cssFiles = array();
+        foreach ($iterator as $info) {
+            $filePath = substr($info->getPathname(), strlen($stubDir));
+            $filePath = preg_replace('/^\//', '', $filePath);
+            if (preg_match('/\.$/', $filePath))
+                continue;
+
+            //Collect js files
+            if(preg_match('/\.js$/',$filePath))
+                $jsFiles[] = $filePath;
+            //Collect css files
+            if(preg_match('/css$/',$filePath))
+                $cssFiles[] = $filePath;
+        }
+        
+        //Export js files
+        foreach ($jsFiles as $file) {
+            if (file_exists($targetFile = resource_path("js/$file")) && !$this->option('force')) {
+                if (!$this->confirm("The [{$file}] view already exists. Do you want to replace it?")) {
+                    continue;
+                }
+            }
+
+            $targetDir = dirname($targetFile);
+            if (!file_exists($targetDir))
+                mkdir($targetDir, 0755, true);
+
+            $stubFile = "$stubDir/$file";
+
+            copy(
+                $stubFile,
+                $targetFile
+            );
+            $this->info("Copy $targetFile");
+        }
+
+        //Export css files
+        foreach ($cssFiles as $file) {
+            if (file_exists($targetFile = resource_path("sass/$file")) && !$this->option('force')) {
+                if (!$this->confirm("The [{$file}] view already exists. Do you want to replace it?")) {
+                    continue;
+                }
+            }
+
+            $targetDir = dirname($targetFile);
+            if (!file_exists($targetDir))
+                mkdir($targetDir, 0755, true);
+
+            $stubFile = "$stubDir/$file";
+
+            copy(
+                $stubFile,
+                $targetFile
+            );
+            $this->info("Copy $targetFile");
+        }
+    }
+
     /**
      * Export the authentication views.
      *
@@ -131,24 +172,39 @@ class UiCommand extends Command
      */
     protected function exportViews()
     {
-        foreach ($this->views as $key => $value) {
-            if (file_exists($view = $this->getViewPath($value)) && !$this->option('force')) {
-                if (!$this->confirm("The [{$value}] view already exists. Do you want to replace it?")) {
+        $stubDir = realpath(__DIR__ . '/../../../stubs/Ui/' . $this->argument('type'));
+
+        $directory = new RecursiveDirectoryIterator($stubDir);
+        $iterator = new RecursiveIteratorIterator($directory);
+        $files = array();
+        foreach ($iterator as $info) {
+            $filePath = substr($info->getPathname(), strlen($stubDir));
+            $filePath = preg_replace('/^\//', '', $filePath);
+            if (preg_match('/\.$/', $filePath))
+                continue;
+            $files[] = $filePath;
+        }
+
+        foreach ($files as $file) {
+            $targetFile = preg_replace('/\.stub$/', '.blade.php', $file);
+
+            if (file_exists($viewFile = $this->getViewPath($targetFile)) && !$this->option('force')) {
+                if (!$this->confirm("The [{$targetFile}] view already exists. Do you want to replace it?")) {
                     continue;
                 }
             }
 
-            $viewDir = dirname($view);
+            $viewDir = dirname($viewFile);
             if (!file_exists($viewDir))
                 mkdir($viewDir, 0755, true);
 
-            $stubFile = __DIR__ . '/../../../stubs/Ui/' . $this->argument('type') . '/' . $key;
+            $stubFile = "$stubDir/$file";
 
             copy(
                 $stubFile,
-                $view
+                $viewFile
             );
-            $this->info("Copy $view");
+            $this->info("Copy $viewFile");
         }
     }
 
@@ -159,24 +215,38 @@ class UiCommand extends Command
      */
     protected function exportControllers()
     {
-        foreach ($this->controllers as $key => $value) {
-            if (file_exists($controller = $this->getControllerPath($value)) && !$this->option('force')) {
-                if (!$this->confirm("The [{$value}] controller already exists. Do you want to replace it?")) {
+        $stubDir = realpath(__DIR__ . '/../../../stubs/Controllers');
+
+        $directory = new RecursiveDirectoryIterator($stubDir);
+        $iterator = new RecursiveIteratorIterator($directory);
+        $files = array();
+        foreach ($iterator as $info) {
+            $filePath = substr($info->getPathname(), strlen($stubDir));
+            $filePath = preg_replace('/^\//', '', $filePath);
+            if (preg_match('/\.$/', $filePath))
+                continue;
+            $files[] = $filePath;
+        }
+
+        foreach ($files as $file) {
+            $targetFile = preg_replace('/\.stub$/', '.php', $file);
+            if (file_exists($controllerFile = $this->getControllerPath($targetFile)) && !$this->option('force')) {
+                if (!$this->confirm("The [{$targetFile}] controller already exists. Do you want to replace it?")) {
                     continue;
                 }
             }
 
-            $controllerDir = dirname($controller);
+            $controllerDir = dirname($controllerFile);
             if (!file_exists($controllerDir))
                 mkdir($controllerDir, 0755, true);
 
-            $stubFile = __DIR__ . '/../../../stubs/Controllers/' . $key;
+            $stubFile = "$stubDir/$file";
 
             copy(
                 $stubFile,
-                $controller
+                $controllerFile
             );
-            $this->info("Copy $controller");
+            $this->info("Copy $controllerFile");
         }
     }
 
