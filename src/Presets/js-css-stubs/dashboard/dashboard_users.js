@@ -4,7 +4,7 @@ var usersDt = $('#dashboard-users').DataTable({
     "processing": true,
     "serverSide": true,
     "ajax": {
-        "url": "/datatable",
+        "url": "/rest/datatable",
         "type": "POST",
         "data": {
             "_token": $('meta[name="csrf-token"]').attr('content'),//For Laravel VerifyCsrfToken Middleware 

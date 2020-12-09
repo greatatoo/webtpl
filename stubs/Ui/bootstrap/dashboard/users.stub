@@ -75,4 +75,6 @@
             </div>
         </div>
     </div>
+    <!-- Scripts -->
+    <script src="{{ asset('js/dashboard/dashboard_users.js') }}" defer></script>
 @endsection

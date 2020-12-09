@@ -67,7 +67,7 @@ $(function () {
     new Promise(function (resolve, reject) {
         //Get all roles
         $.ajax({
-            url: '/role',
+            url: '/rest/role',
             type: 'get',
             success: function (allRoles) {
                 resolve(allRoles);
@@ -81,7 +81,7 @@ $(function () {
             var checkedArr = [];
             //Get user's roles
             $.ajax({
-                url: '/user/' + userId + '/role',
+                url: '/rest/user/' + userId + '/role',
                 type: 'get',
                 success: function (userRoles) {
                     userRoles.forEach(function (el) {
@@ -141,7 +141,7 @@ $(function () {
     new Promise(function (resolve, reject) {
         //Get all permissions
         $.ajax({
-            url: '/permission',
+            url: '/rest/permission',
             type: 'get',
             success: function (allPermissions) {
                 resolve(allPermissions);
@@ -155,7 +155,7 @@ $(function () {
             var checkedArr = [];
             //Get user's permissions
             $.ajax({
-                url: '/user/' + userId + '/permission',
+                url: '/rest/user/' + userId + '/permission',
                 type: 'get',
                 success: function (userPermissions) {
                     userPermissions.forEach(function (el) {

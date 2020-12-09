@@ -20,7 +20,6 @@ class Bootstrap extends Preset
     public static function install()
     {
         static::updatePackages();
-        static::updateWebpackConfiguration();
         static::updateSass();
         static::updateBootstrapping();
         static::removeNodeModules();
@@ -52,16 +51,6 @@ class Bootstrap extends Preset
         return [
             'datatables.net-bs4' => '^1.10.22',
         ];
-    }
-
-    /**
-     * Update the Webpack configuration.
-     *
-     * @return void
-     */
-    protected static function updateWebpackConfiguration()
-    {
-        copy(__DIR__ . '/bootstrap-stubs/webpack.mix.js', base_path('webpack.mix.js'));
     }
 
     /**

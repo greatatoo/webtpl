@@ -108,6 +108,7 @@ class UiCommand extends Command
         $iterator = new RecursiveIteratorIterator($directory);
         $jsFiles = array();
         $cssFiles = array();
+        $webpackFiles = array();
         foreach ($iterator as $info) {
             $filePath = substr($info->getPathname(), strlen($stubDir));
             $filePath = preg_replace('/^\//', '', $filePath);
@@ -115,13 +116,32 @@ class UiCommand extends Command
                 continue;
 
             //Collect js files
-            if(preg_match('/\.js$/',$filePath))
-                $jsFiles[] = $filePath;
+            if(preg_match('/\.js$/',$filePath)){
+                if('webpack.mix.js' == $filePath){
+                    $webpackFiles[] = $filePath;
+                }else{
+                    $jsFiles[] = $filePath;
+                }
+            }
             //Collect css files
             if(preg_match('/css$/',$filePath))
                 $cssFiles[] = $filePath;
         }
         
+        //Export webpack files
+        foreach ($webpackFiles as $file) {
+            if (file_exists($targetFile = base_path($file)) && !$this->option('force')) {
+                if (!$this->confirm("The [{$file}] view already exists. Do you want to replace it?")) {
+                    continue;
+                }
+            }
+            $stubFile = "$stubDir/$file";
+            copy(
+                $stubFile,
+                $targetFile
+            );
+        }
+
         //Export js files
         foreach ($jsFiles as $file) {
             if (file_exists($targetFile = resource_path("js/$file")) && !$this->option('force')) {

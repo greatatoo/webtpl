@@ -89,4 +89,6 @@
             </div>
         </div>
     </div>
+    <!-- Scripts -->
+    <script src="{{ asset('js/dashboard/dashboard_user_detail.js') }}" defer></script>
     @endsection
