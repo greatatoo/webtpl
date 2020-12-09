@@ -90,5 +90,5 @@
         </div>
     </div>
     <!-- Scripts -->
-    <script src="{{ asset('js/dashboard/dashboard_user_detail.js') }}" defer></script>
+    <script src="{{ asset('js/dashboard/user_detail.js') }}" defer></script>
     @endsection

@@ -33,7 +33,7 @@ var usersDt = $('#dashboard-users').DataTable({
         {
             "data": "active",
             "render": function (data, type) {
-                return data;
+                return '<i class="'+(data?'icon-checkmark-circle2':'icon-close2')+'"></i>';
             }
         },
         { "data": "created_at" },

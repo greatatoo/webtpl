@@ -58,5 +58,5 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/dashboard/dashboard_users.js') }}" defer></script>
+    <script src="{{ asset('js/dashboard/users.js') }}" defer></script>
     @endsection
