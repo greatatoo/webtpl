@@ -24,10 +24,10 @@ var usersDt = $('#dashboard-users').DataTable({
         {
             "data": "id",
             "render": function (data) {
-                return '';//TODO user icon
+                return '<i class="icon-user"></i>';
             }
         },
-        { "data": "account"},
+        { "data": "account" },
         { "data": "name" },
         { "data": "email" },
         {
@@ -46,10 +46,26 @@ var usersDt = $('#dashboard-users').DataTable({
     "scrollX": true
 });
 
-$('#dashboard-users tbody').on('click', 'tr', function () {
-    var tr = $(this);
-    var row = usersDt.row(tr);
-    var userId = row.data().id;
+$('#dashboard-users tbody')
+    .on('click', 'tr', function () {
+        var tr = $(this);
+        var row = usersDt.row(tr);
+        var userId = row.data().id;
 
-    window.location.href = "/dashboard/users/" + userId;
-});
+        window.location.href = "/dashboard/users/" + userId;
+    });
+
+$('#dashboard-user-add-modal')
+    .on('shown.bs.modal', function () {
+        $('.tf-account', this).focus();
+    });
+
+$('#dashboard-user-add-modal .btn-ok')
+    .click(function(){
+        var account=$.trim($('#dashboard-user-add-modal .tf-account').val());
+        if(!account){
+            $('#dashboard-user-add-modal .tf-account').focus();
+            return false;
+        }
+        console.log(account);
+    });

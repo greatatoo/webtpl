@@ -52,10 +52,11 @@ class UiCommand extends Command
         $this->addRoutes();
         $this->applyWebtplUi();
         $this->exportJsCss();
+        $this->exportToPublic();
 
         //Install bootstrap, vue or react components
         $this->{$this->argument('type')}();
-        
+
         $this->info('Webtpl ui scaffolding generated successfully.');
     }
 
@@ -100,6 +101,36 @@ class UiCommand extends Command
         $this->comment('Please run "npm install && npm run dev" to compile your fresh scaffolding.');
     }
 
+    /**
+     * Copy all stuff in public-stubs to public_path();
+     */
+    protected function exportToPublic()
+    {
+        $stubDir = realpath(__DIR__ . '/../../../src/Presets/public-stubs');
+
+        $directory = new RecursiveDirectoryIterator($stubDir);
+        $iterator = new RecursiveIteratorIterator($directory);
+        $files = array();
+        foreach ($iterator as $info) {
+            $filePath = substr($info->getPathname(), strlen($stubDir));
+            $filePath = preg_replace('/^\//', '', $filePath);
+            if (preg_match('/\.$/', $filePath))
+                continue;
+            $files[] = $filePath;
+        }
+
+        foreach ($files as $file) {
+            $srcFile = "$stubDir/$file";
+            $tgtFile = public_path("$file");
+            
+            $targetDir = dirname($tgtFile);
+            if (!file_exists($targetDir))
+                mkdir($targetDir, 0755, true);
+            copy($srcFile, $tgtFile);
+            $this->info("Copy $tgtFile");
+        }
+    }
+
     protected function exportJsCss()
     {
         $stubDir = realpath(__DIR__ . '/../../../src/Presets/js-css-stubs');
@@ -116,18 +147,18 @@ class UiCommand extends Command
                 continue;
 
             //Collect js files
-            if(preg_match('/\.js$/',$filePath)){
-                if('webpack.mix.js' == $filePath){
+            if (preg_match('/\.js$/', $filePath)) {
+                if ('webpack.mix.js' == $filePath) {
                     $webpackFiles[] = $filePath;
-                }else{
+                } else {
                     $jsFiles[] = $filePath;
                 }
             }
             //Collect css files
-            if(preg_match('/css$/',$filePath))
+            if (preg_match('/css$/', $filePath))
                 $cssFiles[] = $filePath;
         }
-        
+
         //Export webpack files
         foreach ($webpackFiles as $file) {
             if (file_exists($targetFile = base_path($file)) && !$this->option('force')) {
