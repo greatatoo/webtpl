@@ -1,5 +1,5 @@
 //https://datatables.net/examples/server_side/row_details.html
-//Tips: In server mode data table, you should have the same number columns in 'ajax.data', 'option.columns' and thead.th .
+//Tips: In server mode data table, you should set the same number of columns in 'ajax.data', 'option.columns' and thead.th .
 var usersDt = $('#dashboard-users').DataTable({
     "processing": true,
     "serverSide": true,
@@ -46,6 +46,7 @@ var usersDt = $('#dashboard-users').DataTable({
     "scrollX": true
 });
 
+//Make clickable for each row of table dashboard users.
 $('#dashboard-users tbody')
     .on('click', 'tr', function () {
         var tr = $(this);
@@ -55,11 +56,13 @@ $('#dashboard-users tbody')
         window.location.href = "/dashboard/users/" + userId;
     });
 
+//When user-add moda is shown...
 $('#dashboard-user-add-modal')
     .on('shown.bs.modal', function () {
         $('.tf-account', this).focus();
     });
 
+//When ok button is pressed in user-add modal...
 $('#dashboard-user-add-modal .btn-ok')
     .click(function(){
         var account=$.trim($('#dashboard-user-add-modal .tf-account').val());
@@ -68,4 +71,20 @@ $('#dashboard-user-add-modal .btn-ok')
             return false;
         }
         console.log(account);
+
+        $.ajax({
+            url: '/rest/user',
+            type: 'post',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                account: account,
+                password: util.randStr(6)
+            },
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (xhr) {
+                
+            }
+        });
     });

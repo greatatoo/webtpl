@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('scripts')
+<script src="{{ asset('js/dashboard/users.js') }}" defer></script>
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -51,12 +55,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-cancel" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary btn-ok">OK</button>
+                    <button type="button" class="btn btn-primary btn-ok" data-dismiss="modal">OK</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Scripts -->
-    <script src="{{ asset('js/dashboard/users.js') }}" defer></script>
     @endsection

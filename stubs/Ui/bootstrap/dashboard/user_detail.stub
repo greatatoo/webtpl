@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('scripts')
+<script src="{{ asset('js/dashboard/user_detail.js') }}" defer></script>
+@endsection
+
 @section('content')
 <div class="container" data-user-id="{{ $userId }}">
     <div class="row justify-content-center">
@@ -89,6 +93,4 @@
             </div>
         </div>
     </div>
-    <!-- Scripts -->
-    <script src="{{ asset('js/dashboard/user_detail.js') }}" defer></script>
     @endsection

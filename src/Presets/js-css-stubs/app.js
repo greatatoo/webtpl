@@ -7,3 +7,4 @@ require('./bootstrap');
  */
 require('datatables.net-bs4');
 require('./lib/jqe');
+require('./lib/util');
