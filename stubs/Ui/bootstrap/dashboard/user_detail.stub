@@ -6,12 +6,12 @@
 
 @section('content')
 <div class="container" data-user-id="{{ $userId }}">
-    <div class="row justify-content-center">
-        <h2 class="col-md-7">{{ __("User") }}</h2>
+    <div id="user-detail" class="row justify-content-center">
+        <h2 class="col-md-7">{{ __("User") }} <span class="user-name"></span></h2>
         <div class="col-md-7">
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="user-detail-tab" data-toggle="tab" href="#user-detail" role="tab" aria-controls="user-detail" aria-selected="true">{{ __("Detail") }}</a>
+                    <a class="nav-link active" id="user-info-tab" data-toggle="tab" href="#user-info" role="tab" aria-controls="user-info" aria-selected="true">{{ __("Info") }}</a>
                 </li>
                 <li class="nav-item" role="presentation">
                     <a class="nav-link" id="user-roles-tab" data-toggle="tab" href="#user-roles" role="tab" aria-controls="user-roles" aria-selected="false">{{ __("Roles") }}</a>
@@ -21,7 +21,7 @@
                 </li>
             </ul>
             <div class="tab-content tab-content-border">
-                <div class="tab-pane fade show active" id="user-detail" role="tabpanel" aria-labelledby="user-detail-tab">
+                <div class="tab-pane fade show active" id="user-info" role="tabpanel" aria-labelledby="user-info-tab">
                     <div class="container p-3">
                         <div class="row mt-1">
                             <label for="name" class="col-md-3 col-form-label text-md-right">Name</label>
@@ -54,13 +54,13 @@
                         <div class="row mt-1">
                             <label for="active" class="col-md-3 col-form-label text-md-right">Active</label>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="active" value="">
+                                <input type="checkbox" class="form-control shadow-none" name="active">
                             </div>
                         </div>
 
                         <div class="row mt-3 justify-content-center">
                             <button class="btn btn-danger btn-user-delete" data-user-id="{{ $userId }}" data-confirm-times="3">Delete (<span class="confirm-times"></span>)</button>
-                            <button class="btn btn-primary ml-1 btn-user-detail-update" data-user-id="{{ $userId }}">Update</button>
+                            <button class="btn btn-primary ml-1 btn-user-info-update" data-user-id="{{ $userId }}">Update</button>
                         </div>
                     </div>
                 </div>

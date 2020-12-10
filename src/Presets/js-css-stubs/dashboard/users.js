@@ -33,7 +33,8 @@ var usersDt = $('#dashboard-users').DataTable({
         {
             "data": "active",
             "render": function (data, type) {
-                return '<i class="' + (data ? 'icon-checkmark-circle2' : 'icon-close2') + '"></i>';
+                var isActive = parseInt(data, 10) ? true : false;
+                return '<i class="' + (isActive ? 'icon-checkmark-circle2' : 'icon-close2') + '"></i>';
             }
         },
         { "data": "created_at" },
@@ -93,8 +94,9 @@ $('#dashboard-user-add-modal .btn-ok')
                 password: window.util.randStr(6)
             },
             success: function (data) {
-                window.util.notify(data.account + ' has been created.');
-                usersDt.ajax.reload();;
+                window.location.href = "/dashboard/users/" + data.id;
+                //window.util.notify(data.account + ' has been created.');
+                // usersDt.ajax.reload();
             },
             error: function (xhr) {
 

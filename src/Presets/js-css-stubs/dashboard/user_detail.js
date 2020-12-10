@@ -1,10 +1,50 @@
 /**
- * Button - User Detail Update
+ * User Detail - Fill up
  */
-$('.btn-user-detail-update')
+$('#user-detail')
+    .on('render', function (e, data) {
+        $('.user-name').html(data.name);
+        $('input[name=name]').val(data.name);
+        $('input[name=email]').val(data.email);
+        $('input[name=password]').val('');
+        $('input[name=api-token]').val(data.api_token);
+        $('input[name=active]').prop("checked", data.active ? true : false);
+    });
+
+/**
+ * Button - User Update
+ */
+$('.btn-user-info-update')
     .click(function () {
         var userId = $(this).attr('data-user-id');
-        console.log('btnUserDetailUpdate clicked ' + userId);
+        var name = $.trim($('input[name=name]').val());
+        var email = $.trim($('input[name=email]').val());
+        var passwd = $.trim($('input[name=password]').val());
+        var apiToken = $.trim($('input[name=api-token]').val());
+        var isActive = $('input[name=active]').prop("checked");
+
+        var payload = {};
+        if (name)
+            payload['name'] = name;
+        if (passwd)
+            payload['password'] = passwd;
+        if (apiToken)
+            payload['apiToken'] = apiToken;
+        payload['email'] = email;
+        payload['active'] = isActive ? 1 : 0;
+        payload['_token'] = $('meta[name="csrf-token"]').attr('content');
+        
+        //update user info
+        $.ajax({
+            url: '/rest/user/' + userId,
+            type: 'put',
+            data: payload,
+            success: function (data) {
+                console.log('user updated',data);
+                $('#user-detail').trigger('render', data);
+                window.util.notify('User info has been updated.');
+            }
+        });
     });
 
 /**
@@ -63,6 +103,19 @@ var userRolesDt = $('#dashboard-user-roles-table').DataTable({
  */
 $(function () {
     var userId = $('#dashboard-user-roles-table').attr('data-user-id');
+
+    //Get user detail
+    $.ajax({
+        url: '/rest/user/' + userId,
+        type: 'get',
+        success: function (data) {
+            console.log(data);
+            $('#user-detail').trigger('render', data);
+        },
+        error: function (xhr) {
+            window.util.notify('No such user.', 'error');
+        }
+    });
 
     new Promise(function (resolve, reject) {
         //Get all roles

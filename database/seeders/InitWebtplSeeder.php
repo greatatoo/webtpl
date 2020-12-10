@@ -33,6 +33,7 @@ class InitWebtplSeeder extends Seeder
         $adminUser->email = 'admin@example.com';
         $adminUser->password = bcrypt('admin');
         $adminUser->api_token = uniqid($adminUser->account);
+        $adminUser->active = 1;
         $adminUser->save();
         $adminUser->roles()->attach($adminRole);
         $adminUser->permissions()->attach($adminPermission);

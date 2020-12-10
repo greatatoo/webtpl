@@ -111,7 +111,9 @@ trait UserResourceTrait
      * {
      *   "name":"",
      *   "email":"",
-     *   "password":""
+     *   "password":"",
+     *   "api_token": "",
+     *   "active": 0
      * }
      * 
      * @param  \Illuminate\Http\Request  $request
@@ -124,6 +126,8 @@ trait UserResourceTrait
             'name' => 'nullable|string',
             'email' => 'nullable|email',
             'password' => 'nullable|string|min:6',
+            'api_token' => 'nullable|string',
+            'active' => 'nullable|numeric',
         ]);
 
         try {
@@ -142,9 +146,13 @@ trait UserResourceTrait
             }
             if ($request->password)
                 $user->password = bcrypt($request->password);
+            if($request->api_token)
+                $user->api_token = $request->api_token;
+            if($request->active !== null)
+                $user->active = $request->active;
 
             //update api_token
-            $user->api_token = uniqid($user->account);
+            // $user->api_token = uniqid($user->account);
 
             $user->save();
 
