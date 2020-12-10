@@ -1,6 +1,6 @@
 var _jqePool = {};
 
-window.jqe = {
+var jqe = {
     /**
      * jQuery Special Event
      * @param {Event} or {String} event
@@ -61,3 +61,5 @@ window.jqe = {
         });
     }
 };
+
+module.exports = jqe;

@@ -33,7 +33,7 @@ var usersDt = $('#dashboard-users').DataTable({
         {
             "data": "active",
             "render": function (data, type) {
-                return '<i class="'+(data?'icon-checkmark-circle2':'icon-close2')+'"></i>';
+                return '<i class="' + (data ? 'icon-checkmark-circle2' : 'icon-close2') + '"></i>';
             }
         },
         { "data": "created_at" },
@@ -43,7 +43,8 @@ var usersDt = $('#dashboard-users').DataTable({
     "info": true,
     "searching": true,
     "stateSave": true,
-    "scrollX": true
+    "scrollX": true,
+    "searchDelay": 800
 });
 
 //Make clickable for each row of table dashboard users.
@@ -60,17 +61,28 @@ $('#dashboard-users tbody')
 $('#dashboard-user-add-modal')
     .on('shown.bs.modal', function () {
         $('.tf-account', this).focus();
+    })
+    .on('hidden.bs.modal', function () {
+        $('.tf-account', this).val('');
+    });
+
+//When textfield account is pressed, click ok button.
+$('#dashboard-user-add-modal .tf-account')
+    .on("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            $('#dashboard-user-add-modal .btn-ok').click();
+        }
     });
 
 //When ok button is pressed in user-add modal...
 $('#dashboard-user-add-modal .btn-ok')
-    .click(function(){
-        var account=$.trim($('#dashboard-user-add-modal .tf-account').val());
-        if(!account){
+    .click(function () {
+        var account = $.trim($('#dashboard-user-add-modal .tf-account').val());
+        if (!account) {
             $('#dashboard-user-add-modal .tf-account').focus();
             return false;
         }
-        console.log(account);
 
         $.ajax({
             url: '/rest/user',
@@ -78,13 +90,14 @@ $('#dashboard-user-add-modal .btn-ok')
             data: {
                 _token: $('meta[name="csrf-token"]').attr('content'),
                 account: account,
-                password: util.randStr(6)
+                password: window.util.randStr(6)
             },
             success: function (data) {
-                console.log(data);
+                window.util.notify(data.account + ' has been created.');
+                usersDt.ajax.reload();;
             },
             error: function (xhr) {
-                
+
             }
         });
     });
