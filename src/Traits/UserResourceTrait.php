@@ -146,17 +146,14 @@ trait UserResourceTrait
             }
             if ($request->password)
                 $user->password = bcrypt($request->password);
-            if($request->api_token)
+            if ($request->api_token)
                 $user->api_token = $request->api_token;
-            if($request->active !== null)
+            if ($request->active !== null)
                 $user->active = $request->active;
-
-            //update api_token
-            // $user->api_token = uniqid($user->account);
 
             $user->save();
 
-            return $user;
+            return response()->json($user, 200, [], JSON_NUMERIC_CHECK);
         } catch (QueryException $e) {
             return new JsonResponse(
                 ["reason" => $e->getMessage()],

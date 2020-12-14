@@ -46,8 +46,10 @@ trait UserPermissionResourceTrait
     public function update(Request $request, $userId)
     {
         $request->validate([
-            'permissions' => 'required|array',
+            'permissions' => 'nullable|array',
         ]);
+
+        $permissionArr = $request->permissions ? $request->permissions : [];
 
         DB::beginTransaction();
 
@@ -55,7 +57,7 @@ trait UserPermissionResourceTrait
         $this->destroy($userId);
 
         //set permissions at once.
-        foreach (array_unique($request->permissions) as $permissionId) {
+        foreach (array_unique($permissionArr) as $permissionId) {
             try {
                 $model = new UserPermissionModel();
                 $model->user_id = $userId;

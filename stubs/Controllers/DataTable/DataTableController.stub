@@ -57,15 +57,15 @@ class DataTableController extends Controller
     {
         if (!$request->table)
             return abort(400, "no table specified");
-        Log::debug("table name = " . $request->table);
+        //Log::debug("table name = " . $request->table);
 
         if (!$request->primary_key)
             return abort(400, "no primary key specified");
-        Log::debug("primary key = " . $request->primary_key);
+        //Log::debug("primary key = " . $request->primary_key);
 
         if (!$request->columns)
             return abort(400, "no table columns specified");
-        Log::debug(print_r($request->columns, true));
+        //Log::debug(print_r($request->columns, true));
 
         // Array of database columns which should be read and sent back to DataTables.
         // The `db` parameter represents the column name in the database, while the `dt`

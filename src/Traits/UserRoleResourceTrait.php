@@ -46,8 +46,10 @@ trait UserRoleResourceTrait
     public function update(Request $request, $userId)
     {
         $request->validate([
-            'roles' => 'required|array',
+            'roles' => 'nullable|array',
         ]);
+
+        $roleArr = $request->roles ? $request->roles : [];
 
         DB::beginTransaction();
 
@@ -55,7 +57,7 @@ trait UserRoleResourceTrait
         $this->destroy($userId);
 
         //set roles at once.
-        foreach (array_unique($request->roles) as $roleId) {
+        foreach (array_unique($roleArr) as $roleId) {
             try {
                 $model = new UserRoleModel();
                 $model->user_id = $userId;

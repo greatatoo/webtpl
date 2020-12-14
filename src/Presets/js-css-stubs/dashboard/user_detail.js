@@ -1,5 +1,5 @@
 /**
- * User Detail - Fill up
+ * Render User Detail - Fill up
  */
 $('#user-detail')
     .on('render', function (e, data) {
@@ -8,7 +8,7 @@ $('#user-detail')
         $('input[name=email]').val(data.email);
         $('input[name=password]').val('');
         $('input[name=api-token]').val(data.api_token);
-        $('input[name=active]').prop("checked", data.active ? true : false);
+        $('input[name=active]').prop("checked", (data.active ? true : false));
     });
 
 /**
@@ -29,20 +29,80 @@ $('.btn-user-info-update')
         if (passwd)
             payload['password'] = passwd;
         if (apiToken)
-            payload['apiToken'] = apiToken;
+            payload['api_token'] = apiToken;
         payload['email'] = email;
         payload['active'] = isActive ? 1 : 0;
         payload['_token'] = $('meta[name="csrf-token"]').attr('content');
-        
+
         //update user info
         $.ajax({
             url: '/rest/user/' + userId,
             type: 'put',
             data: payload,
             success: function (data) {
-                console.log('user updated',data);
+                console.log('user updated', data);
                 $('#user-detail').trigger('render', data);
                 window.util.notify('User info has been updated.');
+            }
+        });
+    });
+
+/**
+ * Button - User Roles Update
+ */
+$('.btn-user-roles-update')
+    .click(function () {
+        var userId = $(this).attr('data-user-id');
+        var checkedArr = [];
+        //Collect checked roles
+        $('#dashboard-user-roles-table input[type=checkbox]')
+            .each(function (idx, el) {
+                if ($(el).prop('checked'))
+                    checkedArr.push($(el).val());
+            });
+
+        var payload = {};
+        payload['roles'] = checkedArr;
+        payload['_token'] = $('meta[name="csrf-token"]').attr('content');
+
+        //update user roles
+        $.ajax({
+            url: '/rest/user/' + userId + '/role',
+            type: 'put',
+            data: payload,
+            success: function () {
+                console.log('user roles updated');
+                window.util.notify('User roles has been updated.');
+            }
+        });
+    });
+
+/**
+ * Button - User Permissions Update
+ */
+$('.btn-user-permissions-update')
+    .click(function () {
+        var userId = $(this).attr('data-user-id');
+        var checkedArr = [];
+        //Collect checked roles
+        $('#dashboard-user-permissions-table input[type=checkbox]')
+            .each(function (idx, el) {
+                if ($(el).prop('checked'))
+                    checkedArr.push($(el).val());
+            });
+
+        var payload = {};
+        payload['permissions'] = checkedArr;
+        payload['_token'] = $('meta[name="csrf-token"]').attr('content');
+
+        //update user permissions
+        $.ajax({
+            url: '/rest/user/' + userId + '/permission',
+            type: 'put',
+            data: payload,
+            success: function () {
+                console.log('user permissions updated');
+                window.util.notify('User permissions has been updated.');
             }
         });
     });
@@ -65,8 +125,19 @@ btnUserDelete
         }
 
         var userId = $(this).attr('data-user-id');
-        console.log('btnUserDelete clicked ' + userId);
+        
         $('.confirm-times', this).text(0);
+
+        $.ajax({
+            url: '/rest/user/' + userId,
+            type: 'delete',
+            data: {
+                '_token': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function () {
+                window.location.href = "/dashboard/users";
+            }
+        });
     });
 
 /**
