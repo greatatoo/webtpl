@@ -6,6 +6,7 @@ use Greatatoo\Webtpl\Models\Role;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 
 trait RoleResourceTrait
@@ -58,6 +59,39 @@ trait RoleResourceTrait
     }
 
     /**
+     * Get users in the role
+     */
+    public function getUsers($roleId)
+    {
+        return DB::table('users_roles')
+            ->leftJoin('users', 'users_roles.user_id', '=', 'users.id')
+            ->where('users_roles.role_id', $roleId)
+            ->get([
+                'users_roles.role_id as role_id',
+                'users.id as user_id',
+                'users.account as user_account',
+                'users.name as user_name',
+            ]);
+    }
+
+    /**
+     * Set users in the role
+     */
+    public function setUsers($roleId)
+    {
+        //TODO
+        // return DB::table('users_roles')
+        //     ->leftJoin('users', 'users_roles.user_id', '=', 'users.id')
+        //     ->where('users_roles.role_id', $roleId)
+        //     ->get([
+        //         'users_roles.role_id as role_id',
+        //         'users.id as user_id',
+        //         'users.account as user_account',
+        //         'users.name as user_name',
+        //     ]);
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -82,6 +116,7 @@ trait RoleResourceTrait
             );
         }
     }
+    
     /**
      * Remove the specified resource from storage.
      *

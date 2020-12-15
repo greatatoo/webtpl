@@ -25,6 +25,8 @@ class Webtpl
                     'role' => \App\Http\Controllers\Essential\RoleController::class,
                     'permission' => \App\Http\Controllers\Essential\PermissionController::class,
                 ]);
+                Route::get('role/{role}/user', [\App\Http\Controllers\Essential\RoleController::class, 'getUsers']);
+                Route::put('role/{role}/user', [\App\Http\Controllers\Essential\RoleController::class, 'setUsers']);
 
                 Route::post('user/search', [\App\Http\Controllers\Essential\UserController::class, 'search']);
                 Route::get('user/{user}/detail', [\App\Http\Controllers\Essential\UserController::class, 'detail']);
@@ -66,6 +68,8 @@ class Webtpl
             Route::middleware(['auth', 'role:admin'])->group(function () {
                 Route::get('dashboard/users', [\App\Http\Controllers\Dashboard\UsersController::class, 'show'])->name('dashboard.users');
                 Route::get('dashboard/users/{user}', [\App\Http\Controllers\Dashboard\UserDetailController::class, 'show'])->name('dashboard.user.detail');
+                Route::get('dashboard/roles', [\App\Http\Controllers\Dashboard\RolesController::class, 'show'])->name('dashboard.roles');
+                Route::get('dashboard/roles/{role}', [\App\Http\Controllers\Dashboard\RoleDetailController::class, 'show'])->name('dashboard.role.detail');
             });
     }
 

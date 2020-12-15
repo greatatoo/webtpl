@@ -23,6 +23,7 @@ var usersDt = $('#dashboard-users').DataTable({
     "columns": [
         {
             "data": "id",
+            "width": "1%",
             "render": function (data) {
                 return '<i class="icon-user"></i>';
             }

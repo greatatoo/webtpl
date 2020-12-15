@@ -14,4 +14,6 @@ const mix = require('laravel-mix');
 mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/dashboard/users.js', 'public/js/dashboard/users.js')
     .js('resources/js/dashboard/user_detail.js', 'public/js/dashboard/user_detail.js')
+    .js('resources/js/dashboard/roles.js', 'public/js/dashboard/roles.js')
+    .js('resources/js/dashboard/role_detail.js', 'public/js/dashboard/role_detail.js')
     .sass('resources/sass/app.scss', 'public/css');
