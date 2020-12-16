@@ -35,33 +35,42 @@ $('.btn-role-info-update')
     });
 
 /**
- * Button - Role Users Update
+ * Button - Role User Add
  */
-$('.btn-role-users-update')
+$('.btn-new-role-user')
     .click(function () {
         var roleId = $(this).attr('data-role-id');
-        var checkedArr = [];
-        //Collect checked users
-        $('#dashboard-role-users-table input[type=checkbox]')
-            .each(function (idx, el) {
-                if ($(el).prop('checked'))
-                    checkedArr.push($(el).val());
-            });
+        var account = $.trim($('input[name=tf-new-role-user]').val());
+        if (!roleId || !account) {
+            $('input[name=tf-new-role-user]').val('').focus();
+            return false;
+        }
 
-        var payload = {};
-        payload['users'] = checkedArr;
-        payload['_token'] = $('meta[name="csrf-token"]').attr('content');
-
-        //update role users
         $.ajax({
-            url: '/rest/role/' + roleId + '/user',
-            type: 'put',
-            data: payload,
+            url: '/rest/role/' + roleId + '/account/' + account,
+            type: 'post',
+            data: {
+                '_token': $('meta[name="csrf-token"]').attr('content')
+            },
             success: function () {
-                console.log('role users updated');
-                window.util.notify('Role users has been updated.');
+                $('#dashboard-role-users-table').trigger('reload');
+                window.util.notify('Role user has been added.');
+                $('input[name=tf-new-role-user]').val('').focus();
+            },
+            error: function (xhr) {
+                if (xhr.status == 404)
+                    window.util.notify(account + " doesn't exist.", 'error');
+                $('input[name=tf-new-role-user]').val('').focus();
             }
         });
+    });
+
+$('input[name=tf-new-role-user]')
+    .on("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            $('.btn-new-role-user').click();
+        }
     });
 
 /**
@@ -156,77 +165,71 @@ var roleUsersDt = $('#dashboard-role-users-table').DataTable({
     "stateSave": false
 });
 
+$('#dashboard-role-users-table')
+    //Remove user from role
+    .on('removeUser', function (e, userId) {
+        var roleId = $(this).attr('data-role-id');
+        $.ajax({
+            url: '/rest/role/' + roleId + '/user/' + userId,
+            type: 'delete',
+            data: {
+                '_token': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function () {
+                if (!(userId == 1 && roleId == 1))
+                    window.util.notify('Role user has been removed.');
+                $('#dashboard-role-users-table').trigger('reload');
+            }
+        });
+    })
+    //Reload role's users
+    .on('reload', function () {
+        var self = $(this);
+        var roleId = $(this).attr('data-role-id');
+
+        roleUsersDt.clear();
+
+        //Get role detail
+        $.ajax({
+            url: '/rest/role/' + roleId,
+            type: 'get',
+            success: function (data) {
+                $('#role-detail').trigger('render', data);
+            },
+            error: function (xhr) {
+                window.util.notify('No such role.', 'error');
+            }
+        });
+
+        $.ajax({
+            url: '/rest/role/' + roleId + '/user',
+            type: 'get',
+            success: function (userArr) {
+                var rowArr = [];
+                userArr.forEach(function (el) {
+                    rowArr.push([[el.user_id, true], [el.user_name, el.user_account]]);
+                });
+                roleUsersDt.rows.add(rowArr).draw();
+
+                //checkbox clicked
+                $('input[type=checkbox]', self)
+                    .change(function () {
+                        if (!$(this).is(":checked")) {
+                            var userId = $(this).val();
+                            self.trigger('removeUser', userId);
+                        }
+                    });
+            },
+            error: function (xhr) {
+            }
+        });
+    });
+
 /**
  * Load role's users
  */
 $(function () {
-    var roleId = $('#dashboard-role-users-table').attr('data-role-id');
-
-    //Get role detail
-    $.ajax({
-        url: '/rest/role/' + roleId,
-        type: 'get',
-        success: function (data) {
-            console.log(data);
-            $('#role-detail').trigger('render', data);
-        },
-        error: function (xhr) {
-            window.util.notify('No such role.', 'error');
-        }
-    });
-
-    $.ajax({
-        url: '/rest/role/' + roleId + '/user',
-        type: 'get',
-        success: function (userArr) {
-            var rowArr = [];
-            console.log(userArr);
-            userArr.forEach(function (el) {
-                rowArr.push([[el.user_id, true], [el.user_name, el.user_account]]);
-            });
-            roleUsersDt.rows.add(rowArr).draw();
-        },
-        error: function (xhr) {
-        }
-    });
-
-    // new Promise(function (resolve, reject) {
-    //     //Get all roles
-    //     $.ajax({
-    //         url: '/rest/role',
-    //         type: 'get',
-    //         success: function (allRoles) {
-    //             resolve(allRoles);
-    //         },
-    //         error: function (xhr) {
-    //             reject(xhr.status);
-    //         }
-    //     });
-    // })
-    //     .then((allRoles) => {
-    //         var checkedArr = [];
-    //         //Get user's roles
-    //         $.ajax({
-    //             url: '/rest/user/' + userId + '/role',
-    //             type: 'get',
-    //             success: function (userRoles) {
-    //                 userRoles.forEach(function (el) {
-    //                     checkedArr.push(el.role_id);
-    //                 });
-
-    //                 //Combine 2 arraies
-    //                 var rowArr = [];
-    //                 allRoles.forEach(function (el) {
-    //                     var isChecked = $.inArray(el.id, checkedArr) >= 0;
-    //                     rowArr.push([[el.id, isChecked], [el.name, el.slug]]);
-    //                 });
-    //                 //Render datatable
-    //                 userRolesDt.rows.add(rowArr).draw();
-    //             },
-    //             error: function (xhr) {
-    //             }
-    //         });
-    //     });
+    $('#dashboard-role-users-table').trigger('reload');
 });
 
 /**
