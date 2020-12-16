@@ -27,9 +27,12 @@ class Webtpl
                 ]);
                 Route::get('role/{role}/user', [\App\Http\Controllers\Essential\RoleController::class, 'getUsers']);
                 Route::post('role/{role}/user/{user}', [\App\Http\Controllers\Essential\RoleController::class, 'addUser']);
-                Route::post('role/{role}/account/{account}', [\App\Http\Controllers\Essential\RoleController::class, 'addUserByAccount']);
-                
+                Route::post('role/{role}/account/{account}', [\App\Http\Controllers\Essential\RoleController::class, 'addUserByAccount']);               
                 Route::delete('role/{role}/user/{user}', [\App\Http\Controllers\Essential\RoleController::class, 'removeUser']);
+
+                Route::post('role/{role}/permission/{permission}', [\App\Http\Controllers\Essential\RoleController::class, 'addPermission']);
+                Route::post('role/{role}/slug/{slug}', [\App\Http\Controllers\Essential\RoleController::class, 'addPermissionBySlug']);               
+                Route::delete('role/{role}/permission/{permission}', [\App\Http\Controllers\Essential\RoleController::class, 'removePermission']);
 
                 Route::post('user/search', [\App\Http\Controllers\Essential\UserController::class, 'search']);
                 Route::get('user/{user}/detail', [\App\Http\Controllers\Essential\UserController::class, 'detail']);

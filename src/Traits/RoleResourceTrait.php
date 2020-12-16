@@ -4,7 +4,9 @@ namespace Greatatoo\Webtpl\Traits;
 
 use App\Models\User;
 use Greatatoo\Webtpl\Models\Role;
+use Greatatoo\Webtpl\Models\Permission;
 use Greatatoo\Webtpl\Models\UserRoleModel;
+use Greatatoo\Webtpl\Models\RolePermissionModel;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -122,15 +124,82 @@ trait RoleResourceTrait
      */
     public function removeUser($roleId, $userId)
     {
-        //Skip admin user-group
+        //Skip admin user-role
         if ($roleId == 1 && $userId == 1)
             return;
 
         try {
-            $users = DB::table('users_roles')
+            DB::table('users_roles')
                 ->where([
                     ['role_id', '=', $roleId],
                     ['user_id', '=', $userId]
+                ])
+                ->delete();
+        } catch (QueryException $e) {
+            return new JsonResponse(
+                ["reason" => $e->getMessage()],
+                400
+            );
+        }
+    }
+
+    /**
+     * Add permission by a given slug.
+     */
+    public function addPermissionBySlug($roleId, $slug)
+    {
+        $permissions = DB::table('permissions')
+            ->where('slug', $slug)
+            ->get();
+
+        if (!sizeof($permissions)) {
+            return new JsonResponse(
+                ["reason" => "No such permission. $slug"],
+                404
+            );
+        }
+
+        $permId = $permissions[0]->id;
+        return $this->addPermission($roleId, $permId);
+    }
+
+    /**
+     * Add a permission to the role
+     */
+    public function addPermission($roleId, $permId)
+    {
+        try {
+            $perm = Permission::find($permId);
+            if (!$perm) {
+                return new JsonResponse(
+                    ["reason" => "No such permissionId. $perm"],
+                    404
+                );
+            }
+
+            $model = new RolePermissionModel();
+            $model->role_id = $roleId;
+            $model->permission_id = $permId;
+            $model->save();
+        } catch (\Exception $e) {
+            // Log::debug($e->getMessage());
+        }
+    }
+
+    /**
+     * Remove a permission from the role
+     */
+    public function removePermission($roleId, $permId)
+    {
+        //Skip admin user-permission
+        if ($roleId == 1 && $permId == 1)
+            return;
+
+        try {
+            DB::table('roles_permissions')
+                ->where([
+                    ['role_id', '=', $roleId],
+                    ['permission_id', '=', $permId]
                 ])
                 ->delete();
         } catch (QueryException $e) {

@@ -235,73 +235,124 @@ $(function () {
 /**
 * DataTable - Role's Permissions
 */
-// var rolePermissionsDt = $('#dashboard-role-permissions-table').DataTable({
-//     "columnDefs": [
-//         {
-//             "targets": 0,
-//             "render": function (data, type, row, meta) {
-//                 var permissionId = data[0];
-//                 var isChecked = data[1];
-//                 return '<input type="checkbox" value="' + permissionId + '" ' + (isChecked ? 'checked' : '') + '>';
-//             }
-//         },
-//         {
-//             "targets": 1,
-//             "render": function (data, type, row, meta) {
-//                 var permissionName = data[0];
-//                 var permissionSlug = data[1];
-//                 return '<span title="' + permissionSlug + '">' + permissionName + '</span';
-//             }
-//         }
-//     ],
-//     "paging": false,
-//     "ordering": false,
-//     "info": false,
-//     "searching": false,
-//     "stateSave": false
-// });
+var rolePermissionsDt = $('#dashboard-role-permissions-table').DataTable({
+    "columnDefs": [
+        {
+            "targets": 0,
+            "render": function (data, type, row, meta) {
+                var permissionId = data[0];
+                var isChecked = data[1];
+                return '<input type="checkbox" value="' + permissionId + '" ' + (isChecked ? 'checked' : '') + '>';
+            }
+        },
+        {
+            "targets": 1,
+            "render": function (data, type, row, meta) {
+                var permissionName = data[0];
+                var permissionSlug = data[1];
+                return '<span title="' + permissionSlug + '">' + permissionName + '</span';
+            }
+        }
+    ],
+    "paging": false,
+    "ordering": false,
+    "info": false,
+    "searching": false,
+    "stateSave": false
+});
+
+$('#dashboard-role-permissions-table')
+    //Add permission to role
+    .on('addPermission', function (e, permId) {
+        var roleId = $(this).attr('data-role-id');
+        $.ajax({
+            url: '/rest/role/' + roleId + '/permission/' + permId,
+            type: 'post',
+            data: {
+                '_token': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function () {
+                if (!(permId == 1 && roleId == 1))
+                    window.util.notify('Role permission has been removed.');
+                $('#dashboard-role-permissions-table').trigger('reload');
+            }
+        });
+    })
+    //Remove permission from role
+    .on('removePermission', function (e, permId) {
+        var roleId = $(this).attr('data-role-id');
+        $.ajax({
+            url: '/rest/role/' + roleId + '/permission/' + permId,
+            type: 'delete',
+            data: {
+                '_token': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function () {
+                if (!(permId == 1 && roleId == 1))
+                    window.util.notify('Role permission has been removed.');
+                $('#dashboard-role-permissions-table').trigger('reload');
+            }
+        });
+    })
+    .on('reload', function () {
+        var self = $(this);
+        var roleId = $('#dashboard-role-permissions-table').attr('data-role-id');
+
+        rolePermissionsDt.clear();
+
+        new Promise(function (resolve, reject) {
+            //Get all permissions
+            $.ajax({
+                url: '/rest/permission',
+                type: 'get',
+                success: function (allPermissions) {
+                    resolve(allPermissions);
+                },
+                error: function (xhr) {
+                    reject(xhr.status);
+                }
+            });
+        })
+            .then((allPermissions) => {
+                var checkedArr = [];
+                //Get role's permissions
+                $.ajax({
+                    url: '/rest/role/' + roleId + '/permission',
+                    type: 'get',
+                    success: function (rolePermissions) {
+                        rolePermissions.forEach(function (el) {
+                            checkedArr.push(el.permission_id);
+                        });
+
+                        //Combine 2 arraies
+                        var rowArr = [];
+                        allPermissions.forEach(function (el) {
+                            var isChecked = $.inArray(el.id, checkedArr) >= 0;
+                            rowArr.push([[el.id, isChecked], [el.name, el.slug]]);
+                        });
+                        //Render datatable
+                        rolePermissionsDt.rows.add(rowArr).draw();
+
+                        //Checkbox clicked
+                        $('input[type=checkbox]', self)
+                            .change(function () {
+                                var permId = $(this).val();
+                                if ($(this).is(":checked")) {
+                                    $('#dashboard-role-permissions-table').trigger('addPermission',permId);
+                                } else {
+                                    $('#dashboard-role-permissions-table').trigger('removePermission',permId);
+                                }
+                            });
+                    },
+                    error: function (xhr) {
+                    }
+                });
+            });
+    });
 
 /**
  * Load role's permissions
  */
 $(function () {
-    var roleId = $('#dashboard-role-permissions-table').attr('data-role-id');
-
-    // new Promise(function (resolve, reject) {
-    //     //Get all permissions
-    //     $.ajax({
-    //         url: '/rest/permission',
-    //         type: 'get',
-    //         success: function (allPermissions) {
-    //             resolve(allPermissions);
-    //         },
-    //         error: function (xhr) {
-    //             reject(xhr.status);
-    //         }
-    //     });
-    // })
-    //     .then((allPermissions) => {
-    //         var checkedArr = [];
-    //         //Get user's permissions
-    //         $.ajax({
-    //             url: '/rest/user/' + userId + '/permission',
-    //             type: 'get',
-    //             success: function (userPermissions) {
-    //                 userPermissions.forEach(function (el) {
-    //                     checkedArr.push(el.permission_id);
-    //                 });
-
-    //                 //Combine 2 arraies
-    //                 var rowArr = [];
-    //                 allPermissions.forEach(function (el) {
-    //                     var isChecked = $.inArray(el.id, checkedArr) >= 0;
-    //                     rowArr.push([[el.id, isChecked], [el.name, el.slug]]);
-    //                 });
-    //                 //Render datatable
-    //                 userPermissionsDt.rows.add(rowArr).draw();
-    //             },
-    //             error: function (xhr) {
-    //             }
-    //         });
-    //     });
+    $('#dashboard-role-permissions-table').trigger('reload');
 });
