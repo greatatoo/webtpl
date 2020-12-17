@@ -1,19 +1,19 @@
 /**
- * Render Role Detail - Fill up
+ * Render Permission Detail - Fill up
  */
-$('#role-detail')
+$('#permission-detail')
     .on('render', function (e, data) {
-        $('.role-name').html(data.name);
+        $('.permission-name').html(data.name);
         $('input[name=name]').val(data.name);
         $('input[name=slug]').val(data.slug);
     });
 
 /**
- * Button - Role Update
+ * Button - Permission Update
  */
-$('.btn-role-info-update')
+$('.btn-permission-info-update')
     .click(function () {
-        var roleId = $(this).attr('data-role-id');
+        var permissionId = $(this).attr('data-permission-id');
         var name = $.trim($('input[name=name]').val());
 
         var payload = {};
@@ -21,66 +21,66 @@ $('.btn-role-info-update')
             payload['name'] = name;
         payload['_token'] = $('meta[name="csrf-token"]').attr('content');
 
-        //update role info
+        //update permission info
         $.ajax({
-            url: '/rest/role/' + roleId,
+            url: '/rest/permission/' + permissionId,
             type: 'put',
             data: payload,
             success: function (data) {
-                console.log('role updated', data);
-                $('#role-detail').trigger('render', data);
-                window.util.notify('Role info has been updated.');
+                console.log('permission updated', data);
+                $('#permission-detail').trigger('render', data);
+                window.util.notify('Permission info has been updated.');
             }
         });
     });
 
 /**
- * Button - Role User Add
+ * Button - Permission User Add
  */
-$('.btn-new-role-user')
+$('.btn-new-permission-user')
     .click(function () {
-        var roleId = $(this).attr('data-role-id');
-        var account = $.trim($('input[name=tf-new-role-user]').val());
-        if (!roleId || !account) {
-            $('input[name=tf-new-role-user]').val('').focus();
+        var permissionId = $(this).attr('data-permission-id');
+        var account = $.trim($('input[name=tf-new-permission-user]').val());
+        if (!permissionId || !account) {
+            $('input[name=tf-new-permission-user]').val('').focus();
             return false;
         }
 
         $.ajax({
-            url: '/rest/role/' + roleId + '/account/' + account,
+            url: '/rest/permission/' + permissionId + '/account/' + account,
             type: 'post',
             data: {
                 '_token': $('meta[name="csrf-token"]').attr('content')
             },
             success: function () {
-                $('#dashboard-role-users-table').trigger('reload');
-                window.util.notify('Role user has been added.');
-                $('input[name=tf-new-role-user]').val('').focus();
+                $('#dashboard-permission-users-table').trigger('reload');
+                window.util.notify('Permission user has been added.');
+                $('input[name=tf-new-permission-user]').val('').focus();
             },
             error: function (xhr) {
                 if (xhr.status == 404)
                     window.util.notify(account + " doesn't exist.", 'error');
-                $('input[name=tf-new-role-user]').val('').focus();
+                $('input[name=tf-new-permission-user]').val('').focus();
             }
         });
     });
 
-$('input[name=tf-new-role-user]')
+$('input[name=tf-new-permission-user]')
     .on("keyup", function (event) {
         if (event.keyCode === 13) {
             event.preventDefault();
-            $('.btn-new-role-user').click();
+            $('.btn-new-permission-user').click();
         }
     });
 
 /**
- * Button - Role Permissions Update
+ * Button - Permission Roles Update
  */
-$('.btn-role-permissions-update')
+$('.btn-permission-roles-update')
     .click(function () {
-        var roleId = $(this).attr('data-role-id');
+        var permissionId = $(this).attr('data-permission-id');
         // var checkedArr = [];
-        // //Collect checked roles
+        // //Collect checked permissions
         // $('#dashboard-user-permissions-table input[type=checkbox]')
         //     .each(function (idx, el) {
         //         if ($(el).prop('checked'))
@@ -104,13 +104,13 @@ $('.btn-role-permissions-update')
     });
 
 /**
- * Button - Role Delete
+ * Button - Permission Delete
  */
-var btnRoleDelete = $('.btn-role-delete');
-var confirmTimes = btnRoleDelete.attr('data-confirm-times');
-$('.confirm-times', btnRoleDelete).text(confirmTimes);
+var btnPermissionDelete = $('.btn-permission-delete');
+var confirmTimes = btnPermissionDelete.attr('data-confirm-times');
+$('.confirm-times', btnPermissionDelete).text(confirmTimes);
 
-btnRoleDelete
+btnPermissionDelete
     .click(function () {
         var confirmVal = parseInt($('.confirm-times', this).text(), 10);
         if (confirmVal > 1) {
@@ -120,26 +120,26 @@ btnRoleDelete
             return false;
         }
 
-        var roleId = $(this).attr('data-role-id');
+        var permissionId = $(this).attr('data-permission-id');
 
         $('.confirm-times', this).text(0);
 
         $.ajax({
-            url: '/rest/role/' + roleId,
+            url: '/rest/permission/' + permissionId,
             type: 'delete',
             data: {
                 '_token': $('meta[name="csrf-token"]').attr('content')
             },
             success: function () {
-                window.location.href = "/dashboard/roles";
+                window.location.href = "/dashboard/permissions";
             }
         });
     });
 
 /**
- * DataTable - Role's Users
+ * DataTable - Permission's Users
  */
-var roleUsersDt = $('#dashboard-role-users-table').DataTable({
+var permissionUsersDt = $('#dashboard-permission-users-table').DataTable({
     "columnDefs": [
         {
             "targets": 0,
@@ -165,52 +165,52 @@ var roleUsersDt = $('#dashboard-role-users-table').DataTable({
     "stateSave": false
 });
 
-$('#dashboard-role-users-table')
-    //Remove user from role
+$('#dashboard-permission-users-table')
+    //Remove user from permission
     .on('removeUser', function (e, userId) {
-        var roleId = $(this).attr('data-role-id');
+        var permissionId = $(this).attr('data-permission-id');
         $.ajax({
-            url: '/rest/role/' + roleId + '/user/' + userId,
+            url: '/rest/permission/' + permissionId + '/user/' + userId,
             type: 'delete',
             data: {
                 '_token': $('meta[name="csrf-token"]').attr('content')
             },
             success: function () {
-                if (!(userId == 1 && roleId == 1))
-                    window.util.notify('Role user has been removed.');
-                $('#dashboard-role-users-table').trigger('reload');
+                if (!(userId == 1 && permissionId == 1))
+                    window.util.notify('Permission user has been removed.');
+                $('#dashboard-permission-users-table').trigger('reload');
             }
         });
     })
-    //Reload role's users
+    //Reload permission's users
     .on('reload', function () {
         var self = $(this);
-        var roleId = $(this).attr('data-role-id');
+        var permissionId = $(this).attr('data-permission-id');
 
-        roleUsersDt.clear();
+        permissionUsersDt.clear();
 
-        //Get role detail
+        //Get permission detail
         $.ajax({
-            url: '/rest/role/' + roleId,
+            url: '/rest/permission/' + permissionId,
             type: 'get',
             success: function (data) {
-                $('#role-detail').trigger('render', data);
+                $('#permission-detail').trigger('render', data);
             },
             error: function (xhr) {
-                window.util.notify('No such role.', 'error');
+                window.util.notify('No such permission.', 'error');
             }
         });
 
-        //Get role users
+        //Get permission users
         $.ajax({
-            url: '/rest/role/' + roleId + '/user',
+            url: '/rest/permission/' + permissionId + '/user',
             type: 'get',
             success: function (userArr) {
                 var rowArr = [];
                 userArr.forEach(function (el) {
                     rowArr.push([[el.user_id, true], [el.user_name, el.user_account]]);
                 });
-                roleUsersDt.rows.add(rowArr).draw();
+                permissionUsersDt.rows.add(rowArr).draw();
 
                 //checkbox clicked
                 $('input[type=checkbox]', self)
@@ -227,16 +227,16 @@ $('#dashboard-role-users-table')
     });
 
 /**
- * Load role's users
+ * Load permission's users
  */
 $(function () {
-    $('#dashboard-role-users-table').trigger('reload');
+    $('#dashboard-permission-users-table').trigger('reload');
 });
 
 /**
-* DataTable - Role's Permissions
+* DataTable - Permission's roles
 */
-var rolePermissionsDt = $('#dashboard-role-permissions-table').DataTable({
+var permissionRolesDt = $('#dashboard-permission-roles-table').DataTable({
     "columnDefs": [
         {
             "targets": 0,
@@ -262,44 +262,44 @@ var rolePermissionsDt = $('#dashboard-role-permissions-table').DataTable({
     "stateSave": false
 });
 
-$('#dashboard-role-permissions-table')
-    //Add permission to role
-    .on('addPermission', function (e, permId) {
-        var roleId = $(this).attr('data-role-id');
+$('#dashboard-permission-roles-table')
+    //Add role to permission
+    .on('addRole', function (e, roleId) {
+        var permissionId = $(this).attr('data-permission-id');
         $.ajax({
-            url: '/rest/role/' + roleId + '/permission/' + permId,
+            url: '/rest/permission/' + permissionId + '/role/' + roleId,
             type: 'post',
             data: {
                 '_token': $('meta[name="csrf-token"]').attr('content')
             },
             success: function () {
-                if (!(permId == 1 && roleId == 1))
-                    window.util.notify('Role permission has been removed.');
-                $('#dashboard-role-permissions-table').trigger('reload');
+                if (!(roleId == 1 && permissionId == 1))
+                    window.util.notify('Permission role has been removed.');
+                $('#dashboard-permission-roles-table').trigger('reload');
             }
         });
     })
-    //Remove permission from role
-    .on('removePermission', function (e, permId) {
-        var roleId = $(this).attr('data-role-id');
+    //Remove role from permission
+    .on('removeRole', function (e, roleId) {
+        var permissionId = $(this).attr('data-permission-id');
         $.ajax({
-            url: '/rest/role/' + roleId + '/permission/' + permId,
+            url: '/rest/permission/' + permissionId + '/role/' + roleId,
             type: 'delete',
             data: {
                 '_token': $('meta[name="csrf-token"]').attr('content')
             },
             success: function () {
-                if (!(permId == 1 && roleId == 1))
-                    window.util.notify('Role permission has been removed.');
-                $('#dashboard-role-permissions-table').trigger('reload');
+                if (!(roleId == 1 && permissionId == 1))
+                    window.util.notify('Permission role has been removed.');
+                $('#dashboard-permission-roles-table').trigger('reload');
             }
         });
     })
     .on('reload', function () {
         var self = $(this);
-        var roleId = $('#dashboard-role-permissions-table').attr('data-role-id');
+        var permissionId = $('#dashboard-permission-roles-table').attr('data-permission-id');
 
-        rolePermissionsDt.clear();
+        permissionRolesDt.clear();
 
         new Promise(function (resolve, reject) {
             //Get all permissions
@@ -316,13 +316,13 @@ $('#dashboard-role-permissions-table')
         })
             .then((allPermissions) => {
                 var checkedArr = [];
-                //Get role's permissions
+                //Get permission's permissions
                 $.ajax({
-                    url: '/rest/role/' + roleId + '/permission',
+                    url: '/rest/permission/' + permissionId + '/role',
                     type: 'get',
-                    success: function (rolePermissions) {
-                        rolePermissions.forEach(function (el) {
-                            checkedArr.push(el.permission_id);
+                    success: function (permissionRoles) {
+                        permissionRoles.forEach(function (el) {
+                            checkedArr.push(el.role_id);
                         });
 
                         //Combine 2 arraies
@@ -332,16 +332,16 @@ $('#dashboard-role-permissions-table')
                             rowArr.push([[el.id, isChecked], [el.name, el.slug]]);
                         });
                         //Render datatable
-                        rolePermissionsDt.rows.add(rowArr).draw();
+                        permissionRolesDt.rows.add(rowArr).draw();
 
                         //Checkbox clicked
                         $('input[type=checkbox]', self)
                             .change(function () {
-                                var permId = $(this).val();
+                                var roleId = $(this).val();
                                 if ($(this).is(":checked")) {
-                                    $('#dashboard-role-permissions-table').trigger('addPermission',permId);
+                                    $('#dashboard-permission-roles-table').trigger('addRole',roleId);
                                 } else {
-                                    $('#dashboard-role-permissions-table').trigger('removePermission',permId);
+                                    $('#dashboard-permission-roles-table').trigger('removeRole',roleId);
                                 }
                             });
                     },
@@ -352,8 +352,8 @@ $('#dashboard-role-permissions-table')
     });
 
 /**
- * Load role's permissions
+ * Load permission's roles
  */
 $(function () {
-    $('#dashboard-role-permissions-table').trigger('reload');
+    $('#dashboard-permission-roles-table').trigger('reload');
 });

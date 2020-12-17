@@ -16,4 +16,6 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/dashboard/user_detail.js', 'public/js/dashboard/user_detail.js')
     .js('resources/js/dashboard/roles.js', 'public/js/dashboard/roles.js')
     .js('resources/js/dashboard/role_detail.js', 'public/js/dashboard/role_detail.js')
+    .js('resources/js/dashboard/permissions.js', 'public/js/dashboard/permissions.js')
+    .js('resources/js/dashboard/permission_detail.js', 'public/js/dashboard/permission_detail.js')
     .sass('resources/sass/app.scss', 'public/css');

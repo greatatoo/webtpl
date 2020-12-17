@@ -65,6 +65,9 @@
                                             <a class="dropdown-item" href="{{ route('dashboard.roles') }}">
                                                 {{ __('Roles') }}
                                             </a>
+                                            <a class="dropdown-item" href="{{ route('dashboard.permissions') }}">
+                                                {{ __('Permissions') }}
+                                            </a>
                                         @endpermission
                                     </div>
                                 </li>

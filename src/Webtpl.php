@@ -34,6 +34,16 @@ class Webtpl
                 Route::post('role/{role}/slug/{slug}', [\App\Http\Controllers\Essential\RoleController::class, 'addPermissionBySlug']);               
                 Route::delete('role/{role}/permission/{permission}', [\App\Http\Controllers\Essential\RoleController::class, 'removePermission']);
 
+                Route::get('permission/{permission}/user', [\App\Http\Controllers\Essential\PermissionController::class, 'getUsers']);
+                Route::post('permission/{permission}/user/{user}', [\App\Http\Controllers\Essential\PermissionController::class, 'addUser']);
+                Route::post('permission/{permission}/account/{account}', [\App\Http\Controllers\Essential\PermissionController::class, 'addUserByAccount']);               
+                Route::delete('permission/{permission}/user/{user}', [\App\Http\Controllers\Essential\PermissionController::class, 'removeUser']);
+
+                Route::get('permission/{permission}/role', [\App\Http\Controllers\Essential\PermissionController::class, 'getRoles']);
+                Route::post('permission/{permission}/role/{role}', [\App\Http\Controllers\Essential\PermissionController::class, 'addRole']);
+                Route::post('permission/{permission}/slug/{slug}', [\App\Http\Controllers\Essential\PermissionController::class, 'addRoleBySlug']);               
+                Route::delete('permission/{permission}/role/{role}', [\App\Http\Controllers\Essential\PermissionController::class, 'removeRole']);
+
                 Route::post('user/search', [\App\Http\Controllers\Essential\UserController::class, 'search']);
                 Route::get('user/{user}/detail', [\App\Http\Controllers\Essential\UserController::class, 'detail']);
 
@@ -76,6 +86,8 @@ class Webtpl
                 Route::get('dashboard/users/{user}', [\App\Http\Controllers\Dashboard\UserDetailController::class, 'show'])->name('dashboard.user.detail');
                 Route::get('dashboard/roles', [\App\Http\Controllers\Dashboard\RolesController::class, 'show'])->name('dashboard.roles');
                 Route::get('dashboard/roles/{role}', [\App\Http\Controllers\Dashboard\RoleDetailController::class, 'show'])->name('dashboard.role.detail');
+                Route::get('dashboard/permissions', [\App\Http\Controllers\Dashboard\PermissionsController::class, 'show'])->name('dashboard.permissions');
+                Route::get('dashboard/permissions/{permission}', [\App\Http\Controllers\Dashboard\PermissionDetailController::class, 'show'])->name('dashboard.permission.detail');
             });
     }
 
