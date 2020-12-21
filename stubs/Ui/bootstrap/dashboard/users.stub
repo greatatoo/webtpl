@@ -6,33 +6,27 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <div class="float-left">{{ __('Users') }}</div>
-                    <div class="float-right">
-                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dashboard-user-add-modal"><i class="icon-user-plus"></i></button>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <table id="dashboard-users" class="display table table-striped" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Account</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Active</th>
-                                <th>Created</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">{{ __("Dashboard") }}</li>
+            <li class="breadcrumb-item font-weight-bold ">{{ __("Users") }}</li>
+        </ol>
+    </nav>
+    <div class="float-right">
+        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dashboard-user-add-modal"><i class="icon-user-plus"></i></button>
     </div>
+    <table id="dashboard-users" class="display table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Account</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Active</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+    </table>
 </div>
 
 <div class="modal fade" id="dashboard-user-add-modal" tabindex="-1" role="dialog" aria-labelledby="user-add-modal-label" aria-hidden="true">
@@ -49,7 +43,7 @@
                     <div class="row mt-1">
                         <label for="account" class="col-md-3 col-form-label text-md-right">{{ __('Account') }}</label>
                         <div class="col-md-8">
-                            <input type="text" class="form-control tf-account" name="account" value="" required autofocus>
+                            <input type="text" class="form-control tf-account" name="account" value="" placeholder="Enter a new account." required autofocus>
                         </div>
                     </div>
                 </div>

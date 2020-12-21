@@ -125,7 +125,7 @@ btnUserDelete
         }
 
         var userId = $(this).attr('data-user-id');
-        
+
         $('.confirm-times', this).text(0);
 
         $.ajax({
@@ -147,6 +147,7 @@ var userRolesDt = $('#dashboard-user-roles-table').DataTable({
     "columnDefs": [
         {
             "targets": 0,
+            "width": "1px",
             "render": function (data, type, row, meta) {
                 var roleId = data[0];
                 var isChecked = data[1];
@@ -168,6 +169,12 @@ var userRolesDt = $('#dashboard-user-roles-table').DataTable({
     "searching": false,
     "stateSave": false
 });
+
+$('#user-roles-tab')
+    .on('shown.bs.tab', function (e) {
+        //repaint datatable
+        userRolesDt.columns.adjust().draw();
+    });
 
 /**
  * Load user's roles
@@ -234,6 +241,7 @@ var userPermissionsDt = $('#dashboard-user-permissions-table').DataTable({
     "columnDefs": [
         {
             "targets": 0,
+            "width": "1px",
             "render": function (data, type, row, meta) {
                 var permissionId = data[0];
                 var isChecked = data[1];
@@ -255,6 +263,13 @@ var userPermissionsDt = $('#dashboard-user-permissions-table').DataTable({
     "searching": false,
     "stateSave": false
 });
+
+$('#user-permissions-tab')
+    .on('shown.bs.tab', function (e) {
+        //repaint datatable
+        userPermissionsDt.columns.adjust().draw();
+    });
+
 
 /**
  * Load user's permissions

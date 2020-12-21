@@ -28,10 +28,10 @@ var permissionsDt = $('#dashboard-permissions').DataTable({
         { "data": "name" },
         { "data": "slug" }
     ],
-    "paging": false,
-    "ordering": false,
-    "info": false,
-    "searching": false,
+    "paging": true,
+    "ordering": true,
+    "info": true,
+    "searching": true,
     "stateSave": true,
     "scrollX": true
 });

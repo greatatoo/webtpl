@@ -6,30 +6,24 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <div class="float-left">{{ __('Permissions') }}</div>
-                    <div class="float-right">
-                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dashboard-permission-add-modal"><i class="icon-plus-circle2"></i></button>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <table id="dashboard-permissions" class="display table table-striped" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Name</th>
-                                <th>Slug</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">{{ __("Dashboard") }}</li>
+            <li class="breadcrumb-item font-weight-bold ">{{ __("Permissions") }}</li>
+        </ol>
+    </nav>
+    <div class="float-right">
+        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dashboard-permission-add-modal"><i class="icon-plus-circle2"></i></button>
     </div>
+    <table id="dashboard-permissions" class="display table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Slug</th>
+            </tr>
+        </thead>
+    </table>
 </div>
 
 <div class="modal fade" id="dashboard-permission-add-modal" tabindex="-1" role="dialog" aria-labelledby="permission-add-modal-label" aria-hidden="true">

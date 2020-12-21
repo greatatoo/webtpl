@@ -6,9 +6,15 @@
 
 @section('content')
 <div class="container" data-role-id="{{ $roleId }}">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">{{ __("Dashboard") }}</li>
+            <li class="breadcrumb-item"><a href="{{ route('dashboard.roles') }}">{{ __("Roles") }}</a></li>
+            <li class="breadcrumb-item active font-weight-bold role-name" aria-current="page"></li>
+        </ol>
+    </nav>
     <div id="role-detail" class="row justify-content-center">
-        <h2 class="col-md-7">{{ __("Role") }} <span class="role-name"></span></h2>
-        <div class="col-md-7">
+        <div class="col-md-12">
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link active" id="role-info-tab" data-toggle="tab" href="#role-info" role="tab" aria-controls="role-info" aria-selected="true">{{ __("Info") }}</a>
@@ -45,7 +51,7 @@
                 </div>
                 <div class="tab-pane fade" id="role-users" role="tabpanel" aria-labelledby="role-users-tab">
                     <table id="dashboard-role-users-table" class="display table table-striped" style="width:100%" data-role-id="{{ $roleId }}">
-                        <thead style="display:none">
+                        <thead>
                             <tr>
                                 <th></th>
                                 <th>Name</th>
@@ -63,7 +69,7 @@
                 </div>
                 <div class="tab-pane fade" id="role-permissions" role="tabpanel" aria-labelledby="role-permissions-tab">
                     <table id="dashboard-role-permissions-table" class="display table table-striped" style="width:100%" data-role-id="{{ $roleId }}">
-                        <thead style="display:none">
+                        <thead>
                             <tr>
                                 <th></th>
                                 <th>Name</th>

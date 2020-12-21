@@ -143,6 +143,7 @@ var roleUsersDt = $('#dashboard-role-users-table').DataTable({
     "columnDefs": [
         {
             "targets": 0,
+            "width": "1px",
             "render": function (data, type, row, meta) {
                 var userId = data[0];
                 var isChecked = data[1];
@@ -164,6 +165,12 @@ var roleUsersDt = $('#dashboard-role-users-table').DataTable({
     "searching": false,
     "stateSave": false
 });
+
+$('#role-users-tab')
+    .on('shown.bs.tab', function (e) {
+        //repaint datatable
+        roleUsersDt.columns.adjust().draw();
+    });
 
 $('#dashboard-role-users-table')
     //Remove user from role
@@ -240,6 +247,7 @@ var rolePermissionsDt = $('#dashboard-role-permissions-table').DataTable({
     "columnDefs": [
         {
             "targets": 0,
+            "width": "1px",
             "render": function (data, type, row, meta) {
                 var permissionId = data[0];
                 var isChecked = data[1];
@@ -261,6 +269,12 @@ var rolePermissionsDt = $('#dashboard-role-permissions-table').DataTable({
     "searching": false,
     "stateSave": false
 });
+
+$('#role-permissions-tab')
+    .on('shown.bs.tab', function (e) {
+        //repaint datatable
+        rolePermissionsDt.columns.adjust().draw();
+    });
 
 $('#dashboard-role-permissions-table')
     //Add permission to role

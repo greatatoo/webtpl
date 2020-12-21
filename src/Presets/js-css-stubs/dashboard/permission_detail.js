@@ -143,6 +143,7 @@ var permissionUsersDt = $('#dashboard-permission-users-table').DataTable({
     "columnDefs": [
         {
             "targets": 0,
+            "width": "1px",
             "render": function (data, type, row, meta) {
                 var userId = data[0];
                 var isChecked = data[1];
@@ -164,6 +165,12 @@ var permissionUsersDt = $('#dashboard-permission-users-table').DataTable({
     "searching": false,
     "stateSave": false
 });
+
+$('#permission-users-tab')
+    .on('shown.bs.tab', function (e) {
+        //repaint datatable
+        permissionUsersDt.columns.adjust().draw();
+    });
 
 $('#dashboard-permission-users-table')
     //Remove user from permission
@@ -240,6 +247,7 @@ var permissionRolesDt = $('#dashboard-permission-roles-table').DataTable({
     "columnDefs": [
         {
             "targets": 0,
+            "width": "1px",
             "render": function (data, type, row, meta) {
                 var permissionId = data[0];
                 var isChecked = data[1];
@@ -261,6 +269,12 @@ var permissionRolesDt = $('#dashboard-permission-roles-table').DataTable({
     "searching": false,
     "stateSave": false
 });
+
+$('#permission-roles-tab')
+    .on('shown.bs.tab', function (e) {
+        //repaint datatable
+        permissionRolesDt.columns.adjust().draw();
+    });
 
 $('#dashboard-permission-roles-table')
     //Add role to permission
@@ -302,21 +316,21 @@ $('#dashboard-permission-roles-table')
         permissionRolesDt.clear();
 
         new Promise(function (resolve, reject) {
-            //Get all permissions
+            //Get all roles
             $.ajax({
-                url: '/rest/permission',
+                url: '/rest/role',
                 type: 'get',
-                success: function (allPermissions) {
-                    resolve(allPermissions);
+                success: function (allRoles) {
+                    resolve(allRoles);
                 },
                 error: function (xhr) {
                     reject(xhr.status);
                 }
             });
         })
-            .then((allPermissions) => {
+            .then((allRoles) => {
                 var checkedArr = [];
-                //Get permission's permissions
+                //Get permission's roles
                 $.ajax({
                     url: '/rest/permission/' + permissionId + '/role',
                     type: 'get',
@@ -327,7 +341,7 @@ $('#dashboard-permission-roles-table')
 
                         //Combine 2 arraies
                         var rowArr = [];
-                        allPermissions.forEach(function (el) {
+                        allRoles.forEach(function (el) {
                             var isChecked = $.inArray(el.id, checkedArr) >= 0;
                             rowArr.push([[el.id, isChecked], [el.name, el.slug]]);
                         });

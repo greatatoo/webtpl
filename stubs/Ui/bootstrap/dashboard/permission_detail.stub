@@ -6,9 +6,15 @@
 
 @section('content')
 <div class="container" data-permission-id="{{ $permissionId }}">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">{{ __("Dashboard") }}</li>
+            <li class="breadcrumb-item"><a href="{{ route('dashboard.permissions') }}">{{ __("Permissions") }}</a></li>
+            <li class="breadcrumb-item active font-weight-bold permission-name" aria-current="page"></li>
+        </ol>
+    </nav>
     <div id="permission-detail" class="row justify-content-center">
-        <h2 class="col-md-7">{{ __("Permission") }} <span class="permission-name"></span></h2>
-        <div class="col-md-7">
+        <div class="col-md-12">
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link active" id="permission-info-tab" data-toggle="tab" href="#permission-info" role="tab" aria-controls="permission-info" aria-selected="true">{{ __("Info") }}</a>
@@ -45,7 +51,7 @@
                 </div>
                 <div class="tab-pane fade" id="permission-users" role="tabpanel" aria-labelledby="permission-users-tab">
                     <table id="dashboard-permission-users-table" class="display table table-striped" style="width:100%" data-permission-id="{{ $permissionId }}">
-                        <thead style="display:none">
+                        <thead>
                             <tr>
                                 <th></th>
                                 <th>Name</th>
@@ -63,7 +69,7 @@
                 </div>
                 <div class="tab-pane fade" id="permission-roles" role="tabpanel" aria-labelledby="permission-roles-tab">
                     <table id="dashboard-permission-roles-table" class="display table table-striped" style="width:100%" data-permission-id="{{ $permissionId }}">
-                        <thead style="display:none">
+                        <thead>
                             <tr>
                                 <th></th>
                                 <th>Name</th>

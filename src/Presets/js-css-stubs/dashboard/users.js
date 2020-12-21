@@ -35,7 +35,7 @@ var usersDt = $('#dashboard-users').DataTable({
             "data": "active",
             "render": function (data, type) {
                 var isActive = parseInt(data, 10) ? true : false;
-                return '<i class="' + (isActive ? 'icon-checkmark-circle2' : 'icon-close2') + '"></i>';
+                return '<i class="' + (isActive ? 'icon-checkmark-circle2 text-success' : 'icon-close2 text-danger') + '"></i>';
             }
         },
         { "data": "created_at" },
