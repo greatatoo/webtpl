@@ -23,7 +23,7 @@ var usersDt = $('#dashboard-users').DataTable({
     "columns": [
         {
             "data": "id",
-            "width": "1%",
+            "width": "1px",
             "render": function (data) {
                 return '<i class="icon-user"></i>';
             }
@@ -35,10 +35,20 @@ var usersDt = $('#dashboard-users').DataTable({
             "data": "active",
             "render": function (data, type) {
                 var isActive = parseInt(data, 10) ? true : false;
-                return '<i class="' + (isActive ? 'icon-checkmark-circle2 text-success' : 'icon-close2 text-danger') + '"></i>';
+                return '<i title="' + (isActive ? 'Enabled' : 'Disabled') + '" class="' + (isActive ? 'icon-checkmark-circle2 text-success' : 'icon-close2 text-danger') + '"></i>';
             }
         },
-        { "data": "created_at" },
+        {
+            "data": "created_at",
+            "render": function (dateStr) {
+                const zeroPad = (num, places) => String(num).padStart(places, '0');
+                var d = new Date(Date.parse(dateStr));
+                var yr = d.getFullYear();
+                var mon = zeroPad(d.getMonth() + 1, 2);
+                var day = zeroPad(d.getDate(), 2);
+                return '<span title="' + dateStr + '">' + yr + '-' + mon + '-' + day + '</span>';
+            }
+        },
     ],
     "paging": true,
     "ordering": false,

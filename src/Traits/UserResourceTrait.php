@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
 
+use Greatatoo\Webtpl\Models\Role;
+use Greatatoo\Webtpl\Models\Permission;
+use Greatatoo\Webtpl\Models\UserRoleModel;
+use Greatatoo\Webtpl\Models\UserPermissionModel;
+
 trait UserResourceTrait
 {
     use HasPermissionsTrait;
@@ -213,6 +218,100 @@ trait UserResourceTrait
                 $query->orWhere($column, 'like', '%' . $keyword . '%');
             }
             return $query->get();
+        } catch (QueryException $e) {
+            return new JsonResponse(
+                ["reason" => $e->getMessage()],
+                400
+            );
+        }
+    }
+
+    /**
+     * Add a role to the user
+     */
+    public function addRole($userId, $roleId)
+    {
+        try {
+            $perm = Role::find($roleId);
+            if (!$perm) {
+                return new JsonResponse(
+                    ["reason" => "No such permissionId. $perm"],
+                    404
+                );
+            }
+
+            $model = new UserRoleModel();
+            $model->user_id = $userId;
+            $model->role_id = $roleId;
+            $model->save();
+        } catch (\Exception $e) {
+            // Log::debug($e->getMessage());
+        }
+    }
+
+    /**
+     * Remove a role from the user
+     */
+    public function removeRole($userId, $roleId)
+    {
+        //Skip admin user-role
+        if ($userId == 1 && $roleId == 1)
+            return;
+
+        try {
+            DB::table('users_roles')
+                ->where([
+                    ['user_id', '=', $userId],
+                    ['role_id', '=', $roleId]
+                ])
+                ->delete();
+        } catch (QueryException $e) {
+            return new JsonResponse(
+                ["reason" => $e->getMessage()],
+                400
+            );
+        }
+    }
+
+    /**
+     * Add a permission to the user
+     */
+    public function addPermission($userId, $permId)
+    {
+        try {
+            $perm = Permission::find($permId);
+            if (!$perm) {
+                return new JsonResponse(
+                    ["reason" => "No such permissionId. $perm"],
+                    404
+                );
+            }
+
+            $model = new UserPermissionModel();
+            $model->user_id = $userId;
+            $model->permission_id = $permId;
+            $model->save();
+        } catch (\Exception $e) {
+            // Log::debug($e->getMessage());
+        }
+    }
+
+    /**
+     * Remove a permission from the user
+     */
+    public function removePermission($userId, $permId)
+    {
+        //Skip admin user-permission
+        if ($userId == 1 && $permId == 1)
+            return;
+
+        try {
+            DB::table('users_permissions')
+                ->where([
+                    ['user_id', '=', $userId],
+                    ['permission_id', '=', $permId]
+                ])
+                ->delete();
         } catch (QueryException $e) {
             return new JsonResponse(
                 ["reason" => $e->getMessage()],

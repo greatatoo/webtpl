@@ -25,6 +25,12 @@ class Webtpl
                     'role' => \App\Http\Controllers\Essential\RoleController::class,
                     'permission' => \App\Http\Controllers\Essential\PermissionController::class,
                 ]);
+                Route::post('user/{user}/role/{role}', [\App\Http\Controllers\Essential\UserController::class, 'addRole']);
+                Route::delete('user/{user}/role/{role}', [\App\Http\Controllers\Essential\UserController::class, 'removeRole']);
+
+                Route::post('user/{user}/permission/{permission}', [\App\Http\Controllers\Essential\UserController::class, 'addPermission']);
+                Route::delete('user/{user}/permission/{permission}', [\App\Http\Controllers\Essential\UserController::class, 'removePermission']);
+                
                 Route::get('role/{role}/user', [\App\Http\Controllers\Essential\RoleController::class, 'getUsers']);
                 Route::post('role/{role}/user/{user}', [\App\Http\Controllers\Essential\RoleController::class, 'addUser']);
                 Route::post('role/{role}/account/{account}', [\App\Http\Controllers\Essential\RoleController::class, 'addUserByAccount']);               

@@ -60,7 +60,7 @@
                     </table>
                     <div class="row m-2 justify-content-center">
                         <div class="col-10">
-                            <input type="text" class="form-control" name="tf-new-role-user" value="" placeholder="Enter an account to add">
+                            <input type="text" class="form-control" name="tf-new-role-user" value="" placeholder="Enter an account to add.">
                         </div>
                         <div class="col-2">
                             <button class="btn btn-primary btn-new-role-user" data-role-id="{{ $roleId }}">Add</button>
