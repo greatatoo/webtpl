@@ -232,6 +232,8 @@ class InstallCommand extends Command
             $newLines[] = $line;
             if (preg_match('/protected \$routeMiddleware =/', $line)) {
                 $newLines[] = "        'role' => \Greatatoo\Webtpl\Http\Middleware\RoleMiddleware::class,";
+                $newLines[] = "        'oneOfRoles' => \Greatatoo\Webtpl\Http\Middleware\OneOfRolesMiddleware::class,";
+                $newLines[] = "        'oneOfPermissions' => \Greatatoo\Webtpl\Http\Middleware\OneOfPermissionsMiddleware::class,";
             }
         }
 

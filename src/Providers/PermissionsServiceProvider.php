@@ -6,6 +6,7 @@ use Greatatoo\Webtpl\Models\Permission;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Log;
 
 class PermissionsServiceProvider extends ServiceProvider
 {
