@@ -8,8 +8,8 @@
 <div class="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item">{{ __("Dashboard") }}</li>
-            <li class="breadcrumb-item font-weight-bold ">{{ __("Users") }}</li>
+            <li class="breadcrumb-item">{{ __("dashboard.dashboard") }}</li>
+            <li class="breadcrumb-item font-weight-bold ">{{ __("dashboard.users") }}</li>
         </ol>
     </nav>
     <div class="float-right">
@@ -19,11 +19,11 @@
         <thead>
             <tr>
                 <th></th>
-                <th>Account</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Active</th>
-                <th>Created</th>
+                <th>{{ __("dashboard.user.account") }}</th>
+                <th>{{ __("dashboard.user.name") }}</th>
+                <th>{{ __("dashboard.user.email") }}</th>
+                <th>{{ __("dashboard.user.active") }}</th>
+                <th>{{ __("dashboard.user.created_at") }}</th>
             </tr>
         </thead>
     </table>
@@ -33,7 +33,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="users-roles-modal-label">New User</h5>
+                <h5 class="modal-title" id="users-roles-modal-label">{{ __("dashboard.new_user") }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -41,15 +41,15 @@
             <div class="modal-body">
                 <div class="container mt-2 mb-3">
                     <div class="row mt-1">
-                        <label for="account" class="col-md-3 col-form-label text-md-right">{{ __('Account') }}</label>
+                        <label for="account" class="col-md-3 col-form-label text-md-right">{{ __('dashboard.user.account') }}</label>
                         <div class="col-md-8">
-                            <input type="text" class="form-control tf-account" name="account" value="" placeholder="Enter a new account." required autofocus>
+                            <input type="text" class="form-control tf-account" name="account" value="" placeholder="{{ __('dashboard.tip.enter_account') }}" required autofocus>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-cancel" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary btn-ok" data-dismiss="modal">OK</button>
+                    <button type="button" class="btn btn-secondary btn-cancel" data-dismiss="modal">{{ __("dashboard.close") }}</button>
+                    <button type="button" class="btn btn-primary btn-ok" data-dismiss="modal">{{ __("dashboard.ok") }}</button>
                 </div>
             </div>
         </div>

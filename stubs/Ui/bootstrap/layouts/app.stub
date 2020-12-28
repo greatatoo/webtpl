@@ -10,6 +10,9 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
+    <!-- script>
+        window.translations = {!! Cache::get('translations') !!};
+    </script -->
     <script src="{{ asset('js/app.js') }}" defer></script>   
     @yield('scripts')
 

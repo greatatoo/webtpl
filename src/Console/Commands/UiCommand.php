@@ -53,6 +53,7 @@ class UiCommand extends Command
         $this->applyWebtplUi();
         $this->exportJsCss();
         $this->exportToPublic();
+        $this->exportResources();
 
         //Install bootstrap, vue or react components
         $this->{$this->argument('type')}();
@@ -122,7 +123,37 @@ class UiCommand extends Command
         foreach ($files as $file) {
             $srcFile = "$stubDir/$file";
             $tgtFile = public_path("$file");
-            
+
+            $targetDir = dirname($tgtFile);
+            if (!file_exists($targetDir))
+                mkdir($targetDir, 0755, true);
+            copy($srcFile, $tgtFile);
+            $this->info("Copy $tgtFile");
+        }
+    }
+
+    /**
+     * Export all files under resources folder.
+     */
+    protected function exportResources()
+    {
+        $resourcesDir = realpath(__DIR__ . '/../../../resources');
+
+        $directory = new RecursiveDirectoryIterator($resourcesDir);
+        $iterator = new RecursiveIteratorIterator($directory);
+        $files = array();
+        foreach ($iterator as $info) {
+            $filePath = substr($info->getPathname(), strlen($resourcesDir));
+            $filePath = preg_replace('/^\//', '', $filePath);
+            if (preg_match('/\.$/', $filePath))
+                continue;
+            $files[] = $filePath;
+        }
+
+        foreach ($files as $file) {
+            $srcFile = "$resourcesDir/$file";
+            $tgtFile = base_path("resources/$file");
+
             $targetDir = dirname($tgtFile);
             if (!file_exists($targetDir))
                 mkdir($targetDir, 0755, true);

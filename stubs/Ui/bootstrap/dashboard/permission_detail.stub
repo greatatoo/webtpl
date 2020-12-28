@@ -8,8 +8,8 @@
 <div class="container" data-permission-id="{{ $permissionId }}">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item">{{ __("Dashboard") }}</li>
-            <li class="breadcrumb-item"><a href="{{ route('dashboard.permissions') }}">{{ __("Permissions") }}</a></li>
+            <li class="breadcrumb-item">{{ __("dashboard.dashboard") }}</li>
+            <li class="breadcrumb-item"><a href="{{ route('dashboard.permissions') }}">{{ __("dashboard.permissions") }}</a></li>
             <li class="breadcrumb-item active font-weight-bold permission-name" aria-current="page"></li>
         </ol>
     </nav>
@@ -17,35 +17,35 @@
         <div class="col-md-12">
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="permission-info-tab" data-toggle="tab" href="#permission-info" role="tab" aria-controls="permission-info" aria-selected="true">{{ __("Info") }}</a>
+                    <a class="nav-link active" id="permission-info-tab" data-toggle="tab" href="#permission-info" role="tab" aria-controls="permission-info" aria-selected="true">{{ __("dashboard.info") }}</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="permission-users-tab" data-toggle="tab" href="#permission-users" role="tab" aria-controls="permission-users" aria-selected="false">{{ __("Users") }}</a>
+                    <a class="nav-link" id="permission-users-tab" data-toggle="tab" href="#permission-users" role="tab" aria-controls="permission-users" aria-selected="false">{{ __("dashboard.users") }}</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="permission-roles-tab" data-toggle="tab" href="#permission-roles" role="tab" aria-controls="permission-roles" aria-selected="false">{{ __("Roles") }}</a>
+                    <a class="nav-link" id="permission-roles-tab" data-toggle="tab" href="#permission-roles" role="tab" aria-controls="permission-roles" aria-selected="false">{{ __("dashboard.roles") }}</a>
                 </li>
             </ul>
             <div class="tab-content tab-content-border">
                 <div class="tab-pane fade show active" id="permission-info" role="tabpanel" aria-labelledby="permission-info-tab">
                     <div class="container p-3">
                         <div class="row mt-1">
-                            <label for="name" class="col-md-3 col-form-label text-md-right">Name</label>
+                            <label for="name" class="col-md-3 col-form-label text-md-right">{{ __("dashboard.permission.name") }}</label>
                             <div class="col-md-8">
                                 <input type="text" class="form-control" name="name" value="" required autofocus>
                             </div>
                         </div>
 
                         <div class="row mt-1">
-                            <label for="slug" class="col-md-3 col-form-label text-md-right">Slug</label>
+                            <label for="slug" class="col-md-3 col-form-label text-md-right">{{ __("dashboard.permission.slug") }}</label>
                             <div class="col-md-8">
                                 <input type="text" class="form-control" name="slug" value="" required readonly>
                             </div>
                         </div>
 
                         <div class="row mt-3 justify-content-center">
-                            <button class="btn btn-danger btn-permission-delete" data-permission-id="{{ $permissionId }}" data-confirm-times="3">Delete (<span class="confirm-times"></span>)</button>
-                            <button class="btn btn-primary ml-1 btn-permission-info-update" data-permission-id="{{ $permissionId }}">Update</button>
+                            <button class="btn btn-danger btn-permission-delete" data-permission-id="{{ $permissionId }}" data-confirm-times="3">{{ __("dashboard.delete") }} (<span class="confirm-times"></span>)</button>
+                            <button class="btn btn-primary ml-1 btn-permission-info-update" data-permission-id="{{ $permissionId }}">{{ __("dashboard.update") }}</button>
                         </div>
                     </div>
                 </div>
@@ -54,16 +54,16 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Name</th>
+                                <th>{{ __("dashboard.user.name") }}</th>
                             </tr>
                         </thead>
                     </table>
                     <div class="row m-2 justify-content-center">
                         <div class="col-10">
-                            <input type="text" class="form-control" name="tf-new-permission-user" value="" placeholder="Enter an account to add">
+                            <input type="text" class="form-control" name="tf-new-permission-user" value="" placeholder="{{ __('dashboard.tip.enter_account') }}">
                         </div>
                         <div class="col-2">
-                            <button class="btn btn-primary btn-new-permission-user" data-permission-id="{{ $permissionId }}">Add</button>
+                            <button class="btn btn-primary btn-new-permission-user" data-permission-id="{{ $permissionId }}">{{ __("dashboard.add") }}</button>
                         </div>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Name</th>
+                                <th>{{ __("dashboard.role.name") }}</th>
                             </tr>
                         </thead>
                     </table>
