@@ -8,4 +8,5 @@ require('./bootstrap');
 require('datatables.net-bs4');
 window.Noty = require('noty');
 window.jqe = require('./modules/jqe');
+window.trans = require('./modules/trans');
 window.util = require('./modules/util');
