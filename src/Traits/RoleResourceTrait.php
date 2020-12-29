@@ -249,6 +249,12 @@ trait RoleResourceTrait
      */
     public function destroy($id)
     {
+        if ($id == 1)
+            return new JsonResponse(
+                ["reason" => 'admin role can not be deleted'],
+                406
+            );
+
         try {
             $role = Role::find($id);
             if ($role)

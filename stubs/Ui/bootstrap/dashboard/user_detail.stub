@@ -65,7 +65,9 @@
                         </div>
 
                         <div class="row mt-3 justify-content-center">
+                            @if($userId != 1)
                             <button class="btn btn-danger btn-user-delete" data-user-id="{{ $userId }}" data-confirm-times="3">{{ __("dashboard.delete") }} (<span class="confirm-times"></span>)</button>
+                            @endif
                             <button class="btn btn-primary ml-1 btn-user-info-update" data-user-id="{{ $userId }}">{{ __("dashboard.update") }}</button>
                         </div>
                     </div>

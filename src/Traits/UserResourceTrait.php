@@ -175,6 +175,11 @@ trait UserResourceTrait
      */
     public function destroy($userId)
     {
+        if ($userId == 1)
+            return new JsonResponse(
+                ["reason" => 'admin can not be deleted'],
+                406
+            );
         try {
             $user = User::find($userId);
             if ($user)

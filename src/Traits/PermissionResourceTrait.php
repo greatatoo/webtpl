@@ -247,7 +247,7 @@ trait PermissionResourceTrait
         try {
             $permission = Permission::find($id);
             $permission->name = $request->name;
-            if(!is_null($request->desc))
+            if (!is_null($request->desc))
                 $permission->desc = $request->desc;
             $permission->save();
             return $permission;
@@ -266,6 +266,11 @@ trait PermissionResourceTrait
      */
     public function destroy($id)
     {
+        if ($id == 1)
+            return new JsonResponse(
+                ["reason" => 'admin permission can not be deleted'],
+                406
+            );
         try {
             $permission = Permission::find($id);
             if ($permission)

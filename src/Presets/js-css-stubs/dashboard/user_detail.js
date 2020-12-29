@@ -10,7 +10,6 @@ $('#user-info')
             url: '/rest/user/' + userId,
             type: 'get',
             success: function (data) {
-                console.log(data);
                 self.trigger('render', data);
             },
             error: function (xhr) {
@@ -56,7 +55,6 @@ $('.btn-user-info-update')
             type: 'put',
             data: payload,
             success: function (data) {
-                console.log('user updated', data);
                 $('#user-info').trigger('render', data);
                 window.util.notify(trans('dashboard.popup.user_info_updated'));
             }
@@ -136,7 +134,9 @@ var userRolesDt = $('#dashboard-user-roles-table').DataTable({
             "render": function (data, type, row, meta) {
                 var roleId = data[0];
                 var isChecked = data[1];
-                return '<input type="checkbox" value="' + roleId + '" ' + (isChecked ? 'checked' : '') + '>';
+                var userId = data[2];
+                var isReadOnly = (userId == 1 && roleId == 1);
+                return '<input type="checkbox" value="' + roleId + '" ' + (isChecked ? 'checked' : '') + ' ' + (isReadOnly ? 'disabled' : '') + '>';
             }
         },
         {
@@ -150,7 +150,7 @@ var userRolesDt = $('#dashboard-user-roles-table').DataTable({
         {
             "targets": 2,
             "render": function (data, type, row, meta) {
-                return '<span>' + data + '</span';
+                return '<span>' + $.trim(data) + '</span';
             }
         }
     ],
@@ -232,7 +232,7 @@ $('#dashboard-user-roles-table')
                         var rowArr = [];
                         allRoles.forEach(function (el) {
                             var isChecked = $.inArray(el.id, checkedArr) >= 0;
-                            rowArr.push([[el.id, isChecked], [el.name, el.slug], el.desc]);
+                            rowArr.push([[el.id, isChecked, userId], [el.name, el.slug], el.desc]);
                         });
                         //Render datatable
                         userRolesDt.rows.add(rowArr).draw();
@@ -303,7 +303,9 @@ var userPermissionsDt = $('#dashboard-user-permissions-table').DataTable({
             "render": function (data, type, row, meta) {
                 var permissionId = data[0];
                 var isChecked = data[1];
-                return '<input type="checkbox" value="' + permissionId + '" ' + (isChecked ? 'checked' : '') + '>';
+                var userId = data[2];
+                var isReadOnly = (userId == 1 && permissionId == 1);
+                return '<input type="checkbox" value="' + permissionId + '" ' + (isChecked ? 'checked' : '') + ' ' + (isReadOnly ? 'disabled' : '') + '>';
             }
         },
         {
@@ -317,7 +319,7 @@ var userPermissionsDt = $('#dashboard-user-permissions-table').DataTable({
         {
             "targets": 2,
             "render": function (data, type, row, meta) {
-                return '<span>' + data + '</span';
+                return '<span>' + $.trim(data) + '</span';
             }
         }
     ],
@@ -399,7 +401,7 @@ $('#dashboard-user-permissions-table')
                         var rowArr = [];
                         allPermissions.forEach(function (el) {
                             var isChecked = $.inArray(el.id, checkedArr) >= 0;
-                            rowArr.push([[el.id, isChecked], [el.name, el.slug], el.desc]);
+                            rowArr.push([[el.id, isChecked, userId], [el.name, el.slug], el.desc]);
                         });
                         //Render datatable
                         userPermissionsDt.rows.add(rowArr).draw();

@@ -30,7 +30,6 @@ $('.btn-permission-info-update')
             type: 'put',
             data: payload,
             success: function (data) {
-                console.log('permission updated', data);
                 $('#permission-detail').trigger('render', data);
                 window.util.notify(trans('dashboard.popup.permission_info_updated'));
             }
@@ -145,7 +144,9 @@ var permissionUsersDt = $('#dashboard-permission-users-table').DataTable({
             "render": function (data, type, row, meta) {
                 var userId = data[0];
                 var isChecked = data[1];
-                return '<input type="checkbox" value="' + userId + '" ' + (isChecked ? 'checked' : '') + '>';
+                var permissionId = data[2];
+                var isReadOnly = (userId == 1 && permissionId == 1);
+                return '<input type="checkbox" value="' + userId + '" ' + (isChecked ? 'checked' : '') + ' ' + (isReadOnly ? 'disabled' : '') + '>';
             }
         },
         {
@@ -213,7 +214,7 @@ $('#dashboard-permission-users-table')
             success: function (userArr) {
                 var rowArr = [];
                 userArr.forEach(function (el) {
-                    rowArr.push([[el.user_id, true], [el.user_name, el.user_account]]);
+                    rowArr.push([[el.user_id, true, permissionId], [el.user_name, el.user_account]]);
                 });
                 permissionUsersDt.rows.add(rowArr).draw();
 
@@ -272,9 +273,11 @@ var permissionRolesDt = $('#dashboard-permission-roles-table').DataTable({
             "targets": 0,
             "width": "1px",
             "render": function (data, type, row, meta) {
-                var permissionId = data[0];
+                var roleId = data[0];
                 var isChecked = data[1];
-                return '<input type="checkbox" value="' + permissionId + '" ' + (isChecked ? 'checked' : '') + '>';
+                var permissionId = data[2];
+                var isReadOnly = (roleId == 1 && permissionId == 1);
+                return '<input type="checkbox" value="' + roleId + '" ' + (isChecked ? 'checked' : '') + ' ' + (isReadOnly ? 'disabled' : '') + '>';
             }
         },
         {
@@ -288,7 +291,7 @@ var permissionRolesDt = $('#dashboard-permission-roles-table').DataTable({
         {
             "targets": 2,
             "render": function (data, type, row, meta) {
-                return '<span>' + data + '</span>';
+                return '<span>' + $.trim(data) + '</span>';
             }
         }
     ],
@@ -372,7 +375,7 @@ $('#dashboard-permission-roles-table')
                         var rowArr = [];
                         allRoles.forEach(function (el) {
                             var isChecked = $.inArray(el.id, checkedArr) >= 0;
-                            rowArr.push([[el.id, isChecked], [el.name, el.slug], el.desc]);
+                            rowArr.push([[el.id, isChecked, permissionId], [el.name, el.slug], el.desc]);
                         });
                         //Render datatable
                         permissionRolesDt.rows.add(rowArr).draw();
