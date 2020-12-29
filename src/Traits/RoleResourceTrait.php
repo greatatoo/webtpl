@@ -37,12 +37,14 @@ trait RoleResourceTrait
         $request->validate([
             'name' => 'required|string',
             'slug' => 'required|string',
+            'desc' => 'nullable|string',
         ]);
 
         try {
             $role = new Role();
             $role->name = $request->name;
             $role->slug = $request->slug;
+            $role->desc = $request->desc;
             $role->save();
         } catch (QueryException $e) {
             return new JsonResponse(
@@ -220,12 +222,15 @@ trait RoleResourceTrait
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|string'
+            'name' => 'required|string',
+            'desc' => 'nullable|string',
         ]);
 
         try {
             $role = Role::find($id);
             $role->name = $request->name;
+            if(!is_null($request->desc))
+                $role->desc = $request->desc;
             $role->save();
             return $role;
         } catch (QueryException $e) {

@@ -19,8 +19,9 @@
         <thead>
             <tr>
                 <th></th>
-                <th>{{ __("dashboard.role.name") }}</th>
                 <th>{{ __("dashboard.role.slug") }}</th>
+                <th>{{ __("dashboard.role.name") }}</th>
+                <th>{{ __("dashboard.role.desc") }}</th>
             </tr>
         </thead>
     </table>

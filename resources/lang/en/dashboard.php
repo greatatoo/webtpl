@@ -36,10 +36,12 @@ return [
     'role' => [
         'name' => 'Name',
         'slug' => 'Slug',
+        'desc' => 'Description',
     ],
     'permission' => [
         'name' => 'Name',
-        'slug' => 'Slug'
+        'slug' => 'Slug',
+        'desc' => 'Description'
     ],
     'tip' => [
         'enter_account' => 'Enter a new account.',

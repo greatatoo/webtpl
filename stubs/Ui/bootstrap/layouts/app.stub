@@ -11,7 +11,7 @@
 
     <!-- Scripts -->
     <script>
-        window.translations = {!! Cache::get('translations','""') !!};
+        window.translations = {!! Cache::get('translations','{}') !!};
     </script>
     <script src="{{ asset('js/app.js') }}" defer></script>   
     @yield('scripts')

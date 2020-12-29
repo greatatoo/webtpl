@@ -6,6 +6,7 @@ $('#role-detail')
         $('.role-name').html(data.name);
         $('input[name=name]').val(data.name);
         $('input[name=slug]').val(data.slug);
+        $('input[name=desc]').val(data.desc);
     });
 
 /**
@@ -15,10 +16,12 @@ $('.btn-role-info-update')
     .click(function () {
         var roleId = $(this).attr('data-role-id');
         var name = $.trim($('input[name=name]').val());
+        var desc = $.trim($('input[name=desc]').val());
 
         var payload = {};
         if (name)
             payload['name'] = name;
+        payload['desc'] = desc;
         payload['_token'] = $('meta[name="csrf-token"]').attr('content');
 
         //update role info
@@ -71,36 +74,6 @@ $('input[name=tf-new-role-user]')
             event.preventDefault();
             $('.btn-new-role-user').click();
         }
-    });
-
-/**
- * Button - Role Permissions Update
- */
-$('.btn-role-permissions-update')
-    .click(function () {
-        var roleId = $(this).attr('data-role-id');
-        // var checkedArr = [];
-        // //Collect checked roles
-        // $('#dashboard-user-permissions-table input[type=checkbox]')
-        //     .each(function (idx, el) {
-        //         if ($(el).prop('checked'))
-        //             checkedArr.push($(el).val());
-        //     });
-
-        // var payload = {};
-        // payload['permissions'] = checkedArr;
-        // payload['_token'] = $('meta[name="csrf-token"]').attr('content');
-
-        // //update user permissions
-        // $.ajax({
-        //     url: '/rest/user/' + userId + '/permission',
-        //     type: 'put',
-        //     data: payload,
-        //     success: function () {
-        //         console.log('user permissions updated');
-        //         window.util.notify('User permissions has been updated.');
-        //     }
-        // });
     });
 
 /**
@@ -353,9 +326,9 @@ $('#dashboard-role-permissions-table')
                             .change(function () {
                                 var permId = $(this).val();
                                 if ($(this).is(":checked")) {
-                                    $('#dashboard-role-permissions-table').trigger('addPermission',permId);
+                                    $('#dashboard-role-permissions-table').trigger('addPermission', permId);
                                 } else {
-                                    $('#dashboard-role-permissions-table').trigger('removePermission',permId);
+                                    $('#dashboard-role-permissions-table').trigger('removePermission', permId);
                                 }
                             });
                     },

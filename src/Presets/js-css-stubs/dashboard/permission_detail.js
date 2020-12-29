@@ -6,6 +6,7 @@ $('#permission-detail')
         $('.permission-name').html(data.name);
         $('input[name=name]').val(data.name);
         $('input[name=slug]').val(data.slug);
+        $('input[name=desc]').val(data.desc);
     });
 
 /**
@@ -15,10 +16,12 @@ $('.btn-permission-info-update')
     .click(function () {
         var permissionId = $(this).attr('data-permission-id');
         var name = $.trim($('input[name=name]').val());
+        var desc = $.trim($('input[name=desc]').val());
 
         var payload = {};
         if (name)
             payload['name'] = name;
+        payload['desc'] = desc;
         payload['_token'] = $('meta[name="csrf-token"]').attr('content');
 
         //update permission info
@@ -71,36 +74,6 @@ $('input[name=tf-new-permission-user]')
             event.preventDefault();
             $('.btn-new-permission-user').click();
         }
-    });
-
-/**
- * Button - Permission Roles Update
- */
-$('.btn-permission-roles-update')
-    .click(function () {
-        var permissionId = $(this).attr('data-permission-id');
-        // var checkedArr = [];
-        // //Collect checked permissions
-        // $('#dashboard-user-permissions-table input[type=checkbox]')
-        //     .each(function (idx, el) {
-        //         if ($(el).prop('checked'))
-        //             checkedArr.push($(el).val());
-        //     });
-
-        // var payload = {};
-        // payload['permissions'] = checkedArr;
-        // payload['_token'] = $('meta[name="csrf-token"]').attr('content');
-
-        // //update user permissions
-        // $.ajax({
-        //     url: '/rest/user/' + userId + '/permission',
-        //     type: 'put',
-        //     data: payload,
-        //     success: function () {
-        //         console.log('user permissions updated');
-        //         window.util.notify('User permissions has been updated.');
-        //     }
-        // });
     });
 
 /**

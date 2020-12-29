@@ -19,11 +19,13 @@ class InitWebtplSeeder extends Seeder
         $adminPermission = new Permission();
         $adminPermission->slug = 'admin-permission';
         $adminPermission->name = 'Admin Permission';
+        $adminPermission->desc = 'Admin Privilege';
         $adminPermission->save();
 
         $adminRole = new Role();
         $adminRole->slug = 'admin';
         $adminRole->name = 'Admin Role';
+        $adminRole->desc = 'Admin Group';
         $adminRole->save();
         $adminRole->permissions()->attach($adminPermission);
 

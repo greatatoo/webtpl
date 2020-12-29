@@ -14,6 +14,7 @@ var rolesDt = $('#dashboard-roles').DataTable({
                 { "db": "id", "dt": "id" },
                 { "db": "name", "dt": "name" },
                 { "db": "slug", "dt": "slug" },
+                { "db": "desc", "dt": "desc" },
             ]
         }
     },
@@ -25,8 +26,9 @@ var rolesDt = $('#dashboard-roles').DataTable({
                 return '<i class="icon-users"></i>';
             }
         },
+        { "data": "slug" },
         { "data": "name" },
-        { "data": "slug" }
+        { "data": "desc" },
     ],
     "paging": true,
     "ordering": true,

@@ -38,12 +38,14 @@ trait PermissionResourceTrait
         $request->validate([
             'name' => 'required|string',
             'slug' => 'required|string',
+            'desc' => 'nullable|string',
         ]);
 
         try {
             $permission = new Permission();
             $permission->name = $request->name;
             $permission->slug = $request->slug;
+            $permission->desc = $request->desc;
             $permission->save();
         } catch (QueryException $e) {
             return new JsonResponse(
@@ -157,6 +159,7 @@ trait PermissionResourceTrait
                 'roles.id as role_id',
                 'roles.name as role_name',
                 'roles.slug as role_slug',
+                'roles.desc as role_desc',
             ]);
     }
 
@@ -237,12 +240,15 @@ trait PermissionResourceTrait
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|string'
+            'name' => 'required|string',
+            'desc' => 'nullable|string',
         ]);
 
         try {
             $permission = Permission::find($id);
             $permission->name = $request->name;
+            if(!is_null($request->desc))
+                $permission->desc = $request->desc;
             $permission->save();
             return $permission;
         } catch (QueryException $e) {

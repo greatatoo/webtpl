@@ -30,6 +30,13 @@
                 <div class="tab-pane fade show active" id="permission-info" role="tabpanel" aria-labelledby="permission-info-tab">
                     <div class="container p-3">
                         <div class="row mt-1">
+                            <label for="slug" class="col-md-3 col-form-label text-md-right">{{ __("dashboard.permission.slug") }}</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" name="slug" value="" required readonly>
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
                             <label for="name" class="col-md-3 col-form-label text-md-right">{{ __("dashboard.permission.name") }}</label>
                             <div class="col-md-8">
                                 <input type="text" class="form-control" name="name" value="" required autofocus>
@@ -37,9 +44,9 @@
                         </div>
 
                         <div class="row mt-1">
-                            <label for="slug" class="col-md-3 col-form-label text-md-right">{{ __("dashboard.permission.slug") }}</label>
+                            <label for="desc" class="col-md-3 col-form-label text-md-right">{{ __("dashboard.permission.desc") }}</label>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="slug" value="" required readonly>
+                                <input type="text" class="form-control" name="desc" value="">
                             </div>
                         </div>
 
