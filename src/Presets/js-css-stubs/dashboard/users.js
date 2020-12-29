@@ -1,6 +1,31 @@
 //https://datatables.net/examples/server_side/row_details.html
 //Tips: In server mode data table, you should set the same number of columns in 'ajax.data', 'option.columns' and thead.th .
 var usersDt = $('#dashboard-users').DataTable({
+    "language": {
+        "processing": trans('datatable.processing'),
+        "loadingRecords": trans('datatable.loadingRecords'),
+        "lengthMenu": trans('datatable.lengthMenu'),
+        "zeroRecords": trans('datatable.zeroRecords'),
+        "info": trans('datatable.info'),
+        "infoEmpty": trans('datatable.infoEmpty'),
+        "infoFiltered": trans('datatable.infoFiltered'),
+        "search": trans('datatable.search'),
+        "paginate": {
+            "first": trans('datatable.paginate.first'),
+            "previous": trans('datatable.paginate.previous'),
+            "next": trans('datatable.paginate.next'),
+            "last": trans('datatable.paginate.last')
+        },
+        "aria": {
+            "sortAscending": trans('datatable.aria.sortAscending'),
+            "sortDescending": trans('datatable.aria.sortDescending')
+        },
+        "select": {
+            "1": trans('datatable.select.1'),
+            "2": trans('datatable.select.2'),
+            "_": trans('datatable.select._')
+        }
+    },
     "processing": true,
     "serverSide": true,
     "ajax": {
@@ -35,7 +60,7 @@ var usersDt = $('#dashboard-users').DataTable({
             "data": "active",
             "render": function (data, type) {
                 var isActive = parseInt(data, 10) ? true : false;
-                return '<i title="' + (isActive ? 'Enabled' : 'Disabled') + '" class="' + (isActive ? 'icon-checkmark-circle2 text-success' : 'icon-close2 text-danger') + '"></i>';
+                return '<i title="' + (isActive ? trans('dashboard.enabled') : trans('dashboard.disabled')) + '" class="' + (isActive ? 'icon-checkmark-circle2 text-success' : 'icon-close2 text-danger') + '"></i>';
             }
         },
         {

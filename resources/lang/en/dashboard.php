@@ -12,6 +12,8 @@ return [
     |
     */
     'dashboard' => 'Dashboard',
+    'enabled' => 'Enabled',
+    'disabled' => 'Disabled',
     'users' => 'Users',
     'new_user' => 'New User',
     'new_role' => 'New Role',

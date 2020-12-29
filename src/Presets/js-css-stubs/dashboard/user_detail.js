@@ -104,6 +104,31 @@ btnUserDelete
  * DataTable - User's Roles
  */
 var userRolesDt = $('#dashboard-user-roles-table').DataTable({
+    "language": {
+        "processing": trans('datatable.processing'),
+        "loadingRecords": trans('datatable.loadingRecords'),
+        "lengthMenu": trans('datatable.lengthMenu'),
+        "zeroRecords": trans('datatable.zeroRecords'),
+        "info": trans('datatable.info'),
+        "infoEmpty": trans('datatable.infoEmpty'),
+        "infoFiltered": trans('datatable.infoFiltered'),
+        "search": trans('datatable.search'),
+        "paginate": {
+            "first": trans('datatable.paginate.first'),
+            "previous": trans('datatable.paginate.previous'),
+            "next": trans('datatable.paginate.next'),
+            "last": trans('datatable.paginate.last')
+        },
+        "aria": {
+            "sortAscending": trans('datatable.aria.sortAscending'),
+            "sortDescending": trans('datatable.aria.sortDescending')
+        },
+        "select": {
+            "1": trans('datatable.select.1'),
+            "2": trans('datatable.select.2'),
+            "_": trans('datatable.select._')
+        }
+    },
     "columnDefs": [
         {
             "targets": 0,
@@ -246,6 +271,31 @@ $(function () {
 * DataTable - User's Permissions
 */
 var userPermissionsDt = $('#dashboard-user-permissions-table').DataTable({
+    "language": {
+        "processing": trans('datatable.processing'),
+        "loadingRecords": trans('datatable.loadingRecords'),
+        "lengthMenu": trans('datatable.lengthMenu'),
+        "zeroRecords": trans('datatable.zeroRecords'),
+        "info": trans('datatable.info'),
+        "infoEmpty": trans('datatable.infoEmpty'),
+        "infoFiltered": trans('datatable.infoFiltered'),
+        "search": trans('datatable.search'),
+        "paginate": {
+            "first": trans('datatable.paginate.first'),
+            "previous": trans('datatable.paginate.previous'),
+            "next": trans('datatable.paginate.next'),
+            "last": trans('datatable.paginate.last')
+        },
+        "aria": {
+            "sortAscending": trans('datatable.aria.sortAscending'),
+            "sortDescending": trans('datatable.aria.sortDescending')
+        },
+        "select": {
+            "1": trans('datatable.select.1'),
+            "2": trans('datatable.select.2'),
+            "_": trans('datatable.select._')
+        }
+    },
     "columnDefs": [
         {
             "targets": 0,
