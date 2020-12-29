@@ -32,7 +32,7 @@ $('.btn-role-info-update')
             success: function (data) {
                 console.log('role updated', data);
                 $('#role-detail').trigger('render', data);
-                window.util.notify('Role info has been updated.');
+                window.util.notify(trans('dashboard.popup.role_info_updated'));
             }
         });
     });
@@ -57,12 +57,12 @@ $('.btn-new-role-user')
             },
             success: function () {
                 $('#dashboard-role-users-table').trigger('reload');
-                window.util.notify('Role user has been added.');
+                window.util.notify(trans('dashboard.popup.role_user_added'));
                 $('input[name=tf-new-role-user]').val('').focus();
             },
             error: function (xhr) {
                 if (xhr.status == 404)
-                    window.util.notify(account + " doesn't exist.", 'error');
+                    window.util.notify(trans('dashboard.popup.doesnt_exist', { name: account }), 'error');
                 $('input[name=tf-new-role-user]').val('').focus();
             }
         });
@@ -157,7 +157,7 @@ $('#dashboard-role-users-table')
             },
             success: function () {
                 if (!(userId == 1 && roleId == 1))
-                    window.util.notify('Role user has been removed.');
+                    window.util.notify(trans('dashboard.popup.role_user_removed'));
                 $('#dashboard-role-users-table').trigger('reload');
             }
         });
@@ -177,7 +177,7 @@ $('#dashboard-role-users-table')
                 $('#role-detail').trigger('render', data);
             },
             error: function (xhr) {
-                window.util.notify('No such role.', 'error');
+                window.util.notify(trans('dashboard.popup.no_such_role'), 'error');
             }
         });
 
@@ -232,7 +232,13 @@ var rolePermissionsDt = $('#dashboard-role-permissions-table').DataTable({
             "render": function (data, type, row, meta) {
                 var permissionName = data[0];
                 var permissionSlug = data[1];
-                return '<span title="' + permissionSlug + '">' + permissionName + '</span';
+                return '<span title="' + permissionSlug + '">' + permissionName + '</span>';
+            }
+        },
+        {
+            "targets": 2,
+            "render": function (data, type, row, meta) {
+                return '<span>' + data + '</span>';
             }
         }
     ],
@@ -261,7 +267,7 @@ $('#dashboard-role-permissions-table')
             },
             success: function () {
                 if (!(permId == 1 && roleId == 1))
-                    window.util.notify('Role permission has been removed.');
+                    window.util.notify(trans('dashboard.popup.role_permission_added'));
                 $('#dashboard-role-permissions-table').trigger('reload');
             }
         });
@@ -277,7 +283,7 @@ $('#dashboard-role-permissions-table')
             },
             success: function () {
                 if (!(permId == 1 && roleId == 1))
-                    window.util.notify('Role permission has been removed.');
+                    window.util.notify(trans('dashboard.popup.role_permission_removed'));
                 $('#dashboard-role-permissions-table').trigger('reload');
             }
         });
@@ -316,7 +322,7 @@ $('#dashboard-role-permissions-table')
                         var rowArr = [];
                         allPermissions.forEach(function (el) {
                             var isChecked = $.inArray(el.id, checkedArr) >= 0;
-                            rowArr.push([[el.id, isChecked], [el.name, el.slug]]);
+                            rowArr.push([[el.id, isChecked], [el.name, el.slug], el.desc]);
                         });
                         //Render datatable
                         rolePermissionsDt.rows.add(rowArr).draw();

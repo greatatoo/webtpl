@@ -14,7 +14,7 @@ $('#user-info')
                 self.trigger('render', data);
             },
             error: function (xhr) {
-                window.util.notify('No such user.', 'error');
+                window.util.notify(trans('dashboard.popup.no_such_user'), 'error');
             }
         });
     })
@@ -58,7 +58,7 @@ $('.btn-user-info-update')
             success: function (data) {
                 console.log('user updated', data);
                 $('#user-info').trigger('render', data);
-                window.util.notify('User info has been updated.');
+                window.util.notify(trans('dashboard.popup.user_info_updated'));
             }
         });
     });
@@ -121,6 +121,12 @@ var userRolesDt = $('#dashboard-user-roles-table').DataTable({
                 var roleSlug = data[1];
                 return '<span title="' + roleSlug + '">' + roleName + '</span';
             }
+        },
+        {
+            "targets": 2,
+            "render": function (data, type, row, meta) {
+                return '<span>' + data + '</span';
+            }
         }
     ],
     "paging": false,
@@ -144,7 +150,7 @@ $('#dashboard-user-roles-table')
             },
             success: function () {
                 if (!(userId == 1 && roleId == 1))
-                    window.util.notify('User role has been added.');
+                    window.util.notify(trans('dashboard.popup.user_role_added'));
                 self.trigger('reload');
             }
         });
@@ -162,7 +168,7 @@ $('#dashboard-user-roles-table')
             },
             success: function () {
                 if (!(userId == 1 && roleId == 1))
-                    window.util.notify('User role has been removed.');
+                    window.util.notify(trans('dashboard.popup.user_role_removed'));
                 self.trigger('reload');
             }
         });
@@ -201,7 +207,7 @@ $('#dashboard-user-roles-table')
                         var rowArr = [];
                         allRoles.forEach(function (el) {
                             var isChecked = $.inArray(el.id, checkedArr) >= 0;
-                            rowArr.push([[el.id, isChecked], [el.name, el.slug]]);
+                            rowArr.push([[el.id, isChecked], [el.name, el.slug], el.desc]);
                         });
                         //Render datatable
                         userRolesDt.rows.add(rowArr).draw();
@@ -257,6 +263,12 @@ var userPermissionsDt = $('#dashboard-user-permissions-table').DataTable({
                 var permissionSlug = data[1];
                 return '<span title="' + permissionSlug + '">' + permissionName + '</span';
             }
+        },
+        {
+            "targets": 2,
+            "render": function (data, type, row, meta) {
+                return '<span>' + data + '</span';
+            }
         }
     ],
     "paging": false,
@@ -280,7 +292,7 @@ $('#dashboard-user-permissions-table')
             },
             success: function () {
                 if (!(userId == 1 && permissionId == 1))
-                    window.util.notify('User permission has been added.');
+                    window.util.notify(trans('dashboard.popup.user_permission_added'));
                 self.trigger('reload');
             }
         });
@@ -298,7 +310,7 @@ $('#dashboard-user-permissions-table')
             },
             success: function () {
                 if (!(userId == 1 && permissionId == 1))
-                    window.util.notify('User permission has been removed.');
+                    window.util.notify(trans('dashboard.popup.user_permission_removed'));
                 self.trigger('reload');
             }
         });
@@ -337,7 +349,7 @@ $('#dashboard-user-permissions-table')
                         var rowArr = [];
                         allPermissions.forEach(function (el) {
                             var isChecked = $.inArray(el.id, checkedArr) >= 0;
-                            rowArr.push([[el.id, isChecked], [el.name, el.slug]]);
+                            rowArr.push([[el.id, isChecked], [el.name, el.slug], el.desc]);
                         });
                         //Render datatable
                         userPermissionsDt.rows.add(rowArr).draw();

@@ -32,7 +32,7 @@ $('.btn-permission-info-update')
             success: function (data) {
                 console.log('permission updated', data);
                 $('#permission-detail').trigger('render', data);
-                window.util.notify('Permission info has been updated.');
+                window.util.notify(trans('dashboard.popup.permission_info_updated'));
             }
         });
     });
@@ -57,12 +57,12 @@ $('.btn-new-permission-user')
             },
             success: function () {
                 $('#dashboard-permission-users-table').trigger('reload');
-                window.util.notify('Permission user has been added.');
+                window.util.notify(trans('dashboard.popup.permission_user_added'));
                 $('input[name=tf-new-permission-user]').val('').focus();
             },
             error: function (xhr) {
                 if (xhr.status == 404)
-                    window.util.notify(account + " doesn't exist.", 'error');
+                    window.util.notify(trans('dashboard.popup.doesnt_exist', { name: account }), 'error');
                 $('input[name=tf-new-permission-user]').val('').focus();
             }
         });
@@ -157,7 +157,7 @@ $('#dashboard-permission-users-table')
             },
             success: function () {
                 if (!(userId == 1 && permissionId == 1))
-                    window.util.notify('Permission user has been removed.');
+                    window.util.notify(trans('dashboard.popup.permission_user_removed'));
                 $('#dashboard-permission-users-table').trigger('reload');
             }
         });
@@ -177,7 +177,7 @@ $('#dashboard-permission-users-table')
                 $('#permission-detail').trigger('render', data);
             },
             error: function (xhr) {
-                window.util.notify('No such permission.', 'error');
+                window.util.notify(trans('dashboard.popup.no_such_permission'), 'error');
             }
         });
 
@@ -232,7 +232,13 @@ var permissionRolesDt = $('#dashboard-permission-roles-table').DataTable({
             "render": function (data, type, row, meta) {
                 var permissionName = data[0];
                 var permissionSlug = data[1];
-                return '<span title="' + permissionSlug + '">' + permissionName + '</span';
+                return '<span title="' + permissionSlug + '">' + permissionName + '</span>';
+            }
+        },
+        {
+            "targets": 2,
+            "render": function (data, type, row, meta) {
+                return '<span>' + data + '</span>';
             }
         }
     ],
@@ -261,7 +267,7 @@ $('#dashboard-permission-roles-table')
             },
             success: function () {
                 if (!(roleId == 1 && permissionId == 1))
-                    window.util.notify('Permission role has been removed.');
+                    window.util.notify(trans('dashboard.popup.permission_role_added'));
                 $('#dashboard-permission-roles-table').trigger('reload');
             }
         });
@@ -277,7 +283,7 @@ $('#dashboard-permission-roles-table')
             },
             success: function () {
                 if (!(roleId == 1 && permissionId == 1))
-                    window.util.notify('Permission role has been removed.');
+                    window.util.notify(trans('dashboard.popup.permission_role_removed'));
                 $('#dashboard-permission-roles-table').trigger('reload');
             }
         });
@@ -316,7 +322,7 @@ $('#dashboard-permission-roles-table')
                         var rowArr = [];
                         allRoles.forEach(function (el) {
                             var isChecked = $.inArray(el.id, checkedArr) >= 0;
-                            rowArr.push([[el.id, isChecked], [el.name, el.slug]]);
+                            rowArr.push([[el.id, isChecked], [el.name, el.slug], el.desc]);
                         });
                         //Render datatable
                         permissionRolesDt.rows.add(rowArr).draw();
@@ -326,9 +332,9 @@ $('#dashboard-permission-roles-table')
                             .change(function () {
                                 var roleId = $(this).val();
                                 if ($(this).is(":checked")) {
-                                    $('#dashboard-permission-roles-table').trigger('addRole',roleId);
+                                    $('#dashboard-permission-roles-table').trigger('addRole', roleId);
                                 } else {
-                                    $('#dashboard-permission-roles-table').trigger('removeRole',roleId);
+                                    $('#dashboard-permission-roles-table').trigger('removeRole', roleId);
                                 }
                             });
                     },

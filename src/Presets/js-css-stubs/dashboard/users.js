@@ -106,7 +106,6 @@ $('#dashboard-user-add-modal .btn-ok')
             },
             success: function (data) {
                 window.location.href = "/dashboard/users/" + data.id;
-                //window.util.notify(data.account + ' has been created.');
                 // usersDt.ajax.reload();
             },
             error: function (xhr) {

@@ -30,6 +30,7 @@ trait UserRoleResourceTrait
                 'users_roles.role_id',
                 'roles.name as role_name',
                 'roles.slug as role_slug',
+                'roles.desc as role_desc',
             ]);
     }
 

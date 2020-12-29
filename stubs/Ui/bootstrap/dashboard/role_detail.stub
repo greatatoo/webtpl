@@ -80,6 +80,7 @@
                             <tr>
                                 <th></th>
                                 <th>{{ __("dashboard.permission.name") }}</th>
+                                <th>{{ __("dashboard.permission.desc") }}</th>
                             </tr>
                         </thead>
                     </table>

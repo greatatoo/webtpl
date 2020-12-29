@@ -76,6 +76,7 @@
                             <tr>
                                 <th></th>
                                 <th>{{ __("dashboard.role.name") }}</th>
+                                <th>{{ __("dashboard.role.desc") }}</th>
                             </tr>
                         </thead>
                     </table>
@@ -86,6 +87,7 @@
                             <tr>
                                 <th></th>
                                 <th>{{ __("dashboard.permission.name") }}</th>
+                                <th>{{ __("dashboard.permission.desc") }}</th>
                             </tr>
                         </thead>
                     </table>

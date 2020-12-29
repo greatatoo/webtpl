@@ -96,7 +96,7 @@ $('#dashboard-role-add-modal .btn-ok')
                 slug: slug
             },
             success: function (data) {
-                window.util.notify('Role ' + name + ' has been created.');
+                window.util.notify(trans('dashboard.popup.role_created', { name: name }));
                 rolesDt.ajax.reload();
             },
             error: function (xhr) {

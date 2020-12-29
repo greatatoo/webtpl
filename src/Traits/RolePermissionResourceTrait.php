@@ -30,6 +30,7 @@ trait RolePermissionResourceTrait
                 'roles_permissions.permission_id',
                 'permissions.name as permission_name',
                 'permissions.slug as permission_slug',
+                'permissions.desc as permission_desc',
             ]);
     }
 

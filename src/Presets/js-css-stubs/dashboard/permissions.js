@@ -96,7 +96,7 @@ $('#dashboard-permission-add-modal .btn-ok')
                 slug: slug
             },
             success: function (data) {
-                window.util.notify('Permission ' + name + ' has been created.');
+                window.util.notify(trans('dashboard.popup.permission_created', { name: name }));
                 permissionsDt.ajax.reload();
             },
             error: function (xhr) {
