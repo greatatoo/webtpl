@@ -19,6 +19,7 @@ $('#user-info')
     })
     .on('render', function (e, data) {
         $('.user-name').html(data.name);
+        $('input[name=account]').val(data.account);
         $('input[name=name]').val(data.name);
         $('input[name=email]').val(data.email);
         $('input[name=password]').val('');
@@ -141,14 +142,21 @@ var userRolesDt = $('#dashboard-user-roles-table').DataTable({
         },
         {
             "targets": 1,
+            "width": "24%",
             "render": function (data, type, row, meta) {
-                var roleName = data[0];
-                var roleSlug = data[1];
-                return '<span title="' + roleSlug + '">' + roleName + '</span';
+                var roleId = data[0];
+                var roleName = data[1];
+                var roleSlug = data[2];
+                //get uri which is stored by blade view in attribute 'data-role-uri' in html
+                var uri = $('#dashboard-user-roles-table').attr('data-role-uri');
+                //generate correct url
+                var url = '/' + util.strReplace(uri, { '{role}': roleId });
+                return '<span title="' + roleSlug + '"><a href="' + url + '">' + roleName + '</a></span';
             }
         },
         {
             "targets": 2,
+            "width": "75%",
             "render": function (data, type, row, meta) {
                 return '<span>' + $.trim(data) + '</span';
             }
@@ -232,7 +240,7 @@ $('#dashboard-user-roles-table')
                         var rowArr = [];
                         allRoles.forEach(function (el) {
                             var isChecked = $.inArray(el.id, checkedArr) >= 0;
-                            rowArr.push([[el.id, isChecked, userId], [el.name, el.slug], el.desc]);
+                            rowArr.push([[el.id, isChecked, userId], [el.id, el.name, el.slug], el.desc]);
                         });
                         //Render datatable
                         userRolesDt.rows.add(rowArr).draw();
@@ -310,14 +318,21 @@ var userPermissionsDt = $('#dashboard-user-permissions-table').DataTable({
         },
         {
             "targets": 1,
+            "width": "24%",
             "render": function (data, type, row, meta) {
-                var permissionName = data[0];
-                var permissionSlug = data[1];
-                return '<span title="' + permissionSlug + '">' + permissionName + '</span';
+                var permissionId = data[0];
+                var permissionName = data[1];
+                var permissionSlug = data[2];
+                //get uri which is stored by blade view in attribute 'data-permission-uri' in html
+                var uri = $('#dashboard-user-permissions-table').attr('data-permission-uri');
+                //generate correct url
+                var url = '/' + util.strReplace(uri, { '{permission}': permissionId });
+                return '<span title="' + permissionSlug + '"><a href="' + url + '">' + permissionName + '</a></span';
             }
         },
         {
             "targets": 2,
+            "width": "75%",
             "render": function (data, type, row, meta) {
                 return '<span>' + $.trim(data) + '</span';
             }
@@ -401,7 +416,7 @@ $('#dashboard-user-permissions-table')
                         var rowArr = [];
                         allPermissions.forEach(function (el) {
                             var isChecked = $.inArray(el.id, checkedArr) >= 0;
-                            rowArr.push([[el.id, isChecked, userId], [el.name, el.slug], el.desc]);
+                            rowArr.push([[el.id, isChecked, userId], [el.id, el.name, el.slug], el.desc]);
                         });
                         //Render datatable
                         userPermissionsDt.rows.add(rowArr).draw();

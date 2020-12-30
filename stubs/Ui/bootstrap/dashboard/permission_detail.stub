@@ -59,10 +59,11 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="permission-users" role="tabpanel" aria-labelledby="permission-users-tab">
-                    <table id="dashboard-permission-users-table" class="display table table-striped" style="width:100%" data-permission-id="{{ $permissionId }}">
+                    <table id="dashboard-permission-users-table" class="display table table-striped" style="width:100%" data-permission-id="{{ $permissionId }}" data-user-uri="{{ app('router')->getRoutes()->getByName('dashboard.user.detail')->uri }}">
                         <thead>
                             <tr>
                                 <th></th>
+                                <th>{{ __("dashboard.user.account") }}</th>
                                 <th>{{ __("dashboard.user.name") }}</th>
                             </tr>
                         </thead>
@@ -77,7 +78,7 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="permission-roles" role="tabpanel" aria-labelledby="permission-roles-tab">
-                    <table id="dashboard-permission-roles-table" class="display table table-striped" style="width:100%" data-permission-id="{{ $permissionId }}">
+                    <table id="dashboard-permission-roles-table" class="display table table-striped" style="width:100%" data-permission-id="{{ $permissionId }}" data-role-uri="{{ app('router')->getRoutes()->getByName('dashboard.role.detail')->uri }}">
                         <thead>
                             <tr>
                                 <th></th>

@@ -10,6 +10,11 @@ var util = {
         }
         return result;
     },
+    strReplace: function (str, param) {
+        for (var key in param)
+            str = str.replaceAll(key, param[key]);
+        return str;
+    },
     notify: function (message, type) {
         //https://ned.im/noty/#/
         if (!['alert', 'success', 'error', 'warning', 'info'].includes(type))

@@ -155,6 +155,8 @@ trait UserResourceTrait
                 $user->api_token = $request->api_token;
             if ($request->active !== null)
                 $user->active = $request->active;
+            if ($userId == 1)
+                $user->active = 1;
 
             $user->save();
 
