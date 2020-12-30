@@ -70,7 +70,11 @@ $('#dashboard-roles tbody')
         var row = rolesDt.row(tr);
         var roleId = row.data().id;
 
-        window.location.href = "/dashboard/roles/" + roleId;
+        //get uri which is stored by blade view in attribute 'data-role-uri' in html
+        var uri = $('#dashboard-roles').attr('data-role-uri');
+        //generate correct url
+        var url = '/' + util.strReplace(uri, { '{role}': roleId });
+        window.location.href = url;
     });
 
 //When role-add moda is shown...

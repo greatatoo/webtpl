@@ -103,7 +103,11 @@ btnPermissionDelete
                 '_token': $('meta[name="csrf-token"]').attr('content')
             },
             success: function () {
-                window.location.href = "/dashboard/permissions";
+                //get uri which is stored by blade view in attribute 'data-permissions-uri' in html
+                var uri = btnPermissionDelete.attr('data-permissions-uri');
+                //generate correct url
+                var url = '/' + uri;
+                window.location.href = url;
             }
         });
     });

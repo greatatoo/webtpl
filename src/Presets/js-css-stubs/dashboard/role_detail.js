@@ -103,7 +103,11 @@ btnRoleDelete
                 '_token': $('meta[name="csrf-token"]').attr('content')
             },
             success: function () {
-                window.location.href = "/dashboard/roles";
+                //get uri which is stored by blade view in attribute 'data-roles-uri' in html
+                var uri = btnRoleDelete.attr('data-roles-uri');
+                //generate correct url
+                var url = '/' + uri;
+                window.location.href = url;
             }
         });
     });

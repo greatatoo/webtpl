@@ -69,8 +69,11 @@ $('#dashboard-permissions tbody')
         var tr = $(this);
         var row = permissionsDt.row(tr);
         var permissionId = row.data().id;
-
-        window.location.href = "/dashboard/permissions/" + permissionId;
+        //get uri which is stored by blade view in attribute 'data-permission-uri' in html
+        var uri = $('#dashboard-permissions').attr('data-permission-uri');
+        //generate correct url
+        var url = '/' + util.strReplace(uri, { '{permission}': permissionId });
+        window.location.href = url;
     });
 
 //When permission-add moda is shown...

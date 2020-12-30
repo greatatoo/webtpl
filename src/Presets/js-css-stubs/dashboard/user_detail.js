@@ -94,7 +94,11 @@ btnUserDelete
                 '_token': $('meta[name="csrf-token"]').attr('content')
             },
             success: function () {
-                window.location.href = "/dashboard/users";
+                //get uri which is stored by blade view in attribute 'data-users-uri' in html
+                var uri = btnUserDelete.attr('data-users-uri');
+                //generate correct url
+                var url = '/' + uri;
+                window.location.href = url;
             }
         });
     });

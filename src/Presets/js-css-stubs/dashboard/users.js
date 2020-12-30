@@ -90,8 +90,11 @@ $('#dashboard-users tbody')
         var tr = $(this);
         var row = usersDt.row(tr);
         var userId = row.data().id;
-
-        window.location.href = "/dashboard/users/" + userId;
+        //get uri which is stored by blade view in attribute 'data-user-uri' in html
+        var uri = $('#dashboard-users').attr('data-user-uri');
+        //generate correct url
+        var url = '/' + util.strReplace(uri, { '{user}': userId });
+        window.location.href = url;
     });
 
 //When user-add moda is shown...
@@ -130,7 +133,11 @@ $('#dashboard-user-add-modal .btn-ok')
                 password: window.util.randStr(6)
             },
             success: function (data) {
-                window.location.href = "/dashboard/users/" + data.id;
+                //get uri which is stored by blade view in attribute 'data-user-uri' in html
+                var uri = $('#dashboard-user-add-modal').attr('data-user-uri');
+                //generate correct url
+                var url = '/' + util.strReplace(uri, { '{user}': data.id });
+                window.location.href = url;
                 // usersDt.ajax.reload();
             },
             error: function (xhr) {
