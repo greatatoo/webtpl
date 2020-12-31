@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,9 +12,9 @@
 
     <!-- Scripts -->
     <script>
-        window.translations = {!! Cache::get('translations','{}') !!};
+        window.translations = {!!Cache::get('translations', '{}') !!};
     </script>
-    <script src="{{ asset('js/app.js') }}" defer></script>   
+    <script src="{{ asset('js/app.js') }}" defer></script>
     @yield('scripts')
 
     <!-- Fonts -->
@@ -24,6 +25,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/icons/icomoon/styles.min.css') }}" rel="stylesheet">
 </head>
+
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
@@ -43,58 +45,70 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ __('Locale') }}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('get.locale',['locale'=>'en']) }}">
+                                    {{ __('USA') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('get.locale',['locale'=>'zh_TW']) }}">
+                                    {{ __('Taiwan') }}
+                                </a>
+                            </div>
+                        </li>
                         <!-- Authentication Links -->
                         @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login.form') }}">{{ __('Login') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login.form') }}">{{ __('Login') }}</a>
+                        </li>
+                        @if (Route::has('register'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                        </li>
+                        @endif
                         @else
-                            <!-- Admin Features -->
-                            @role('admin')
-                                <li class="nav-item dropdown">
-                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                        {{ __('Dashboard') }}
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        @permission('admin-permission')
-                                            <a class="dropdown-item" href="{{ route('dashboard.users') }}">
-                                                {{ __('Users') }}
-                                            </a>
-                                            <a class="dropdown-item" href="{{ route('dashboard.roles') }}">
-                                                {{ __('Roles') }}
-                                            </a>
-                                            <a class="dropdown-item" href="{{ route('dashboard.permissions') }}">
-                                                {{ __('Permissions') }}
-                                            </a>
-                                        @endpermission
-                                    </div>
-                                </li>
-                            @endrole
-
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                        <!-- Admin Features -->
+                        @role('admin')
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ __('Dashboard') }}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                @permission('admin-permission')
+                                <a class="dropdown-item" href="{{ route('dashboard.users') }}">
+                                    {{ __('Users') }}
                                 </a>
+                                <a class="dropdown-item" href="{{ route('dashboard.roles') }}">
+                                    {{ __('Roles') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('dashboard.permissions') }}">
+                                    {{ __('Permissions') }}
+                                </a>
+                                @endpermission
+                            </div>
+                        </li>
+                        @endrole
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('home') }}">
-                                        {{ __('Home') }}
-                                    </a>                                    
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ Auth::user()->name }}
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('home') }}">
+                                    {{ __('Home') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
+                                    {{ __('Logout') }}
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
                         @endguest
                     </ul>
                 </div>
@@ -106,4 +120,5 @@
         </main>
     </div>
 </body>
+
 </html>

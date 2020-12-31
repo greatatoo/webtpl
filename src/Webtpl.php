@@ -17,6 +17,8 @@ class Webtpl
                 Route::post('/session', [\App\Http\Controllers\Essential\SessionController::class, 'create']);
                 Route::post('/session/{column}', [\App\Http\Controllers\Essential\SessionController::class, 'create']);
                 Route::delete('/session', [\App\Http\Controllers\Essential\SessionController::class, 'destroy']);
+                Route::put('/locale/{locale}', [\App\Http\Controllers\Essential\LocaleController::class, 'update'])->name('set.locale');
+                Route::get('/locale/{locale}', [\App\Http\Controllers\Essential\LocaleController::class, 'show'])->name('get.locale');
             });
 
             Route::middleware(['role:admin'])->group(function () {
@@ -78,16 +80,19 @@ class Webtpl
     {        
             //Guest
             Route::post('login', [\App\Http\Controllers\Auth\LoginController::class, 'doAuth'])->name('login');
-            Route::get('login', [\App\Http\Controllers\Auth\LoginController::class, 'show'])->name('login.form');
             Route::post('logout', [\App\Http\Controllers\Essential\SessionController::class, 'destroy'])->name('logout');
 
+            Route::middleware(['locale'])->group(function () {
+                Route::get('login', [\App\Http\Controllers\Auth\LoginController::class, 'show'])->name('login.form');
+            });          
+
             //Personal
-            Route::middleware(['auth'])->group(function () {
+            Route::middleware(['auth','locale'])->group(function () {
                 Route::get('home', [\App\Http\Controllers\HomeController::class, 'show'])->name('home');
             });
 
             //Dashboard
-            Route::middleware(['auth', 'role:admin'])->group(function () {
+            Route::middleware(['auth', 'locale', 'role:admin'])->group(function () {
                 Route::get('dashboard/users', [\App\Http\Controllers\Dashboard\UsersController::class, 'show'])->name('dashboard.users');
                 Route::get('dashboard/users/{user}', [\App\Http\Controllers\Dashboard\UserDetailController::class, 'show'])->name('dashboard.user.detail');
                 Route::get('dashboard/roles', [\App\Http\Controllers\Dashboard\RolesController::class, 'show'])->name('dashboard.roles');

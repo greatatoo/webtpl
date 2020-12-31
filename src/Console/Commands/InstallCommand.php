@@ -57,7 +57,7 @@ class InstallCommand extends Command
         // $this->installWebtplServiceProvider(); // already registered in composer.json
         $this->modifyUserModel();
         $this->addAuthVerifiedBy();
-        $this->addRoleMiddleware();
+        $this->addMiddlewares();
         $this->copyControllerStubs();
         $this->copySeeders();
         $this->addRoutes();
@@ -217,14 +217,14 @@ class InstallCommand extends Command
     }
 
     /**
-     * Add RoleMiddleware
+     * Add Webtpl Middlewares
      */
-    protected function addRoleMiddleware()
+    protected function addMiddlewares()
     {
         $lines = $this->fileToLines(app_path('Http/Kernel.php'));
 
-        //check if RoleMiddleware exists
-        if ($this->linesContain($lines, 'RoleMiddleware'))
+        //check if Webtpl exists
+        if ($this->linesContain($lines, 'Webtpl'))
             return;
 
         $newLines = [];
@@ -234,11 +234,12 @@ class InstallCommand extends Command
                 $newLines[] = "        'role' => \Greatatoo\Webtpl\Http\Middleware\RoleMiddleware::class,";
                 $newLines[] = "        'oneOfRoles' => \Greatatoo\Webtpl\Http\Middleware\OneOfRolesMiddleware::class,";
                 $newLines[] = "        'oneOfPermissions' => \Greatatoo\Webtpl\Http\Middleware\OneOfPermissionsMiddleware::class,";
+                $newLines[] = "        'locale' => \Greatatoo\Webtpl\Http\Middleware\LocaleMiddleware::class,";
             }
         }
 
         $this->linesToFile($newLines, app_path("Http/Kernel.php"));
-        $this->info("Add RoleMiddleware to Http/Kernel.php");
+        $this->info("Add more middlewares to Http/Kernel.php");
     }
 
     /**

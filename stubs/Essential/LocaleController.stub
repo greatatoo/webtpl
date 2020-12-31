@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Http\Controllers\Essential;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Cache;
+
+class LocaleController extends Controller
+{
+    public function show($locale){
+        Cache::forget('translations');
+        Cookie::queue( Cookie::forever('lang', $locale) );
+        return back();
+    }
+    
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $locale
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $locale)
+    {
+        Cookie::queue( Cookie::forever('lang', $locale) );
+    }
+}
