@@ -32,7 +32,7 @@
         "laravel": {
             "providers": [
 				"Greatatoo\\Webtpl\\WebtplServiceProvider",
-                "Greatatoo\\Webtpl\\Providers\\PermissionsServiceProvider",
+                "Greatatoo\\Webtpl\\Providers\\PermissionsServiceProvider"
             ],
             "aliases": {
                 "Webtpl": "Greatatoo\\Webtpl\\Facades\\Webtpl"
