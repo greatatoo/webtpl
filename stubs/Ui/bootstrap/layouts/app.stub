@@ -45,7 +45,7 @@
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ __('Locale') }}
+                                {{ __('app.locale') }}
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('get.locale',['locale'=>'en']) }}">
@@ -59,11 +59,11 @@
                         <!-- Authentication Links -->
                         @guest
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login.form') }}">{{ __('Login') }}</a>
+                            <a class="nav-link" href="{{ route('login.form') }}">{{ __('app.login') }}</a>
                         </li>
                         @if (Route::has('register'))
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            <a class="nav-link" href="{{ route('register') }}">{{ __('app.register') }}</a>
                         </li>
                         @endif
                         @else
@@ -71,18 +71,18 @@
                         @role('admin')
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ __('Dashboard') }}
+                                {{ __('app.dashboard') }}
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 @permission('admin-permission')
                                 <a class="dropdown-item" href="{{ route('dashboard.users') }}">
-                                    {{ __('Users') }}
+                                    {{ __('app.users') }}
                                 </a>
                                 <a class="dropdown-item" href="{{ route('dashboard.roles') }}">
-                                    {{ __('Roles') }}
+                                    {{ __('app.roles') }}
                                 </a>
                                 <a class="dropdown-item" href="{{ route('dashboard.permissions') }}">
-                                    {{ __('Permissions') }}
+                                    {{ __('app.permissions') }}
                                 </a>
                                 @endpermission
                             </div>
@@ -96,11 +96,11 @@
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('home') }}">
-                                    {{ __('Home') }}
+                                    {{ __('app.home') }}
                                 </a>
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
+                                    {{ __('app.logout') }}
                                 </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
