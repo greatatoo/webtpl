@@ -2,19 +2,28 @@
 
 namespace App\Http\Controllers\Essential;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
 
 class LocaleController extends Controller
 {
-    public function show($locale){
-        Cache::forget('translations');
-        Cookie::queue( Cookie::forever('lang', $locale) );
+    public function __construct()
+    {
+        //Remember to put 'lang' in except array in Middleware EncryptCookies.php
+        $this->lang = Cookie::get('lang');
+        $this->langPath = resource_path('lang/' . $this->lang);
+    }
+
+    public function show($locale)
+    {
+        Cookie::queue(Cookie::forever('lang', $locale));
         return back();
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
@@ -24,6 +33,34 @@ class LocaleController extends Controller
      */
     public function update(Request $request, $locale)
     {
-        Cookie::queue( Cookie::forever('lang', $locale) );
+        Cookie::queue(Cookie::forever('lang', $locale));
+    }
+
+    /**
+     * Generate a javascript for translations.
+     */
+    public function getJs(Request $request)
+    {
+        $lang = $request->input('lang');
+        if ($lang)
+            $this->lang = $lang;
+
+        $this->langPath = resource_path("lang/" . $this->lang);
+
+        if (!file_exists($this->langPath)) {
+            $this->lang = App::getLocale();
+            $this->langPath = resource_path('lang/' . $this->lang);
+        }
+
+        $json = Cache::rememberForever('translations_' . $this->lang, function () {
+            return collect(File::allFiles($this->langPath))->flatMap(function ($file) {
+                return [
+                    ($translation = $file->getBasename('.php')) => trans($translation, [], $this->lang),
+                ];
+            })->toJson();
+        });
+
+        return response("window.translations = $json", 200)
+            ->header('Content-Type', 'text/javascript');
     }
 }

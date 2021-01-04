@@ -11,6 +11,8 @@ class Webtpl
      */
     public static function routes()
     {
+        Route::get('/locale/locale.js', [\App\Http\Controllers\Essential\LocaleController::class, 'getJs'])->name('locale.js');
+
         Route::prefix('rest')->group(function () {
             Route::middleware(['web'])->group(function () {
                 Route::get('/session', [\App\Http\Controllers\Essential\SessionController::class, 'query']);

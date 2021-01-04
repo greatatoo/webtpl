@@ -56,6 +56,7 @@ class InstallCommand extends Command
         // $this->replaceHomeWithDashboard(); //
         // $this->installWebtplServiceProvider(); // already registered in composer.json
         $this->modifyUserModel();
+        $this->updateEncryptCookies();
         $this->addAuthVerifiedBy();
         $this->addMiddlewares();
         $this->copyControllerStubs();
@@ -181,6 +182,26 @@ class InstallCommand extends Command
 
         $this->linesToFile($newLines, base_path('routes/web.php'));
         $this->info("Modify routes/web.php");
+    }
+
+    protected function updateEncryptCookies()
+    {
+        $filePath = app_path('Http/Middleware/EncryptCookies.php');
+        $lines = $this->fileToLines($filePath);
+
+        //check if 'lang' exists
+        if ($this->linesContain($lines, 'lang'))
+            return;
+
+        $newLines = [];
+        foreach ($lines as $line) {
+            $newLines[] = $line;
+            if (preg_match('/protected \$except/', $line))
+                $newLines[] = "        'lang',";
+        }
+
+        $this->linesToFile($newLines, $filePath);
+        $this->info("Modify Http/Middleware/EncryptCookies.php");
     }
 
     /**

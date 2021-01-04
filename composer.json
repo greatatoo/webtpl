@@ -33,7 +33,6 @@
             "providers": [
 				"Greatatoo\\Webtpl\\WebtplServiceProvider",
                 "Greatatoo\\Webtpl\\Providers\\PermissionsServiceProvider",
-                "Greatatoo\\Webtpl\\Providers\\TranslationServiceProvider"
             ],
             "aliases": {
                 "Webtpl": "Greatatoo\\Webtpl\\Facades\\Webtpl"
