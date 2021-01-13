@@ -50,7 +50,8 @@ class Bootstrap extends Preset
     {
         return [
             'datatables.net-bs4' => '^1.10.22',
-            'noty' => 'latest'
+            'noty' => 'latest',
+            'stomp-websocket' => 'latest',
         ];
     }
 

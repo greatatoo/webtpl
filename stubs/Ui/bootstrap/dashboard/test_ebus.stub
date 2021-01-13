@@ -1,0 +1,87 @@
+@extends('layouts.app')
+
+@section('scripts')
+<script src="{{ asset('js/dashboard/test_ebus.js') }}" defer></script>
+@endsection
+
+@section('content')
+<style>
+    /* #page_test_ebus {
+        max-width: 800px;
+        margin: 50px auto 0 auto;
+    }
+
+    #page_test_ebus .card-body {
+        padding: 10px;
+    }
+
+    #page_test_ebus .card {
+        margin-bottom: 1rem;
+    }
+
+    #page_test_ebus .card-body input {
+        width: 63%;
+        float: left;
+        margin: 0 10px 5px 0;
+    }
+
+    #page_test_ebus .btn {
+        width: 16%;
+        float: right;
+        margin-left: 5px;
+    }
+
+    #page_test_ebus .btn-send {
+        width: 33%;
+    }*/
+
+    #page_test_ebus .log-container {
+        width: 100%;
+        height: 300px;
+        overflow: auto;
+        border: solid 1px #d4d1d1;
+        padding: 5px;
+    }
+
+    #page_test_ebus .log-row {
+        background-color: #75ca75;
+        transition: background-color 0.8s linear;
+    }
+
+    #page_test_ebus .log-row.fade-color {
+        background-color: white;
+    }
+
+    #page_test_ebus .log-time {
+        margin-right: 10px;
+    }
+</style>
+
+<div id="page_test_ebus">
+    <div class="card">
+        <div class="card-header">
+            EBus
+        </div>
+        <div class="card-body container">
+            <div class="row">
+                <input type="text" class="form-control form-control-sm col-7 tf-ip" placeholder="MQ IP">
+                <button class="btn btn-primary btn-sm ml-1 text-nowrap btn-clear">Clear</button>
+                <button class="btn btn-primary btn-sm ml-1 text-nowrap btn-connect">Connect</button>
+                <button class="btn btn-primary btn-sm ml-1 text-nowrap btn-disconnect" style="display:none">Disconnect</button>
+            </div>
+            <div class="row mt-1">
+                <input type="text" class="form-control form-control-sm col-7 tf-subscribe" value="/topic/test" placeholder="Channel">
+                <button class="btn btn-primary btn-sm ml-1 text-nowrap btn-unsubscribe">Unsubscribe</button>
+                <button class="btn btn-primary btn-sm ml-1 text-nowrap btn-subscribe">Subscribe</button>
+            </div>
+            <div class="row mt-1">
+                <input type="text" class="form-control form-control-sm col-7 tf-send" placeholder="Message">
+                <button class="btn btn-primary btn-sm ml-1 text-nowrap btn-send">Send to channel</button>
+            </div>
+
+            <div class="log-container row mt-1">
+            </div>
+        </div>
+    </div>
+</div>
+@endsection

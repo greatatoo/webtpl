@@ -101,6 +101,7 @@ class Webtpl
                 Route::get('dashboard/roles/{role}', [\App\Http\Controllers\Dashboard\RoleDetailController::class, 'show'])->name('dashboard.role.detail');
                 Route::get('dashboard/permissions', [\App\Http\Controllers\Dashboard\PermissionsController::class, 'show'])->name('dashboard.permissions');
                 Route::get('dashboard/permissions/{permission}', [\App\Http\Controllers\Dashboard\PermissionDetailController::class, 'show'])->name('dashboard.permission.detail');
+                Route::get('dashboard/test/ebus', [\App\Http\Controllers\Dashboard\TestEbusController::class, 'show'])->name('dashboard.test.ebus');
             });
     }
 

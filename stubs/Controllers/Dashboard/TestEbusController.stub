@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Http\Controllers\Dashboard;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\View;
+
+class TestEbusController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware('auth'); 
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @return \Illuminate\Http\Response
+    */
+	public function show()
+    {
+        return View::make('dashboard.test_ebus', []);
+    }
+}

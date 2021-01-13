@@ -7,6 +7,8 @@ require('./bootstrap');
  */
 require('datatables.net-bs4');
 window.Noty = require('noty');
+window.Stomp = require('../../node_modules/stomp-websocket/lib/stomp.min');
 window.jqe = require('./modules/jqe');
+window.Ebus = require('./modules/ebus');
 window.trans = require('./modules/trans');
 window.util = require('./modules/util');
