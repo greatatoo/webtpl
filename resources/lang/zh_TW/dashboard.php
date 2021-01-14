@@ -70,5 +70,22 @@ return [
         'permission_user_added' => '帳號已加入列表',
         'permission_user_removed' => '帳號已從列表移除',
         'no_such_permission' => '無此權限',
+    ],
+    'ebus' => [
+        'text' => 'EBus',
+        'test' => 'EBus 檢測',
+        'server_ip' => '伺服器 IP',
+        'clear' => '清除',
+        'connect' => '連線',
+        'disconnect' => '斷線',
+        'channel' => '頻道',
+        'subscribe' => '訂閱',
+        'unsubscribe' => '取消訂閱',
+        'enter_message' => '輸入訊息',
+        'send_to_channel' => '發送到頻道',
+        'no_server_ip' => '尚未指定伺服器 IP',
+        'not_connected_yet' => '尚未連線',
+        'no_channel_specified' => '尚未指定頻道',
+        'channel_start_with' => '頻道必須以 /topic/ 或 /queue/ 為開頭',
     ]
 ];

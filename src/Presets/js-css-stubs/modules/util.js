@@ -29,7 +29,81 @@ var util = {
             timeout: 3000,
         })
             .show();
-    }
+    },
+    /**
+     * yyyy/mm/dd -> timestamp
+     * @param {Object} dateStr
+     */
+    dateToTimestamp: function (dateStr) {
+        if (!dateStr)
+            return undefined;
+        var d = dateStr.match(/\d+/g);
+        var date = new Date(d[0], d[1] - 1, d[2], 0, 0, 0);
+        return date.getTime() / 1000;
+    },
+    timestampToClock: function (ts) {
+        if (!ts)
+            return undefined;
+        var date = new Date(ts * 1000);
+        var h = date.getHours();
+        var m = date.getMinutes();
+        var t = h >= 12 ? 'pm' : 'am';
+        if (h > 12)
+            h -= 12;
+        if (m < 10)
+            m = '0' + m;
+        return h + ':' + m + ' ' + t;
+    },
+    /**
+     * timestamp -> yyyy/mm/dd
+     * @param {Object} ts second
+     * @return yyyy/mm/dd
+     */
+    timestampToDate: function (ts) {
+        if (!ts)
+            return '';
+        var date = new Date(ts * 1000);
+        var y = date.getFullYear();
+        var M = date.getMonth() + 1;
+        var d = date.getDate();
+        var h = date.getHours();
+        var m = date.getMinutes();
+        var s = date.getSeconds();
+        if (M < 10)
+            M = '0' + M;
+        if (d < 10)
+            d = '0' + d;
+        return y + '/' + M + '/' + d;
+    },
+    /**
+     * timestamp -> yyyy/mm/dd hh:mm:ss
+     * @param {Object} ts second
+     * @return yyyy/mm/dd hh:mm:ss
+     */
+    timestampToDateTime: function (ts) {
+        if (!ts)
+            return '';
+        var date = new Date(ts * 1000);
+        var y = date.getFullYear();
+        var M = date.getMonth() + 1;
+        var d = date.getDate();
+        var h = date.getHours();
+        var m = date.getMinutes();
+        var s = date.getSeconds();
+
+        if (M < 10)
+            M = '0' + M;
+        if (d < 10)
+            d = '0' + d;
+        if (h < 10)
+            h = '0' + h;
+        if (m < 10)
+            m = '0' + m;
+        if (s < 10)
+            s = '0' + s;
+
+        return y + '/' + M + '/' + d + ' ' + h + ':' + m + ':' + s;
+    },
 };
 
 module.exports = util;

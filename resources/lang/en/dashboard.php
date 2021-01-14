@@ -70,5 +70,22 @@ return [
         'permission_user_added' => 'User has been added to list.',
         'permission_user_removed' => 'User has been removed from list.',
         'no_such_permission' => 'No such permission.',
+    ],
+    'ebus' => [
+        'text' => 'EBus',
+        'test' => 'EBus Test',
+        'server_ip' => 'Server IP',
+        'clear' => 'Clear',
+        'connect' => 'Connect',
+        'disconnect' => 'Disconnect',
+        'channel' => 'Channel',
+        'subscribe' => 'Subscribe',
+        'unsubscribe' => 'Unsubscribe',
+        'enter_message' => 'Enter your message.',
+        'send_to_channel' => 'Send to channel',
+        'no_server_ip' => 'No server ip specified.',
+        'not_connected_yet' => 'Not connected yet.',
+        'no_channel_specified' => 'No channel specified.',
+        'channel_start_with' => 'Channel must start with /topic/ or /queue/.',
     ]
 ];
