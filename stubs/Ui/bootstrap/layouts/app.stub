@@ -85,7 +85,7 @@
                                     {{ __('app.permissions') }}
                                 </a>
                                 <a class="dropdown-item" href="{{ route('dashboard.test.ebus') }}">
-                                    {{ __('app.ebus.text') }}
+                                    {{ __('dashboard.ebus.test') }}
                                 </a>
                                 @endpermission
                             </div>
