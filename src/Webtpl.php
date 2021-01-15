@@ -86,6 +86,9 @@ class Webtpl
 
             Route::middleware(['locale'])->group(function () {
                 Route::get('login', [\App\Http\Controllers\Auth\LoginController::class, 'show'])->name('login.form');
+                Route::get('/', function () {
+                    return view('homepage');
+                });
             });          
 
             //Personal

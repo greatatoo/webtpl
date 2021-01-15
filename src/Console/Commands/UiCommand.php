@@ -380,16 +380,25 @@ class UiCommand extends Command
     {
         $lines = $this->fileToLines(base_path('routes/web.php'));
 
+        //Remove welcome route
         if (!$this->linesContain($lines, 'welcome'))
             return;
 
         $newLines = [];
+        $lineCountToRemove = 0;
         foreach ($lines as $line) {
-            $line = preg_replace("/'welcome'/", "'homepage'", $line);
+            if (preg_match("/Route::get\('\/'/", $line))
+                $lineCountToRemove = 3;
+
+            if ($lineCountToRemove) {
+                $lineCountToRemove--;
+                continue;
+            }
+
             $newLines[] = $line;
         }
         $this->linesToFile($newLines, base_path('routes/web.php'));
-        $this->info("Modify welcome → homepage in routes/web.php");
+        $this->info("Remove welcome route in routes/web.php");
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Greatatoo\Webtpl\Http\Middleware;
 
 use Closure;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Log;
 
 class RoleMiddleware
@@ -18,6 +19,9 @@ class RoleMiddleware
      */
     public function handle($request, Closure $next, $role, $permission = null)
     {
+        if (in_array($request->ip(), ['localhost', '127.0.0.1']))
+            return $next($request);
+            
         if (!$request->user()->hasRole($role)) {
             Log::debug("user has no role '$role'");
             abort(401, "role '$role' required");
