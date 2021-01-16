@@ -21,6 +21,9 @@ class OneOfPermissionsMiddleware
         if (in_array($request->ip(), ['localhost', '127.0.0.1']))
             return $next($request);
 
+        if(!$request->user())
+            abort(403, "forbidden");
+
         foreach ($permissions as $permission) {
             if ($request->user()->can($permission)) {
                 return $next($request);

@@ -21,6 +21,9 @@ class OneOfRolesMiddleware
         if (in_array($request->ip(), ['localhost', '127.0.0.1']))
             return $next($request);
 
+        if(!$request->user())
+            abort(403, "forbidden");
+
         foreach ($roles as $role) {
             if ($request->user()->hasRole($role)) {
                 return $next($request);

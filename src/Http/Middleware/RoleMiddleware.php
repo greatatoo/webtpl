@@ -22,6 +22,9 @@ class RoleMiddleware
         if (in_array($request->ip(), ['localhost', '127.0.0.1']))
             return $next($request);
             
+        if(!$request->user())
+            abort(403, "forbidden");
+            
         if (!$request->user()->hasRole($role)) {
             Log::debug("user has no role '$role'");
             abort(401, "role '$role' required");
