@@ -31,7 +31,7 @@ class AlterUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('account');
             $table->dropColumn('api_token');
-            $table->string('email')->nullable(false)->change();
+            $table->string('email')->nullable()->change();
         });
     }
 }
