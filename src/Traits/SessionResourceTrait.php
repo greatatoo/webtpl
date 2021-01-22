@@ -68,7 +68,10 @@ trait SessionResourceTrait
         ]);
 
         //do the authentication
-        $credentials = $request->only($this->username(), 'password');
+        $credentials = [
+            $this->username() => $request->account,
+            'password' => $request->password
+        ];
         if (Auth::attempt($credentials, $request->filled('remember')))
             return $this->sendLoginResponse($request);
 
