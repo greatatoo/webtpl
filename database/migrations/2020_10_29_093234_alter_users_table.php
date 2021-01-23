@@ -16,7 +16,7 @@ class AlterUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('account')->nullable(false)->unique()->after('id');
             $table->string('api_token')->unique()->nullable()->after('password');
-            $table->tinyInteger('active')->default(0)->after('api_token');
+            $table->tinyInteger('active')->default(1)->after('api_token');
             $table->string('email')->nullable()->change();
         });
     }
