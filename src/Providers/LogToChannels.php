@@ -26,12 +26,18 @@ class LogToChannels
      * @var Logger[]
      */
     protected $channels = [];
+    protected $logFormat = "[%datetime%] [%level_name%] %message% %context% %extra%\n";
 
     /**
      * LogToChannels constructor.
      */
     public function __construct()
     {
+    }
+
+    public function setFormat($logFormat)
+    {
+        $this->logFormat = $logFormat;
     }
 
     /**
@@ -50,7 +56,7 @@ class LogToChannels
                 storage_path() . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR . $channel . '.log'
             );
 
-            $handler->setFormatter(new LineFormatter(null, null, true, true));
+            $handler->setFormatter(new LineFormatter($this->logFormat, null, true, true));
             $this->addChannel($channel, $handler);
         }
         // LogToChannels the record        
@@ -71,15 +77,9 @@ class LogToChannels
         if (isset($this->channels[$channelName])) {
             throw new \Exception('This channel already exists');
         }
-        
+
         $this->channels[$channelName] = new Logger($channelName);
-        $this->channels[$channelName]->pushHandler(
-            new $handler(
-                $path === null ?
-                    storage_path() . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR . $channelName . '.log' :
-                    $path . DIRECTORY_SEPARATOR . $channelName . '.log'
-            )
-        );
+        $this->channels[$channelName]->pushHandler($handler);
     }
 
     /**
